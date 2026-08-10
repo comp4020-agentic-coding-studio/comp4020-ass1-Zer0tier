@@ -1,0 +1,55 @@
+---
+// One card on the timeline, and the ONLY place the data-* attribute names are
+// written. The quiz builds its whole question pool from these attributes, so
+// the timeline is structurally the source of truth: it cannot ask about a
+// regime that isn't on the page, because there would be no node to read.
+//
+// The card is an <a href="#d-id">, not a <button>. That single choice does
+// three jobs: it satisfies the spec's "every trigger is focusable" contract,
+// it navigates to the server-rendered reference article with JavaScript off,
+// and with JavaScript on detail.js intercepts it and fills the panel instead.
+import { TRACK_NAMES, formatSpan, periodOf } from "../data/dynasties";
+import type { Cell } from "../data/layout";
+
+interface Props {
+  cell: Cell;
+}
+
+const { cell } = Astro.props;
+const r = cell.regime;
+const years = formatSpan(r);
+const period = periodOf(r.period);
+---
+
+<div
+  class:list={[
+    "cell",
+    `is-${r.track}`,
+    r.kind !== "regime" && "is-umbrella",
+    cell.continues && "is-open-end",
+    cell.begins && "is-open-start",
+  ]}
+  style={`--col:${cell.column};--from:${cell.from};--to:${cell.to}`}
+>
+  <a
+    class="regime"
+    href={`#d-${r.id}`}
+    data-dynasty={r.id}
+    data-name={r.name}
+    data-zh={r.chinese}
+    data-start={String(r.start)}
+    data-end={String(r.end)}
+    data-years={years}
+    data-period={r.period}
+    data-period-name={period?.name ?? ""}
+    data-track={r.track}
+    data-track-name={TRACK_NAMES[r.track]}
+    data-kind={r.kind}
+    data-artefact={r.artefacts[0]}
+    data-detail={r.summary}
+  >
+    <span class="regime-name">{r.name}</span>
+    <span class="zh" lang="zh-Hans">{r.chinese}</span>
+    <span class="regime-years">{years}</span>
+  </a>
+</div>

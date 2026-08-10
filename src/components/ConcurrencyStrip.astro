@@ -1,0 +1,46 @@
+---
+// The thesis, as a picture and as a sentence — both computed from the same
+// data the timeline below is drawn from, so neither can drift from it.
+// spec/timeline.test.ts recomputes these numbers from the page's own rendered
+// attributes and fails if the caption disagrees.
+import { formatYear, regimes } from "../data/dynasties";
+import { peakConcurrency, profile, yearsWithAtLeast } from "../data/layout";
+
+const STEP = 25;
+const samples = profile(regimes, STEP);
+const peak = peakConcurrency(regimes);
+const atPeak = regimes.filter(
+  (r) => r.kind === "regime" && r.start <= peak.year && peak.year < r.end,
+);
+const years3 = yearsWithAtLeast(3, regimes);
+
+const first = samples[0].year;
+const last = samples[samples.length - 1].year + STEP;
+const total = last - first;
+
+const names = atPeak.map((r) => r.name);
+const nameList =
+  names.length > 1 ? `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}` : names[0];
+---
+
+<figure class="strip-figure">
+  <p class="strip-scale">
+    <span>{formatYear(first)}</span>
+    <span>{formatYear(last)}</span>
+  </p>
+  {/* Decorative: the figcaption carries the whole finding in words, so nothing
+      here depends on reading the bars. */}
+  <ul class="strip" aria-hidden="true">
+    {
+      samples.map((s) => (
+        <li class:list={[s.n >= 3 && "is-high"]} style={`--n:${s.n}`} />
+      ))
+    }
+  </ul>
+  <figcaption class="strip-caption">
+    Every bar is 25 years, and its height is how many regimes were running at once. For {years3} of
+    these {total.toLocaleString("en-AU")} years, three or more ruled at the same time. The peak is {
+      peak.n
+    }, in {formatYear(peak.year)} — {nameList}, all at once.
+  </figcaption>
+</figure>

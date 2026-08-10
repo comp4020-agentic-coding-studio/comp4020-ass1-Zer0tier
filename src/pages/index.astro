@@ -1,26 +1,102 @@
 ---
-import "../styles/global.css";
+import ConcurrencyStrip from "../components/ConcurrencyStrip.astro";
+import DetailPanel from "../components/DetailPanel.astro";
+import EraBand from "../components/EraBand.astro";
+import ReferenceList from "../components/ReferenceList.astro";
+import Base from "../layouts/Base.astro";
+import { periods, regimes } from "../data/dynasties";
+import { buildBand } from "../data/layout";
+
+const bands = periods.map((p) => buildBand(p, regimes));
 ---
 
-<!doctype html>
-<html lang="en-AU">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>COMP4020 prototype</title>
-  </head>
-  <body>
-    <header>
-      <nav aria-label="Primary">
-        <a href="/">Home</a>
-      </nav>
-    </header>
-    <main>
-      <h1>COMP4020 prototype</h1>
-      <p data-testid="intro">
-        Replace this with your prototype. This week's brief is on the course website;
-        <code>spec/README.md</code> explains how the checks in this repo relate to it.
+<Base
+  title="Chinese history was never one line"
+  description="Most timelines show the Chinese dynasties as a single sequence. For 333 of those 4,000 years, three or more regimes ruled at once. An interactive explainer you can also be tested on."
+>
+  <header class="masthead shell">
+    <p><span class="eyebrow">An interactive explainer</span></p>
+    <h1>Chinese history was never one line</h1>
+    <p class="lede">
+      Almost every timeline of China is a single column — Xia, Shang, Zhou, Qin, Han, and on down to
+      Qing. It is the version taught in schools on both sides of the Pacific, and it is tidy,
+      memorable and wrong. For centuries at a stretch there was no one ruler of China at all: two
+      courts, three courts, once five states at the same moment, each keeping its own calendar and
+      each certain the others were pretenders.
+    </p>
+  </header>
+
+  <nav class="modes shell" aria-label="Modes">
+    <ul>
+      <li><a href="#explore" aria-current="true">Explore the timeline</a></li>
+      <li><a href="#quiz">Test yourself</a></li>
+    </ul>
+  </nav>
+
+  <main id="main">
+    <div class="shell">
+      <ConcurrencyStrip />
+    </div>
+
+    <section id="explore" class="shell" aria-labelledby="explore-title">
+      <h2 id="explore-title">Explore</h2>
+      <p class="lede">
+        Time runs downwards; regimes that ruled at the same time sit side by side. Bar heights are
+        compressed — a two-year regime and a five-century one have to both stay readable — so read
+        the dates, not the heights. Pick anything to see what it made.
       </p>
-    </main>
-  </body>
-</html>
+      <div class="explore-grid">
+        <ol class="timeline">
+          {bands.map((band) => <EraBand band={band} />)}
+        </ol>
+        <DetailPanel />
+      </div>
+    </section>
+
+    <ReferenceList />
+
+    <section class="sources shell" aria-labelledby="sources-title">
+      <h2 id="sources-title">Where the dates and the objects come from</h2>
+      <p>
+        Dates for the Xia, Shang and Western Zhou are the conventional figures from the
+        Xia–Shang–Zhou Chronology Project and are marked approximate throughout; the Xia's
+        historicity is itself still argued over, and nothing here treats it as settled. Every object
+        named on this page is a real surviving thing in a real collection, not an invention chosen
+        to sound plausible.
+      </p>
+      <ul>
+        <li>
+          <a href="https://www.worldhistory.org/china/" rel="external noopener">
+            World History Encyclopedia — China
+          </a>{" "}
+          — for periodisation and the narrative of each division.
+        </li>
+        <li>
+          <a href="https://en.wikipedia.org/wiki/Timeline_of_Chinese_history" rel="external noopener">
+            Timeline of Chinese history
+          </a>{" "}
+          — cross-checked against it for the concurrent regimes most single-column tables omit.
+        </li>
+        <li>
+          <a href="https://www.britishmuseum.org/collection" rel="external noopener">
+            The British Museum collection
+          </a>{" "}
+          — for the bronzes and the oracle bones.
+        </li>
+        <li>
+          <a href="https://en.wikipedia.org/wiki/Xia%E2%80%93Shang%E2%80%93Zhou_Chronology_Project" rel="external noopener">
+            The Xia–Shang–Zhou Chronology Project
+          </a>{" "}
+          — the source of the conventional early dates, and of the argument about them.
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer shell">
+    <p>
+      Built as coursework for COMP4020 Agentic Coding Studio at ANU. The dynasty names are given in
+      English with the Chinese characters alongside; the prose is mine and the errors are too.
+    </p>
+  </footer>
+</Base>

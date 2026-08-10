@@ -1196,13 +1196,17 @@ export function formatYear(y: number, approx?: boolean): string {
   return `${prefix}${y}`;
 }
 
+export function formatRange(start: number, end: number, approx?: boolean): string {
+  const c = approx ? "c. " : "";
+  if (start < 0 && end < 0) return `${c}${-start}–${-end} BC`;
+  if (start < 0) return `${c}${-start} BC – AD ${end}`;
+  if (start < 1000) return `${c}AD ${start}–${end}`;
+  return `${c}${start}–${end}`;
+}
+
 export function formatSpan(r: Regime): string {
   if (r.displaySpan) return r.displaySpan;
-  const c = r.approx ? "c. " : "";
-  if (r.start < 0 && r.end < 0) return `${c}${-r.start}–${-r.end} BC`;
-  if (r.start < 0) return `${c}${-r.start} BC – AD ${r.end}`;
-  if (r.start < 1000) return `${c}AD ${r.start}–${r.end}`;
-  return `${c}${r.start}–${r.end}`;
+  return formatRange(r.start, r.end, r.approx);
 }
 
 export function periodOf(id: string): Period | undefined {

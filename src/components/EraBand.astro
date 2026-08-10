@@ -1,0 +1,70 @@
+---
+import RegimeCard from "./RegimeCard.astro";
+import { formatRange } from "../data/dynasties";
+import type { Band } from "../data/layout";
+
+interface Props {
+  band: Band;
+}
+
+const { band } = Astro.props;
+const { period, columns, cells, rows, peak } = band;
+
+// Row 1 is the column headers; the rest are the time segments computed in
+// layout.ts, one per boundary year in this band.
+const rowTemplate = ["auto", ...rows].join(" ");
+
+// A track holding two simultaneous regimes gets two columns, and "The north"
+// twice reads as a mistake rather than as the point. Number them.
+const perTrack = new Map<string, number>();
+for (const c of columns) perTrack.set(c.track, (perTrack.get(c.track) ?? 0) + 1);
+const seen = new Map<string, number>();
+const labelled = columns.map((c) => {
+  const n = (seen.get(c.track) ?? 0) + 1;
+  seen.set(c.track, n);
+  return { ...c, label: (perTrack.get(c.track) ?? 1) > 1 ? `${c.name} ${n}` : c.name };
+});
+
+// Only bands that actually scroll at 390px get the hint. Three columns is
+// 335px of the 358px available, so three still fits and four does not.
+const crowded = columns.length >= 4;
+---
+
+<li class="era" id={`era-${period.id}`}>
+  <div class="era-head">
+    <h3>
+      {period.name} <span class="zh" lang="zh-Hans">{period.chinese}</span>
+    </h3>
+    <p class="era-span">{formatRange(period.start, period.end)}</p>
+    <p class="era-blurb">{period.blurb}</p>
+    {
+      peak >= 2 && (
+        <p class="era-peak">
+          Up to {peak} regimes at once
+        </p>
+      )
+    }
+    {crowded && <p class="scroll-hint">Scrolls sideways →</p>}
+  </div>
+
+  {/* A grid whose children include per-column headers can't honestly be a
+      <ul>, so this is a labelled group. The cards inside are already links,
+      so the scroller must NOT take a tabindex — that would add a redundant
+      tab stop. (C2's rails needed one because their cards held nothing
+      focusable; that rule does not transfer.) */}
+  <div
+    class="era-tracks"
+    role="group"
+    aria-label={`${period.name}: ${columns.length} parallel ${columns.length === 1 ? "track" : "tracks"}`}
+    style={`--tracks:${columns.length};grid-template-rows:${rowTemplate}`}
+  >
+    {
+      labelled.map((c) => (
+        <p class:list={["track-head", `is-${c.track}`]} style={`--col:${c.index}`}>
+          {c.label}
+        </p>
+      ))
+    }
+    {cells.map((cell) => <RegimeCard cell={cell} />)}
+  </div>
+</li>

@@ -1,0 +1,60 @@
+---
+// Every regime in full, server-rendered. This does three jobs at once:
+// it is the no-JavaScript content, it is the target every timeline card links
+// to, and it is the clone source detail.js copies into the panel — so the
+// panel can never show something the page doesn't already contain.
+import { TRACK_NAMES, formatSpan, periodOf, regimes } from "../data/dynasties";
+
+const ordered = [...regimes].sort((a, b) => a.start - b.start || a.end - b.end);
+---
+
+<section class="reference shell" id="reference" aria-labelledby="reference-title">
+  <h2 id="reference-title">Every regime, in order</h2>
+  <p class="lede">
+    Fifty entries, earliest first — the full reference, and what each one left behind. This is also
+    exactly what the panel above shows you when you pick something from the timeline.
+  </p>
+  <div class="ref-grid">
+    {
+      ordered.map((r) => (
+        <article class="ref" id={`d-${r.id}`}>
+          <h3>
+            {r.name} <span class="zh" lang="zh-Hans">{r.chinese}</span>
+          </h3>
+          <p class="ref-span">
+            {formatSpan(r)} · {periodOf(r.period)?.name} · {TRACK_NAMES[r.track]}
+          </p>
+          {r.capital && <p class="ref-capital">Capital: {r.capital}</p>}
+          <p class="ref-summary">{r.summary}</p>
+          {r.note && <p class="ref-note">{r.note}</p>}
+          <dl class="ref-facts">
+            <dt>Weapons</dt>
+            <dd>
+              <ul>
+                {r.weapons.map((w) => (
+                  <li>{w}</li>
+                ))}
+              </ul>
+            </dd>
+            <dt>Inventions</dt>
+            <dd>
+              <ul>
+                {r.inventions.map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+            </dd>
+            <dt>What they left</dt>
+            <dd>
+              <ul>
+                {r.artefacts.map((a) => (
+                  <li>{a}</li>
+                ))}
+              </ul>
+            </dd>
+          </dl>
+        </article>
+      ))
+    }
+  </div>
+</section>

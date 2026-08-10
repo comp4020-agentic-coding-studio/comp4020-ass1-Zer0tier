@@ -1,0 +1,17 @@
+---
+// The panel a timeline click fills. Note what is NOT inside the tested
+// element: the heading and the empty-state sentence are siblings, because
+// spec/assignment-1.test.ts requires [data-testid='dynasty-detail'] to have
+// empty textContent on load. Putting the empty state inside it — the obvious
+// place — fails that contract.
+---
+
+<section class="detail explore-panel" id="detail" tabindex="-1" aria-labelledby="detail-title">
+  <h2 id="detail-title">What they made</h2>
+  <p class="detail-empty" id="detail-empty">
+    Pick any regime on the timeline and its weapons, inventions and surviving objects appear here.
+    Without JavaScript the same link takes you straight to its entry in the full list below.
+  </p>
+  <div class="detail-body" data-testid="dynasty-detail"></div>
+  <p class="sr-only" role="status" id="detail-status"></p>
+</section>
