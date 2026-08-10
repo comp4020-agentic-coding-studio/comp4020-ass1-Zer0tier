@@ -160,3 +160,121 @@ catching you out, a fact about the stack the agent keeps getting wrong --- write
 it down here. Growing this file is the work of harness engineering, and the gap
 between this boilerplate and your own version is part of what your prototype
 says about the developer you're becoming.
+
+## What I've learned to hold the agent to
+
+Added as each one actually cost me something. Kept short on purpose --- a rule I
+won't reread is a rule that doesn't work.
+
+### Read the spec's own tests before writing any code
+
+`spec/*.test.ts` for the week is the contract in executable form, and it holds
+requirements a summary of the brief will drop. In C2 my own brief covered the
+link to the original but never mentioned the organisation's **contact**
+details --- which `spec/crit-2.test.ts` asserts outright. Read those files and
+the published spec first, then build. Cheaper than discovering it at the crit.
+
+### Word counts: a crit week is 150--300 words, not an essay
+
+Indicative, not penalised --- but badly overshooting loses marks under the
+response criterion, and "badly" is easy to hit by accident. I wrote a 1,182-word
+`PROCESS.md` for a 150--300-word slot before checking.
+
+| file | words | shape |
+| --- | --- | --- |
+| crit-week `PROCESS.md` | 150--300 | **one or two** moments, not four |
+| assignment `PROCESS.md` | 400--600 | |
+| final-project `PROCESS.md` | 600--900 | folds in stack + workflow |
+| any `reflections/*.md` | 150--300 | every week, crit or assignment |
+
+Images and screenshots don't count towards any of these, and are encouraged
+where one carries the verification better than a sentence. Tables are a cheap
+way to say a lot inside the budget.
+
+### Never let real information be plausible-looking invention
+
+When the week's brief involves a real organisation, its identity, address and
+contact details must be **theirs**, fetched and cited --- not generated to look
+right. A fabricated address for a real company is worse than no address.
+Chinese sites are often GB18030, not UTF-8: if a fetch returns mojibake, pipe it
+through `iconv -f gb18030 -t utf-8` rather than guessing at the content.
+
+### The rendered page is the only source of truth for layout
+
+`pnpm check` cannot see the page. It was fully green in C2 while all 24 card
+thumbnails rendered as empty tofu boxes (emoji, no emoji font) and three links
+had shipped welded to the previous word. Render the built site and measure it at
+**both** graded viewports before believing it:
+
+- `document.documentElement.scrollWidth === window.innerWidth` at 1920 and at
+  390 --- this is the no-horizontal-scroll contract, and the one thing most
+  worth checking
+- elements crossing the right edge at 390 should only ever be the contents of a
+  deliberate horizontal scroller
+- don't assert layout in `spec/` --- jsdom computes none, so the test would pass
+  on a visibly broken page. Say so in the test file rather than faking the
+  coverage.
+
+Emoji are not safe as load-bearing visuals. Text and CSS need no font that
+might be missing.
+
+Run axe-core in that same browser session while it's open --- injecting it from
+a CDN and calling `axe.run(document)` at both viewports takes seconds. In C2 it
+caught one serious `color-contrast` failure I would not have seen: the Chinese
+nav labels sat at ~3.4:1 because I'd dimmed the pill's own colour with
+`opacity: 0.65`. Note *why* this isn't a `spec/` test: axe under jsdom cannot
+evaluate `color-contrast` at all --- no layout, no computed colours --- so the
+wired-up cheap version would have passed on the exact bug it was meant to catch,
+and the honest version needs a real browser in CI. Until a spec asks for that,
+this is a manual pass to repeat whenever colours change.
+
+### `hidden` loses to any author `display` rule
+
+The UA implements the `hidden` attribute as `display: none` in *its* stylesheet,
+so any author rule that sets `display` on the same element outranks it. In C2 an
+empty search bar (`display: flex`) rendered 71px tall on every first visit while
+carrying `hidden`, and the empty favourites list (`display: grid`) stayed in the
+accessibility tree. Ship `[hidden] { display: none !important; }` once, globally.
+
+And measure the right thing: my probe read `el.hidden`, which was `true` the
+whole time. The attribute is not the question --- `getComputedStyle(el).display`
+and `el.offsetParent !== null` are. Assert what a visitor sees, not what the DOM
+property says.
+
+### Make a check fail before trusting it
+
+A test that has never been red is not evidence. Break the thing on purpose,
+watch it fail, restore, watch it pass. And any injection or edit used to do that
+must **assert it actually matched** --- in C2 a find-and-replace silently hit
+nothing (the real markup had a `class` attribute I hadn't accounted for), so the
+test never ran and still read as green. A silently-skipped verification is worse
+than none, because it manufactures confidence.
+
+### Astro, in this repo
+
+- **Base path.** Pages serves under `/<repo>/`, so `astro.config.mjs` sets
+  `site` + `base`. Belt and braces: `build.inlineStylesheets: "always"` and no
+  bitmap images means the built page references no external asset at all, so a
+  wrong base has nothing to break. `spec/redesign.test.ts` asserts this. Before
+  shipping any new asset, re-check that test.
+- **Whitespace.** Astro strips the newline between trailing text and an inline
+  element, so `text\n<a>` renders as `text<a>`. Use an explicit `{" "}`.
+- `.astro/` is generated --- gitignored, and oxlint skips it via
+  `--ignore-path .gitignore`.
+- Keep CSS in a real `.css` file, not only in `<style>` blocks: stylelint's glob
+  is `**/*.css`, so styles written inline in a component are never linted. Same
+  for JS: a script written straight into a `.astro` file is invisible to oxlint.
+  Write it as a real `.js` file and inline it with `import src from "./x.js?raw"`
+  plus `<script is:inline set:html={src} />` --- linted *and* inline.
+- **Never let Astro emit an external script.** A plain `<script>` gets bundled
+  to `/_astro/*.js`, which resolves against `base` and 404s in the links check
+  that runs on `./dist`. `is:inline` is the rule, and `spec/redesign.test.ts`
+  asserts no script carries a `src`.
+- Don't write the literal text `<` + `script>` inside a JS file --- it survives
+  into the inlined output and confuses greps, and the closing form would end the
+  block early.
+- stylelint-config-standard here means kebab-case classes (BEM `__` fails),
+  range media queries (`(width >= 48rem)`), percentage alpha
+  (`rgb(255 255 255 / 8%)`), and `no-descending-specificity` --- put a base
+  selector ahead of every context that overrides it, and prefer a class over a
+  bare descendant (`.card .zh`, not `.card h3 span`).
