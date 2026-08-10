@@ -1,0 +1,32 @@
+---
+// The quiz shell. Everything here is the honest starting state: no questions,
+// no score, and no control offered to a visitor whose scripts didn't run.
+//
+// data-total is the ONE place the round length is written. quiz.js reads it and
+// the intro prose interpolates it, so a round can never silently become eleven
+// questions because two copies of "10" drifted apart.
+const TOTAL = 10;
+---
+
+<section class="quiz shell" id="quiz" data-total={String(TOTAL)} aria-labelledby="quiz-title">
+  <h2 id="quiz-title">Test yourself</h2>
+  <p class="quiz-intro lede">
+    {TOTAL} questions, drawn at random from a much larger pool, so no two rounds are the same. Most of
+    them are only answerable if you accept the premise of the timeline above — that these regimes
+    overlapped. Get one wrong and the answer's entry opens underneath, which is the point.
+  </p>
+
+  <p class="quiz-nojs">
+    This part needs JavaScript. The timeline and the full reference below both work without it.
+  </p>
+
+  <p class="js-only">
+    <button type="button" class="button button-primary" id="quiz-start">
+      Start {TOTAL} questions
+    </button>
+  </p>
+
+  <div data-testid="quiz-questions"></div>
+  <div class="detail-body" data-testid="quiz-detail"></div>
+  <p class="sr-only" role="status" id="quiz-status"></p>
+</section>

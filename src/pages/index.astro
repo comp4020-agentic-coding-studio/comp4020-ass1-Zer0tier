@@ -2,10 +2,23 @@
 import ConcurrencyStrip from "../components/ConcurrencyStrip.astro";
 import DetailPanel from "../components/DetailPanel.astro";
 import EraBand from "../components/EraBand.astro";
+import Quiz from "../components/Quiz.astro";
 import ReferenceList from "../components/ReferenceList.astro";
+import Scoreboard from "../components/Scoreboard.astro";
 import Base from "../layouts/Base.astro";
 import { periods, regimes } from "../data/dynasties";
 import { buildBand } from "../data/layout";
+
+// ?raw + is:inline, never a plain <script>. Astro would bundle that to
+// /_astro/*.js, which resolves against the Pages base path and 404s the links
+// check — while looking perfectly fine locally. Keeping them as real .js files
+// is what lets oxlint see them at all.
+import enhanceSrc from "../enhance.js?raw";
+import detailSrc from "../detail.js?raw";
+import scoreboardSrc from "../scoreboard.js?raw";
+import poolSrc from "../quiz-pool.js?raw";
+import quizSrc from "../quiz.js?raw";
+import modesSrc from "../modes.js?raw";
 
 const bands = periods.map((p) => buildBand(p, regimes));
 ---
@@ -53,6 +66,9 @@ const bands = periods.map((p) => buildBand(p, regimes));
       </div>
     </section>
 
+    <Quiz />
+    <Scoreboard />
+
     <ReferenceList />
 
     <section class="sources shell" aria-labelledby="sources-title">
@@ -99,4 +115,33 @@ const bands = periods.map((p) => buildBand(p, regimes));
       English with the Chinese characters alongside; the prose is mine and the errors are too.
     </p>
   </footer>
+
+  {/* Marks for the quiz. Inline SVG, never emoji — the marking machine has no
+      emoji font and they render as tofu boxes, which C2 taught me the hard way. */}
+  <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0">
+    <symbol id="tick" viewBox="0 0 24 24">
+      <path
+        d="M20 6L9 17l-5-5"
+        fill="none"
+        stroke="currentcolor"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"></path>
+    </symbol>
+    <symbol id="cross" viewBox="0 0 24 24">
+      <path
+        d="M6 6l12 12M18 6L6 18"
+        fill="none"
+        stroke="currentcolor"
+        stroke-width="3"
+        stroke-linecap="round"></path>
+    </symbol>
+  </svg>
+
+  <script is:inline set:html={enhanceSrc} />
+  <script is:inline set:html={detailSrc} />
+  <script is:inline set:html={scoreboardSrc} />
+  <script is:inline set:html={poolSrc} />
+  <script is:inline set:html={quizSrc} />
+  <script is:inline set:html={modesSrc} />
 </Base>

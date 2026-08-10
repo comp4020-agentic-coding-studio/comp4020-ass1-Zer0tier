@@ -1,0 +1,22 @@
+---
+// Ships empty, and says so. The list is display:flex in CSS, so the `hidden`
+// attribute alone would NOT hide it — that is the bug that shipped green in C2
+// and the reason global.css carries [hidden] { display: none !important }.
+//
+// #score-empty takes tabindex="-1" because clearing the board destroys whatever
+// had focus inside the list; focus has to land somewhere deliberate rather than
+// falling back to <body>.
+---
+
+<section class="scoreboard shell" id="scoreboard" aria-labelledby="scoreboard-title">
+  <h2 id="scoreboard-title">Your best rounds</h2>
+  <p class="score-empty" id="score-empty" tabindex="-1">
+    No rounds yet. Your best five are kept in this browser only — nothing is sent anywhere, and
+    clearing your site data clears them.
+  </p>
+  <ol class="score-list" id="score-list" hidden></ol>
+  <p class="js-only">
+    <button type="button" class="button" id="score-clear">Clear saved scores</button>
+  </p>
+  <p class="sr-only" role="status" id="score-status"></p>
+</section>
