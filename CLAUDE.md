@@ -250,6 +250,26 @@ nothing (the real markup had a `class` attribute I hadn't accounted for), so the
 test never ran and still read as green. A silently-skipped verification is worse
 than none, because it manufactures confidence.
 
+**A test that checks a rule by applying that same rule cannot catch the rule
+being wrong.** In A1 I inverted `overlaps()` from half-open to closed --- the
+classic off-by-one --- and "never puts two overlapping regimes in the same
+column" stayed green, because it asks `overlaps()` whether the packing
+`overlaps()` produced was right. Only the fixture test ("Ming ends 1644 and
+Southern Ming begins 1644 --- not concurrent") went red. So: for any convention
+the whole design rests on, write at least one test that states the expected
+answer as a **literal**, from outside the implementation. Structural tests check
+consistency; only fixtures check correctness.
+
+### "Never commit a red state" has one exception, and only one
+
+The week's own `spec/*.test.ts` encodes the published contract *before* the
+thing exists --- red is its correct starting state, and turning each one green
+is the commit trail the marker reads. So the rule is: never commit a
+**regression**, and never commit with typecheck, build or lint red. A spec test
+that has never yet been green is a different thing from a test that just broke.
+Say which is which in the commit message, so the distinction is legible rather
+than something a reader has to reconstruct.
+
 ### Astro, in this repo
 
 - **Base path.** Pages serves under `/<repo>/`, so `astro.config.mjs` sets
