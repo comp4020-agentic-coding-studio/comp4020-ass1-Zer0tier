@@ -54,4 +54,19 @@ describe("Windows Desktop Evolution", () => {
     const pages = [resolve("dist/index.html"), ...versions.map((version) => resolve("dist", version, "index.html"))];
     for (const page of pages) expect(readFileSync(page, "utf8"), page).not.toMatch(/\p{Script=Han}/u);
   });
+
+  it("includes a sourced story and named contributors on every release page", () => {
+    for (const version of versions) {
+      const html = readFileSync(resolve("dist", version, "index.html"), "utf8");
+      const doc = new JSDOM(html).window.document;
+      const story = doc.querySelector(".release-story");
+      const contributors = [...doc.querySelectorAll(".contributor-card")];
+
+      expect(story?.querySelector("h2")?.textContent?.trim(), version).toBeTruthy();
+      expect(story?.querySelector('a[target="_blank"]')?.getAttribute("href"), version).toMatch(/^https:\/\//);
+      expect(contributors.length, version).toBeGreaterThanOrEqual(2);
+      expect(contributors.every((card) => card.querySelector("img")?.getAttribute("alt")?.startsWith("Portrait of ")), version).toBe(true);
+      expect(contributors.every((card) => card.querySelector("h3")?.textContent?.trim()), version).toBe(true);
+    }
+  });
 });

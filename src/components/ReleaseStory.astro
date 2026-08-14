@@ -1,0 +1,21 @@
+---
+import type { ReleaseStory } from "../data/windows-history";
+
+interface Props {
+  releaseName: string;
+  story: ReleaseStory;
+}
+
+const { releaseName, story } = Astro.props;
+---
+
+<section class="release-story" aria-labelledby="story-heading">
+  <p class="eyebrow">Field story · {releaseName}</p>
+  <div class="story-layout">
+    <h2 id="story-heading">{story.title}</h2>
+    <div>
+      <p>{story.story}</p>
+      <a href={story.sourceUrl} target="_blank" rel="noreferrer">Read the record: {story.sourceLabel}<span aria-hidden="true"> ↗</span></a>
+    </div>
+  </div>
+</section>

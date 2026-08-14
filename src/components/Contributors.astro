@@ -1,0 +1,31 @@
+---
+import type { Contributor } from "../data/windows-history";
+
+interface Props {
+  releaseName: string;
+  contributors: Contributor[];
+  base: string;
+}
+
+const { releaseName, contributors, base } = Astro.props;
+---
+
+<section class="contributors" aria-labelledby="contributors-heading">
+  <div class="section-heading">
+    <div><p class="eyebrow">People behind the release</p><h2 id="contributors-heading">Influential contributors</h2></div>
+    <p>Selected people whose product, engineering, creative, or executive work shaped {releaseName}.</p>
+  </div>
+  <div class="contributor-grid">
+    {contributors.map((contributor) => (
+      <article class="contributor-card">
+        <img src={`${base}${contributor.photo}`} alt={`Portrait of ${contributor.name}`} width="500" height="500" loading="lazy" />
+        <div>
+          <h3>{contributor.name}</h3>
+          <p>{contributor.contribution}</p>
+          <a href={contributor.profileUrl} target="_blank" rel="noreferrer">Profile and contribution<span aria-hidden="true"> ↗</span></a>
+          <small>Photo: {contributor.photoCredit}</small>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>
