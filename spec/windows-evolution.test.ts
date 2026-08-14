@@ -28,6 +28,17 @@ describe("Windows Desktop Evolution", () => {
     }
   });
 
+  it("gives every release page its own full-page theme and system cursor", () => {
+    const themeIds = ["win1", "win2", "win3", "win95", "win98", "win2000", "winxp", "vista", "win7", "win8", "win10", "win11"];
+    for (const [index, version] of versions.entries()) {
+      const html = readFileSync(resolve("dist", version, "index.html"), "utf8");
+      const doc = new JSDOM(html).window.document;
+      expect(doc.body.classList.contains(`page-${themeIds[index]}`), version).toBe(true);
+      expect(html, version).toContain(`.page-${themeIds[index]}`);
+      expect(html, version).toContain("--system-cursor:");
+    }
+  });
+
   it("keeps system controls keyboard reachable", () => {
     for (const version of versions) {
       const html = readFileSync(resolve("dist", version, "index.html"), "utf8");
