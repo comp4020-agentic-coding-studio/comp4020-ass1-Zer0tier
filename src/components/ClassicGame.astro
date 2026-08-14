@@ -1,0 +1,49 @@
+---
+import type { WindowsRelease } from "../data/windows";
+
+interface Props {
+  release: WindowsRelease;
+}
+
+const { release } = Astro.props;
+const hasGame = ["win1", "winxp", "vista"].includes(release.id);
+---
+
+{hasGame && (
+  <section class:list={["classic-game-section", `game-section-${release.id}`]} aria-labelledby="game-heading">
+    <div class="game-copy">
+      <p class="eyebrow">Classic built-in game</p>
+      {release.id === "win1" && <><h2 id="game-heading">Play Reversi</h2><p>Place a black piece where it traps a line of white pieces. The game flips every captured piece automatically.</p></>}
+      {release.id === "winxp" && <><h2 id="game-heading">Play Minesweeper</h2><p>Clear the beginner field without opening a mine. Turn on flag mode to mark the squares you suspect.</p></>}
+      {release.id === "vista" && <><h2 id="game-heading">Play Purble Pairs</h2><p>Turn over two tiles at a time and remember where each matching symbol is hiding.</p></>}
+    </div>
+
+    {release.id === "win1" && (
+      <div class="game-window reversi-window" data-reversi>
+        <header><button type="button" aria-label="Game window menu"></button><strong>Reversi</strong><span></span></header>
+        <nav aria-label="Reversi menu"><button type="button" data-reversi-reset>Game</button><button type="button">Skill</button><button type="button">Help</button></nav>
+        <div class="reversi-board" data-reversi-board aria-label="Reversi board"></div>
+        <footer><p data-reversi-status role="status" aria-live="polite">Black to move.</p><button type="button" data-reversi-reset>New game</button></footer>
+      </div>
+    )}
+
+    {release.id === "winxp" && (
+      <div class="game-window mines-window" data-minesweeper>
+        <header><span><i aria-hidden="true"></i>Minesweeper</span><div><button type="button" aria-label="Minimise game">_</button><button type="button" aria-label="Maximise game">□</button><button type="button" aria-label="Close game">×</button></div></header>
+        <nav aria-label="Minesweeper menu"><button type="button" data-mines-reset>Game</button><button type="button">Help</button></nav>
+        <div class="mine-controls"><output data-mine-count aria-label="Mines remaining">010</output><button class="mine-face" type="button" data-mines-reset aria-label="Start a new Minesweeper game"><span aria-hidden="true"></span></button><output data-mine-timer aria-label="Elapsed time">000</output></div>
+        <div class="mines-grid" data-mines-grid aria-label="Beginner Minesweeper board"></div>
+        <footer><button type="button" data-flag-mode aria-pressed="false">Flag mode: off</button><p data-mines-status role="status" aria-live="polite">Choose a square to begin.</p></footer>
+      </div>
+    )}
+
+    {release.id === "vista" && (
+      <div class="game-window purble-window" data-purble>
+        <header><span>Purble Pairs</span><div><button type="button" aria-label="Minimise game">_</button><button type="button" aria-label="Maximise game">□</button><button type="button" aria-label="Close game">×</button></div></header>
+        <div class="purble-toolbar"><p>Pairs found: <strong data-purble-score>0 / 8</strong></p><button type="button" data-purble-reset>New game</button></div>
+        <div class="purble-grid" data-purble-grid aria-label="Purble Pairs matching board"></div>
+        <p class="purble-status" data-purble-status role="status" aria-live="polite">Choose two tiles.</p>
+      </div>
+    )}
+  </section>
+)}
