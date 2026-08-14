@@ -5,11 +5,14 @@ import Contributors from "../components/Contributors.astro";
 import DesktopPreview from "../components/DesktopPreview.astro";
 import ReleaseQuiz from "../components/ReleaseQuiz.astro";
 import ReleaseStory from "../components/ReleaseStory.astro";
+import StartupSound from "../components/StartupSound.astro";
+import { getStartupSound } from "../data/windows-audio";
 import { getWindowsHistory } from "../data/windows-history";
 import { windowsReleases, type WindowsRelease } from "../data/windows";
 import interactions from "../system-interactions.js?raw";
 import gameInteractions from "../classic-games.js?raw";
 import quizInteractions from "../release-quiz.js?raw";
+import startupSoundInteractions from "../startup-sound.js?raw";
 import "../styles/global.css";
 
 export function getStaticPaths() {
@@ -26,6 +29,7 @@ const currentIndex = windowsReleases.findIndex((item) => item.id === release.id)
 const previous = windowsReleases[currentIndex - 1];
 const next = windowsReleases[currentIndex + 1];
 const history = getWindowsHistory(release.id);
+const startupSound = getStartupSound(release.id);
 const releaseHref = (slug: string) => `${base}${slug}/`;
 ---
 
@@ -40,6 +44,8 @@ const releaseHref = (slug: string) => `${base}${slug}/`;
       {windowsReleases.map((item) => <li><a href={releaseHref(item.slug)} aria-current={item.id === release.id ? "page" : undefined}><b>{item.shortName}</b><span>{item.year}</span></a></li>)}
     </ol>
   </nav>
+
+  <StartupSound releaseName={release.name} sound={startupSound} base={base} />
 
   <main id="main" class="shell">
     <section class="version-hero" aria-labelledby="version-title">
@@ -78,4 +84,5 @@ const releaseHref = (slug: string) => `${base}${slug}/`;
   <script is:inline set:html={interactions} />
   <script is:inline set:html={quizInteractions} />
   <script is:inline set:html={gameInteractions} />
+  <script is:inline set:html={startupSoundInteractions} />
 </Base>

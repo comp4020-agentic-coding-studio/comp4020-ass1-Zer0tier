@@ -25,6 +25,7 @@ describe("Windows Desktop Evolution", () => {
       const doc = new JSDOM(html).window.document;
       expect(doc.querySelector(".desktop"), version).not.toBeNull();
       expect(doc.querySelector(".release-details"), version).not.toBeNull();
+      expect(doc.querySelector("[data-startup-sound]"), version).not.toBeNull();
       expect(doc.querySelector("nav.version-nav"), version).not.toBeNull();
     }
   });
