@@ -12,10 +12,11 @@ describe("Windows Desktop Evolution", () => {
     for (const version of versions) expect(existsSync(resolve("dist", version, "index.html")), version).toBe(true);
   });
 
-  it("links all twelve releases from the overview", () => {
-    const links = [...home.querySelectorAll<HTMLAnchorElement>(".release-card")];
-    expect(links).toHaveLength(versions.length);
-    expect(links.every((link, index) => link.getAttribute("href")?.endsWith(`/${versions[index]}/`))).toBe(true);
+  it("places all twelve releases in the scroll-controlled homepage timeline", () => {
+    const scenes = [...home.querySelectorAll<HTMLElement>("[data-timeline-scene]")];
+    expect(scenes).toHaveLength(versions.length);
+    expect(scenes.every((scene, index) => scene.getAttribute("data-href")?.endsWith(`/${versions[index]}/`))).toBe(true);
+    expect(home.querySelector("[data-timeline-enter]")?.getAttribute("href")?.endsWith("/windows-1/")).toBe(true);
   });
 
   it("renders a period-specific system recreation on every release page", () => {

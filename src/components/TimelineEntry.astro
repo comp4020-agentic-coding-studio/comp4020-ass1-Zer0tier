@@ -1,0 +1,72 @@
+---
+import type { WindowsRelease } from "../data/windows";
+
+interface Props {
+  releases: WindowsRelease[];
+  base: string;
+}
+
+const { releases, base } = Astro.props;
+const titles: Record<string, string> = {
+  win1: "MS-DOS Executive",
+  win2: "Control Panel",
+  win3: "Program Manager",
+  win95: "Windows Explorer",
+  win98: "My Computer",
+  win2000: "Control Panel",
+  winxp: "My Pictures",
+  vista: "Computer",
+  win7: "Libraries",
+  win8: "Start",
+  win10: "Settings",
+  win11: "Settings",
+};
+---
+
+<main id="main" class="timeline-entry" data-timeline-entry>
+  <h1 class="sr-only">Windows Desktop Evolution</h1>
+  <div class="timeline-window" data-timeline-window aria-live="polite">
+    <header class="timeline-titlebar">
+      <span data-timeline-title>{titles[releases[0].id]}</span>
+      <div aria-hidden="true"><i></i><i></i><i></i></div>
+    </header>
+
+    <div class="timeline-scenes">
+      {releases.map((release, index) => (
+        <article
+          class:list={["timeline-scene", `timeline-scene-${release.id}`]}
+          data-timeline-scene
+          data-id={release.id}
+          data-name={release.name}
+          data-year={release.year}
+          data-title={titles[release.id]}
+          data-href={`${base}${release.slug}/`}
+          hidden={index !== 0}
+        >
+          <div class="timeline-logo">
+            <span class="timeline-windows-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+            <p>Microsoft</p>
+            <strong>{release.name}</strong>
+            <small>{release.year}</small>
+          </div>
+          <div class="timeline-system-preview" aria-hidden="true">
+            <div class="mini-system-title"><span>{titles[release.id]}</span><i></i><i></i><i></i></div>
+            <div class="mini-system-menu"><i></i><i></i><i></i><i></i></div>
+            <div class="mini-system-content"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div class="mini-system-bar"><i></i><i></i><i></i><i></i></div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <footer class="timeline-statusbar">
+      <span><b data-timeline-index>01</b> / {String(releases.length).padStart(2, "0")}</span>
+      <p data-timeline-status>Windows 1.0 · 1985</p>
+      <span>Scroll to travel · Click to enter</span>
+    </footer>
+  </div>
+
+  <nav class="timeline-enter-nav" aria-label="Enter the selected Windows release">
+    <a href={`${base}${releases[0].slug}/`} data-timeline-enter aria-label={`Enter the ${releases[0].name} page`}><span class="sr-only">Enter selected Windows release</span></a>
+  </nav>
+</main>

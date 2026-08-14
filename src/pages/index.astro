@@ -1,46 +1,14 @@
 ---
 import Base from "../layouts/Base.astro";
+import TimelineEntry from "../components/TimelineEntry.astro";
 import { windowsReleases } from "../data/windows";
+import timelineInteractions from "../timeline-entry.js?raw";
 import "../styles/global.css";
 
 const base = import.meta.env.BASE_URL;
-const releaseHref = (slug: string) => `${base}${slug}/`;
 ---
 
-<Base title="Windows Desktop Evolution" description="Explore twelve separate, interactive recreations of Microsoft Windows desktop interfaces from Windows 1.0 to Windows 11." bodyClass="home-page">
-  <header class="site-header shell">
-    <a class="wordmark" href={base} aria-label="Windows Desktop Evolution home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Windows<br /><b>Desktop Evolution</b></span></a>
-    <nav class="home-nav" aria-label="Page navigation"><a href="#release-heading">Explore releases</a><span>1985—2021</span></nav>
-  </header>
-
-  <main id="main">
-    <section class="hero shell" aria-labelledby="page-title">
-      <p class="eyebrow">An interactive interface archive</p>
-      <h1 id="page-title">Twelve desktops.<br /><span>One evolving idea.</span></h1>
-      <div class="hero-copy"><p>Explore the major Windows interfaces from Windows 1.0 to Windows 11. Every release opens on its own page with a period-accurate system recreation.</p><a href={releaseHref(windowsReleases[0].slug)}>Begin with Windows 1.0 <span aria-hidden="true">→</span></a></div>
-    </section>
-
-    <section class="release-index shell" aria-labelledby="release-heading">
-      <div class="section-heading"><p class="eyebrow">Choose a system</p><h2 id="release-heading">The desktop, release by release</h2></div>
-      <ol class="release-grid">
-        {windowsReleases.map((release, index) => (
-          <li>
-            <a href={releaseHref(release.slug)} class:list={["release-card", `card-${release.id}`]}>
-              <div class="card-preview" aria-hidden="true"><span class="preview-window"><i></i><b></b><em></em></span><span class="preview-bar"></span></div>
-              <div class="card-index">{String(index + 1).padStart(2, "0")}</div>
-              <div><p>{release.year}</p><h3>{release.name}</h3><span>{release.era}</span></div>
-              <i class="card-arrow" aria-hidden="true">↗</i>
-            </a>
-          </li>
-        ))}
-      </ol>
-    </section>
-
-    <section class="archive-note shell">
-      <p class="eyebrow">About the archive</p>
-      <p>These recreations use semantic HTML, CSS, and small client-side interactions. They reproduce recognisable system layouts without relying on screenshots, so the controls remain sharp, responsive, and keyboard accessible.</p>
-    </section>
-  </main>
-
-  <footer class="site-footer shell"><p>Windows Desktop Evolution · Educational interface study</p><a href="#main">Back to top</a></footer>
+<Base title="Windows Desktop Evolution" description="Scroll through the evolution of Microsoft Windows, then click to enter the selected release." bodyClass="home-page">
+  <TimelineEntry releases={windowsReleases} base={base} />
+  <script is:inline set:html={timelineInteractions} />
 </Base>

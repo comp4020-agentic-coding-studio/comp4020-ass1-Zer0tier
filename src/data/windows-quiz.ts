@@ -15,8 +15,8 @@ export const windowsQuiz: Record<string, QuizQuestion[]> = {
     { prompt: "Which familiar caption controls became part of Windows 2.0?", choices: ["Minimise and maximise", "Snap and shake", "Back and forward"], answer: 0, explanation: "Minimise and maximise controls helped make layered window management practical." },
   ],
   win3: [
-    { prompt: "What replaced MS-DOS Executive as the main launcher in Windows 3.0?", choices: ["Program Manager", "Start", "Active Desktop"], answer: 0, explanation: "Program Manager organised applications into visual groups of icons." },
-    { prompt: "Where did users browse files in Windows 3.0?", choices: ["Internet Explorer", "File Manager", "Libraries"], answer: 1, explanation: "File Manager supplied a tree-and-directory interface separate from Program Manager." },
+    { prompt: "What served as the main launcher in Windows 3.1?", choices: ["Program Manager", "Start", "Active Desktop"], answer: 0, explanation: "Program Manager organised applications into visual groups of icons." },
+    { prompt: "Where did users browse files in Windows 3.1?", choices: ["Internet Explorer", "File Manager", "Libraries"], answer: 1, explanation: "File Manager supplied a tree-and-directory interface separate from Program Manager." },
   ],
   win95: [
     { prompt: "Which navigation feature debuted with Windows 95?", choices: ["Charms", "The Start menu", "Task View"], answer: 1, explanation: "Windows 95 introduced the Start button and Start menu as a consistent application launcher." },
