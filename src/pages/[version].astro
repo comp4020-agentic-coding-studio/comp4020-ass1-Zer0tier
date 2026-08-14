@@ -6,6 +6,7 @@ import DesktopPreview from "../components/DesktopPreview.astro";
 import ReleaseQuiz from "../components/ReleaseQuiz.astro";
 import ReleaseStory from "../components/ReleaseStory.astro";
 import StartupSound from "../components/StartupSound.astro";
+import XPSpiderEasterEgg from "../components/XPSpiderEasterEgg.astro";
 import { getStartupSound } from "../data/windows-audio";
 import { getWindowsHistory } from "../data/windows-history";
 import { windowsReleases, type WindowsRelease } from "../data/windows";
@@ -13,6 +14,8 @@ import interactions from "../system-interactions.js?raw";
 import gameInteractions from "../classic-games.js?raw";
 import quizInteractions from "../release-quiz.js?raw";
 import startupSoundInteractions from "../startup-sound.js?raw";
+import xpSpiderInteractions from "../xp-spider-easter-egg.js?raw";
+import xpSpiderStyles from "../styles/xp-spider.css?raw";
 import "../styles/global.css";
 
 export function getStaticPaths() {
@@ -34,6 +37,7 @@ const releaseHref = (slug: string) => `${base}${slug}/`;
 ---
 
 <Base title={`${release.name} — Windows Desktop Evolution`} description={`${release.summary} Explore a period-accurate interactive recreation of the ${release.name} desktop.`} bodyClass={`version-page page-${release.id}`}>
+  {release.id === "winxp" && <style is:inline set:html={xpSpiderStyles} />}
   <header class="site-header shell">
     <a class="wordmark" href={base} aria-label="Windows Desktop Evolution home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Windows<br /><b>Desktop Evolution</b></span></a>
     <p>{String(currentIndex + 1).padStart(2, "0")} / {String(windowsReleases.length).padStart(2, "0")}</p>
@@ -81,8 +85,10 @@ const releaseHref = (slug: string) => `${base}${slug}/`;
   </main>
 
   <footer class="site-footer shell"><p>{release.name} · Windows Desktop Evolution</p><a href={base}>All releases</a></footer>
+  {release.id === "winxp" && <XPSpiderEasterEgg base={base} />}
   <script is:inline set:html={interactions} />
   <script is:inline set:html={quizInteractions} />
   <script is:inline set:html={gameInteractions} />
   <script is:inline set:html={startupSoundInteractions} />
+  {release.id === "winxp" && <script is:inline set:html={xpSpiderInteractions} />}
 </Base>

@@ -1,0 +1,69 @@
+/* Windows XP Spider Solitaire Easter egg — scoped to the XP release page. */
+.xp-crawling-spider { --crawl-duration: 2.2s; --spider-facing: 1; position: fixed; z-index: 80; display: grid; width: 48px; height: 48px; place-items: center; padding: 0; border: 0; background: transparent; filter: drop-shadow(2px 3px 2px rgb(0 0 0 / 32%)); transition: left var(--crawl-duration) ease-in-out, top var(--crawl-duration) ease-in-out; }
+.xp-crawling-spider img { width: 32px; height: 32px; image-rendering: pixelated; transform: scaleX(var(--spider-facing)); transition: transform 120ms linear; }
+.xp-crawling-spider:hover img, .xp-crawling-spider:focus-visible img { filter: drop-shadow(0 0 4px #fff) drop-shadow(0 0 5px #ffdf45); }
+.xp-crawling-spider:focus-visible { outline: 2px dotted #fff; outline-offset: 1px; }
+.xp-crawling-spider.is-squashed { animation: squash-spider 380ms ease-in forwards; pointer-events: none; }
+
+@keyframes squash-spider {
+  55% { opacity: 1; transform: scale(1.15, 0.18) rotate(7deg); }
+  100% { opacity: 0; transform: scale(1.35, 0.04) rotate(12deg); }
+}
+
+.xp-spider-game-layer { position: fixed; z-index: 160; inset: 0; display: grid; place-items: center; padding: 3vw; }
+.xp-spider-game-layer[hidden], .xp-spider-task[hidden] { display: none; }
+.xp-game-backdrop { position: absolute; z-index: -1; inset: 0; border: 0; background: rgb(4 17 37 / 76%); backdrop-filter: blur(2px); }
+.xp-spider-window { display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; width: min(94vw, 62rem); height: min(82vh, 44rem); overflow: hidden; border: 3px solid #145ac4; border-radius: 9px 9px 0 0; background: #ece9d8; box-shadow: 12px 16px 38px rgb(0 0 0 / 48%); color: #000; font: 0.75rem Tahoma, Arial, sans-serif; }
+.xp-spider-window:focus { outline: 0; }
+.xp-spider-window.is-maximised { width: calc(100vw - 1rem); height: calc(100vh - 1rem); }
+.xp-spider-titlebar { display: flex; justify-content: space-between; align-items: center; min-height: 2.2rem; padding: 0.2rem 0.25rem 0.2rem 0.45rem; background: linear-gradient(#63a2f3 0, #1d67d5 14%, #0753c5 52%, #2a72dd 88%, #1455b7); color: #fff; text-shadow: 1px 1px #06398c; }
+.xp-spider-titlebar > span { display: flex; gap: 0.4rem; align-items: center; }
+.xp-spider-titlebar img { image-rendering: pixelated; }
+.xp-spider-titlebar > div { display: flex; gap: 0.12rem; }
+.xp-spider-titlebar button { display: grid; width: 1.55rem; height: 1.45rem; place-items: center; padding: 0; border: 1px solid #fff; border-radius: 3px; background: linear-gradient(#6ca5ee, #1c61c5); box-shadow: inset 1px 1px rgb(255 255 255 / 45%); color: #fff; font: 800 0.75rem Tahoma, sans-serif; }
+.xp-spider-titlebar button:last-child { background: linear-gradient(#f5a08d, #db3b20 55%, #bc240e); }
+.xp-spider-menubar { display: flex; min-height: 1.9rem; align-items: center; padding-inline: 0.25rem; border-bottom: 1px solid #aca899; background: #ece9d8; }
+.xp-spider-menubar button { min-width: 3.5rem; padding: 0.25rem 0.5rem; border: 1px solid transparent; background: transparent; color: #000; font: inherit; text-align: left; }
+.xp-spider-menubar button:hover, .xp-spider-menubar button:focus-visible { border-color: #316ac5; background: #c1d2ee; outline: 0; }
+.xp-spider-game { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-height: 0; overflow: hidden; background: #087a3d; box-shadow: inset 0 0 28px rgb(0 46 20 / 28%); }
+.xp-spider-tableau { display: grid; grid-template-columns: repeat(10, minmax(4.3rem, 1fr)); gap: clamp(0.28rem, 0.8vw, 0.7rem); min-width: 48rem; min-height: 0; overflow: auto; padding: 1rem; align-items: start; }
+.xp-spider-column { min-height: 17rem; padding-bottom: 5rem; }
+.xp-spider-card { position: relative; display: grid; width: 100%; aspect-ratio: 0.72; min-height: 5.8rem; padding: 0.3rem; overflow: hidden; border: 1px solid #111; border-radius: 5px; box-shadow: 1px 2px 2px rgb(0 0 0 / 32%); font-family: "Times New Roman", serif; }
+.xp-spider-card + .xp-spider-card { margin-top: -3.75rem; }
+.xp-spider-card.is-face-down + .xp-spider-card { margin-top: -4.65rem; }
+.xp-spider-card.is-face-up { grid-template-rows: auto 1fr auto; background: #fff; color: #111; }
+.xp-spider-card.is-face-down { background-color: #245bbb; background-image: linear-gradient(45deg, #f3d34d 25%, transparent 25%, transparent 75%, #f3d34d 75%), linear-gradient(45deg, #ef5252 25%, #fff 25%, #fff 75%, #ef5252 75%); background-position: 0 0, 4px 4px; background-size: 8px 8px; box-shadow: inset 0 0 0 3px #fff, inset 0 0 0 4px #245bbb, 1px 2px 2px rgb(0 0 0 / 32%); }
+.xp-spider-card > span { display: grid; justify-self: start; color: #111; font-size: 0.82rem; line-height: 0.75; text-align: center; }
+.xp-spider-card > span:last-child { place-self: end; transform: rotate(180deg); }
+.xp-spider-card > strong { place-self: center; font-size: clamp(1.35rem, 2vw, 2rem); }
+.xp-spider-card i { font-style: normal; }
+.xp-spider-card.is-selected { outline: 3px solid #ffdc3f; outline-offset: -3px; transform: translateY(-3px); }
+.xp-spider-game-footer { display: grid; grid-template-columns: minmax(9rem, auto) 1fr auto; gap: 1rem; align-items: end; min-width: 48rem; padding: 0.65rem 1rem 0.8rem; }
+.xp-spider-game-footer > p { align-self: center; margin: 0; padding: 0.45rem 0.7rem; border: 1px solid rgb(255 255 255 / 48%); background: rgb(0 60 27 / 48%); color: #fff; text-align: center; }
+.xp-spider-completed { display: flex; gap: 0.25rem; }
+.xp-spider-completed span { display: grid; width: 1.75rem; height: 2.45rem; place-items: center; border: 1px dashed rgb(255 255 255 / 42%); border-radius: 2px; color: #111; font: 700 0.58rem "Times New Roman", serif; }
+.xp-spider-completed span.is-complete { border-style: solid; background: #fff; box-shadow: 1px 1px 2px rgb(0 0 0 / 35%); }
+.xp-spider-stock { position: relative; width: 4.4rem; height: 3.6rem; padding: 0; border: 0; background: transparent; color: #fff; font: inherit; }
+.xp-spider-stock span { position: absolute; right: 0; bottom: 0; width: 2.6rem; height: 3.45rem; border: 2px solid #fff; border-radius: 4px; background: repeating-linear-gradient(45deg, #285bb4 0 3px, #f0cf46 3px 5px, #ef5757 5px 7px); box-shadow: -3px -2px 0 #fff, -4px -3px 0 #285bb4; }
+.xp-spider-stock b { position: absolute; right: 0.8rem; bottom: 1.25rem; color: #fff; text-shadow: 1px 1px #000; }
+.xp-spider-stock:disabled { opacity: 0.42; }
+.xp-spider-statusbar { display: grid; grid-template-columns: repeat(3, 1fr); min-height: 1.7rem; gap: 2px; padding: 2px; border-top: 1px solid #fff; background: #ece9d8; }
+.xp-spider-statusbar span { padding: 0.25rem 0.45rem; border: 1px inset #fff; }
+.xp-spider-statusbar span:last-child { text-align: right; }
+.xp-spider-game-layer.is-minimised { pointer-events: none; }
+.xp-spider-game-layer.is-minimised .xp-game-backdrop, .xp-spider-game-layer.is-minimised .xp-spider-window { display: none; }
+.xp-spider-task { position: fixed; right: 1rem; bottom: 0.55rem; z-index: 170; display: flex; gap: 0.35rem; min-width: 10rem; min-height: 2rem; align-items: center; padding: 0.25rem 0.55rem; border: 2px outset #9fc5f5; border-radius: 3px; background: linear-gradient(#438bf0, #1b58be); color: #fff; font: 0.72rem Tahoma, sans-serif; pointer-events: auto; }
+.xp-spider-task img { image-rendering: pixelated; }
+.xp-spider-game-open { overflow: hidden; }
+
+@media (width < 42rem) {
+  .xp-spider-game-layer { padding: 0; }
+  .xp-spider-window, .xp-spider-window.is-maximised { width: 100vw; height: 100svh; border-width: 2px; border-radius: 0; }
+  .xp-spider-tableau { padding: 0.7rem; }
+  .xp-spider-game-footer { grid-template-columns: 1fr auto; min-width: 0; }
+  .xp-spider-completed { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-crawling-spider { left: auto !important; top: auto !important; right: 1.5rem; bottom: 4rem; }
+}

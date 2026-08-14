@@ -70,4 +70,10 @@ describe("Windows Desktop Evolution", () => {
       expect(contributors.every((card) => card.querySelector("h3")?.textContent?.trim()), version).toBe(true);
     }
   });
+
+  it("uses only English text in the Windows XP Easter egg", () => {
+    const html = readFileSync(resolve("dist/windows-xp/index.html"), "utf8");
+    const easterEgg = new JSDOM(html).window.document.querySelector("[data-xp-spider-easter-egg]");
+    expect(easterEgg?.textContent).not.toMatch(/\p{Script=Han}/u);
+  });
 });

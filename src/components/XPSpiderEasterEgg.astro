@@ -1,0 +1,51 @@
+---
+interface Props {
+  base: string;
+}
+
+const { base } = Astro.props;
+const spiderIcon = `${base}media/xp-spider-solitaire.png`;
+---
+
+<div class="xp-spider-easter-egg" data-xp-spider-easter-egg>
+  <button class="xp-crawling-spider" type="button" data-xp-spider aria-label="Catch the Spider Solitaire spider">
+    <img src={spiderIcon} alt="" width="32" height="32" draggable="false" />
+  </button>
+
+  <div class="xp-spider-game-layer" data-spider-game-layer hidden>
+    <button class="xp-game-backdrop" type="button" data-spider-close tabindex="-1" aria-label="Close Spider Solitaire"></button>
+    <section class="xp-spider-window" role="dialog" aria-modal="true" aria-labelledby="spider-game-title" data-spider-game-window>
+      <header class="xp-spider-titlebar">
+        <span><img src={spiderIcon} alt="" width="20" height="20" /><strong id="spider-game-title">Spider Solitaire</strong></span>
+        <div>
+          <button type="button" data-spider-minimise aria-label="Minimise Spider Solitaire">_</button>
+          <button type="button" data-spider-maximise aria-label="Maximise Spider Solitaire">□</button>
+          <button type="button" data-spider-close aria-label="Close Spider Solitaire">×</button>
+        </div>
+      </header>
+      <nav class="xp-spider-menubar" aria-label="Spider Solitaire commands">
+        <button type="button" data-spider-new><u>G</u>ame</button>
+        <button type="button" data-spider-deal><u>D</u>eal!</button>
+        <button type="button" data-spider-help><u>H</u>elp</button>
+      </nav>
+      <div class="xp-spider-game" data-spider-game>
+        <div class="xp-spider-tableau" data-spider-tableau aria-label="Spider Solitaire tableau"></div>
+        <footer class="xp-spider-game-footer">
+          <div class="xp-spider-completed" data-spider-completed aria-label="Completed sequences"></div>
+          <p data-spider-status role="status" aria-live="polite">Build descending runs from King to Ace. Select a card, then choose its destination.</p>
+          <button class="xp-spider-stock" type="button" data-spider-stock aria-label="Deal a new row of cards">
+            <span aria-hidden="true"></span><b data-spider-stock-count>50</b>
+          </button>
+        </footer>
+      </div>
+      <footer class="xp-spider-statusbar">
+        <span>Score: <output data-spider-score>500</output></span>
+        <span>Moves: <output data-spider-moves>0</output></span>
+        <span>Easy · One suit</span>
+      </footer>
+    </section>
+    <button class="xp-spider-task" type="button" data-spider-task hidden><img src={spiderIcon} alt="" width="18" height="18" /> Spider Solitaire</button>
+  </div>
+
+  <p class="visually-hidden" data-spider-announcement role="status" aria-live="polite"></p>
+</div>

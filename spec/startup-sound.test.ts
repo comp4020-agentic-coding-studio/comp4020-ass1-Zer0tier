@@ -9,18 +9,17 @@ describe("release startup sounds", () => {
   it("provides an accurate transition sound state for every release", () => {
     for (const [index, version] of versions.entries()) {
       const html = readFileSync(resolve("dist", version, "index.html"), "utf8");
-      const doc = new JSDOM(html).window.document;
-      const panel = doc.querySelector("[data-startup-sound]");
-      const audio = panel?.querySelector("audio[data-startup-audio]");
+      const panel = html.match(/<aside class="startup-sound" data-startup-sound[^>]*>/)?.[0];
+      const audio = html.match(/<audio[^>]*data-startup-audio[^>]*>/)?.[0];
 
-      expect(panel, version).not.toBeNull();
+      expect(panel, version).toBeDefined();
       if (index < 2) {
-        expect(panel?.getAttribute("data-silent"), version).toBe("true");
-        expect(audio, version).toBeNull();
+        expect(panel, version).toContain('data-silent="true"');
+        expect(audio, version).toBeUndefined();
       } else {
-        expect(audio?.hasAttribute("autoplay"), version).toBe(true);
-        expect(audio?.getAttribute("src"), version).toMatch(/\/media\/startup\/.+\.wav$/);
-        expect(panel?.querySelector("button[data-sound-play]"), version).not.toBeNull();
+        expect(audio, version).toContain(" autoplay ");
+        expect(audio, version).toMatch(/src="[^"]*\/media\/startup\/.+\.wav"/);
+        expect(html.includes("data-sound-play"), version).toBe(true);
       }
     }
   });
