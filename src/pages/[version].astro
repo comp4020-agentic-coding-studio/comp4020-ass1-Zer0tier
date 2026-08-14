@@ -1,0 +1,63 @@
+---
+import Base from "../layouts/Base.astro";
+import DesktopPreview from "../components/DesktopPreview.astro";
+import { windowsReleases, type WindowsRelease } from "../data/windows";
+import interactions from "../system-interactions.js?raw";
+import "../styles/global.css";
+
+export function getStaticPaths() {
+  return windowsReleases.map((release) => ({ params: { version: release.slug }, props: { release } }));
+}
+
+interface Props {
+  release: WindowsRelease;
+}
+
+const { release } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const currentIndex = windowsReleases.findIndex((item) => item.id === release.id);
+const previous = windowsReleases[currentIndex - 1];
+const next = windowsReleases[currentIndex + 1];
+const releaseHref = (slug: string) => `${base}${slug}/`;
+---
+
+<Base title={`${release.name} — Windows Desktop Evolution`} description={`${release.summary} Explore a period-accurate interactive recreation of the ${release.name} desktop.`} bodyClass={`version-page page-${release.id}`}>
+  <header class="site-header shell">
+    <a class="wordmark" href={base} aria-label="Windows Desktop Evolution home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Windows<br /><b>Desktop Evolution</b></span></a>
+    <p>{String(currentIndex + 1).padStart(2, "0")} / {String(windowsReleases.length).padStart(2, "0")}</p>
+  </header>
+
+  <nav class="version-nav" aria-label="Windows versions">
+    <ol class="shell">
+      {windowsReleases.map((item) => <li><a href={releaseHref(item.slug)} aria-current={item.id === release.id ? "page" : undefined}><b>{item.shortName}</b><span>{item.year}</span></a></li>)}
+    </ol>
+  </nav>
+
+  <main id="main" class="shell">
+    <section class="version-hero" aria-labelledby="version-title">
+      <div class="version-number" aria-hidden="true">{release.shortName}</div>
+      <div><p class="eyebrow">{release.year} · {release.era}</p><h1 id="version-title">{release.name}</h1><p class="version-headline">{release.headline}</p></div>
+      <p class="version-summary">{release.summary}</p>
+    </section>
+
+    <DesktopPreview release={release} />
+
+    <section id="details" class="release-details" aria-labelledby="details-heading">
+      <div class="section-heading"><p class="eyebrow">System notes</p><h2 id="details-heading">What this interface changed</h2></div>
+      <div class="detail-grid">
+        <article><span>01</span><h3>Signature interface</h3><p>{release.signature}</p></article>
+        <article><span>02</span><h3>The shift</h3><p>{release.changed}</p></article>
+        <article><span>03</span><h3>The trade-off</h3><p>{release.tradeoff}</p></article>
+        <article><span>04</span><h3>What remained</h3><p>{release.legacy}</p></article>
+      </div>
+    </section>
+
+    <nav class="release-pagination" aria-label="Adjacent Windows releases">
+      {previous ? <a class="previous-release" href={releaseHref(previous.slug)}><span>← Previous</span><b>{previous.name}</b></a> : <span></span>}
+      {next ? <a class="next-release" href={releaseHref(next.slug)}><span>Next →</span><b>{next.name}</b></a> : <a class="next-release" href={base}><span>Return to</span><b>All releases</b></a>}
+    </nav>
+  </main>
+
+  <footer class="site-footer shell"><p>{release.name} · Windows Desktop Evolution</p><a href={base}>All releases</a></footer>
+  <script is:inline set:html={interactions} />
+</Base>

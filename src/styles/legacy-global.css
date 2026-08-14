@@ -1,0 +1,773 @@
+/* One stylesheet, inlined into the page at build time (astro.config.mjs sets
+   inlineStylesheets: "always"), so the deployed page references no external
+   asset at all and a wrong Pages base path has nothing to break.
+
+   Order matters and is deliberate: tokens, reset, the [hidden] guard, base
+   element rules, shared utilities, then feature sections in page order, then
+   the two breakpoints at the very end. stylelint's no-descending-specificity
+   wants every base selector ahead of the contexts that override it. */
+
+:root {
+  /* warm paper and ink, not the usual white-on-grey */
+  --bg: #fdfbf7;
+  --bg-alt: #f5f0e6;
+  --bg-sunk: #ece5d7;
+  --line: #ded4c1;
+  --line-strong: #b6a88d;
+  --text: #241f1a;
+  --text-muted: #574e43;
+  --accent: #9c2b1f;
+  --accent-deep: #6f1c13;
+  --focus: #0b63d6;
+
+  /* One ink per political sphere. Colour never carries meaning alone — every
+     column is also labelled in words, and every card names its own region. */
+  --court: #6d3597;
+  --north: #1d4ed8;
+  --south: #0f766e;
+  --steppe: #9a5209;
+  --rival: #9c2b1f;
+  --track-ink: var(--text-muted);
+
+  /* geometry */
+  --radius: 10px;
+  --radius-lg: 16px;
+  --shell: 1400px;
+  --pad: clamp(1rem, 3vw, 2.5rem);
+  --tap: 2.75rem;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* The UA implements the `hidden` attribute as display:none in ITS stylesheet,
+   so any author rule setting `display` on the same element outranks it. The
+   score list is a flex container and the question region is a block; both ship
+   hidden. This exact bug shipped fully green in C2 — an "empty" search bar 71px
+   tall on every first visit. This is the one place !important earns its keep. */
+[hidden] {
+  display: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+
+  /* Never overflow-x: hidden here. It would make the no-horizontal-scroll
+     probe pass on a broken page, and it kills position: sticky. */
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Iowan Old Style", "Palatino Linotype", palatino, georgia, serif;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.2;
+  margin: 0 0 0.4em;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+h3 {
+  font-size: 1.15rem;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--accent-deep);
+}
+
+ul,
+ol {
+  margin: 0 0 1em;
+  padding-left: 1.2em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+button {
+  font: inherit;
+}
+
+/* ---------- shared utilities ---------- */
+
+.shell {
+  max-width: var(--shell);
+  margin-inline: auto;
+  padding-inline: var(--pad);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -3rem;
+  left: 0.5rem;
+  z-index: 10;
+  padding: 0.5rem 0.9rem;
+  background: var(--text);
+  color: var(--bg);
+  border-radius: 0 0 var(--radius) var(--radius);
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Anything that only works once a script has run stays out of the document
+   until enhance.js confirms its hooks exist and adds .js to <html>. A no-JS
+   visitor is never shown a dead control. Base rule first, then the context
+   that reveals it — no-descending-specificity. */
+.js-only {
+  display: none;
+}
+
+.js .js-only {
+  display: block;
+}
+
+.zh {
+  font-family: "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC", serif;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.button {
+  display: inline-block;
+  min-height: var(--tap);
+  padding: 0.55rem 1.1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.15s var(--ease);
+}
+
+.button:hover {
+  background: var(--bg-sunk);
+}
+
+.button-primary {
+  background: var(--accent);
+  border-color: var(--accent-deep);
+  color: #fff;
+}
+
+.button-primary:hover {
+  background: var(--accent-deep);
+}
+
+/* ---------- masthead and thesis ---------- */
+
+.masthead {
+  padding-block: clamp(2rem, 6vw, 4.5rem) 1rem;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  color: var(--accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.lede {
+  max-width: 46rem;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  color: var(--text-muted);
+}
+
+.modes {
+  padding-block: 0.5rem 1.5rem;
+}
+
+.modes ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modes a {
+  display: inline-block;
+  min-height: var(--tap);
+  padding: 0.55rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--bg-alt);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.modes a[aria-current="true"] {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
+}
+
+/* ---------- the concurrency strip ---------- */
+
+.strip-figure {
+  margin: 0;
+  padding-block: 1rem 2rem;
+}
+
+.strip {
+  display: flex;
+  align-items: end;
+  gap: 1px;
+  height: 5rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  border-bottom: 2px solid var(--line-strong);
+  list-style: none;
+}
+
+.strip li {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 2px;
+  height: calc(var(--n, 0) * 20%);
+  background: var(--accent);
+  opacity: 0.35;
+}
+
+.strip .is-high {
+  opacity: 1;
+}
+
+.strip-caption {
+  max-width: 46rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.strip-scale {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 0 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+/* ---------- the timeline ---------- */
+
+.timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.era {
+  padding-block: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.era-head {
+  margin-bottom: 0.5rem;
+}
+
+.era-head h3 {
+  margin-bottom: 0.15rem;
+}
+
+.era-span {
+  margin: 0 0 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.era-blurb {
+  max-width: 44rem;
+  margin: 0 0 0.35rem;
+}
+
+.era-peak {
+  display: inline-block;
+  margin: 0 0.5rem 0 0;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  background: var(--bg-sunk);
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.scroll-hint {
+  display: inline-block;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* The whole 390px answer. Columns are fluid down to 6.75rem and then stop:
+   past that THIS element scrolls sideways, never the page. A one-column
+   period can never reach the floor, so only the crowded periods scroll —
+   which is the argument the page is making, not a defect in it.
+
+   The 3px inline padding is so a 3px focus ring on an edge card is not
+   clipped by the scrollport. */
+.era-tracks {
+  display: grid;
+  grid-template-columns: repeat(var(--tracks, 1), minmax(6.75rem, 1fr));
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.4rem 3px 0.6rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+.track-head {
+  grid-column: var(--col);
+  grid-row: 1;
+  min-width: 0;
+  margin: 0 0 0.2rem;
+  padding-bottom: 0.2rem;
+  border-bottom: 2px solid var(--track-ink);
+  color: var(--track-ink);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cell {
+  display: flex;
+  grid-column: var(--col);
+  grid-row: var(--from) / var(--to);
+  min-width: 0;
+}
+
+.regime {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--tap);
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--track-ink);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  color: var(--text);
+  overflow-wrap: break-word;
+  text-decoration: none;
+  transition: background 0.15s var(--ease);
+}
+
+.regime:hover {
+  background: var(--bg-sunk);
+}
+
+.regime-name {
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.regime .zh {
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.regime-years {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.is-court {
+  --track-ink: var(--court);
+}
+
+.is-north {
+  --track-ink: var(--north);
+}
+
+.is-south {
+  --track-ink: var(--south);
+}
+
+.is-steppe {
+  --track-ink: var(--steppe);
+}
+
+.is-rival {
+  --track-ink: var(--rival);
+}
+
+/* An umbrella over other regimes, not a regime competing with them. */
+.is-umbrella .regime {
+  background: transparent;
+  border-style: dashed;
+}
+
+.is-open-end .regime {
+  border-bottom-style: dashed;
+}
+
+.is-open-start .regime {
+  border-top-style: dashed;
+}
+
+/* ---------- the detail panel ---------- */
+
+.detail {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--bg-alt);
+}
+
+.detail h2 {
+  margin-bottom: 0.3rem;
+  font-size: 1.2rem;
+}
+
+.detail-empty {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.detail-body h3 {
+  margin-bottom: 0.15rem;
+}
+
+.detail-body dt {
+  margin-top: 0.6rem;
+  color: var(--track-ink);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.detail-body dd {
+  margin: 0.15rem 0 0;
+}
+
+.detail-body ul {
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+.detail-back {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- quiz ---------- */
+
+.quiz {
+  padding-block: 1.5rem;
+}
+
+.quiz-intro {
+  max-width: 44rem;
+}
+
+.quiz-nojs {
+  padding: 0.6rem 0.9rem;
+  border-left: 4px solid var(--line-strong);
+  background: var(--bg-alt);
+  color: var(--text-muted);
+}
+
+.js .quiz-nojs {
+  display: none;
+}
+
+.quiz-meter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 0 0.75rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.quiz-prompt {
+  max-width: 44rem;
+  margin-bottom: 0.8rem;
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  font-weight: 600;
+}
+
+.quiz-choices {
+  display: grid;
+  gap: 0.5rem;
+  max-width: 44rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.quiz-choice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--tap);
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  color: var(--text);
+  overflow-wrap: anywhere;
+  text-align: left;
+  cursor: pointer;
+}
+
+.quiz-choice:hover {
+  background: var(--bg-sunk);
+}
+
+.quiz-choice[aria-disabled="true"] {
+  cursor: default;
+}
+
+.quiz-choice .mark {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  visibility: hidden;
+}
+
+.quiz-choice.is-correct {
+  border-color: var(--south);
+  background: #e7f3ef;
+}
+
+.quiz-choice.is-wrong {
+  border-color: var(--accent);
+  background: #f8e9e7;
+}
+
+.quiz-choice.is-correct .mark,
+.quiz-choice.is-wrong .mark {
+  visibility: visible;
+}
+
+.quiz-because {
+  max-width: 44rem;
+  color: var(--text-muted);
+}
+
+.quiz-summary {
+  max-width: 44rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--bg-alt);
+}
+
+/* ---------- scoreboard ---------- */
+
+.scoreboard {
+  padding-block: 1rem 2rem;
+}
+
+.score-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 30rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  min-width: 0;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  font-variant-numeric: tabular-nums;
+}
+
+.score-row.is-new {
+  border-color: var(--accent);
+}
+
+.score-rank {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.score-value {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 600;
+}
+
+.score-when {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.score-empty {
+  max-width: 40rem;
+  color: var(--text-muted);
+}
+
+/* ---------- reference list ---------- */
+
+.reference {
+  padding-block: 2rem 3rem;
+  border-top: 1px solid var(--line);
+}
+
+.ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  gap: 1rem;
+}
+
+.ref {
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+}
+
+.ref h3 {
+  margin-bottom: 0.15rem;
+}
+
+.ref-span {
+  margin: 0 0 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.ref-capital,
+.ref-note {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.ref-facts {
+  margin: 0;
+}
+
+.ref-facts dt {
+  margin-top: 0.6rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ref-facts dd {
+  margin: 0.15rem 0 0;
+}
+
+.ref-facts ul {
+  margin: 0;
+  padding-left: 1.1em;
+  font-size: 0.95rem;
+}
+
+/* ---------- sources and footer ---------- */
+
+.sources {
+  padding-block: 2rem;
+  border-top: 1px solid var(--line);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.site-footer {
+  padding-block: 2rem 3rem;
+  border-top: 1px solid var(--line);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+/* ---------- breakpoints, mobile-first, at the end ---------- */
+
+@media (width >= 48rem) {
+  .scroll-hint {
+    display: none;
+  }
+
+  .era-tracks {
+    gap: 0.5rem;
+  }
+
+  .quiz-choices {
+    gap: 0.6rem;
+  }
+}
+
+@media (width >= 64rem) {
+  .explore-grid {
+    display: grid;
+
+    /* minmax(0, …) rather than 1fr — a bare 1fr lets the timeline's intrinsic
+       minimum width blow the page open sideways. */
+    grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .explore-panel {
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    transition: none !important;
+  }
+}

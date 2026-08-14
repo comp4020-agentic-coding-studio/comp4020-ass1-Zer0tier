@@ -4,9 +4,10 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  bodyClass?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, bodyClass = "" } = Astro.props;
 ---
 
 <!doctype html>
@@ -15,13 +16,10 @@ const { title, description } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
-    {/* The palette is a light one. C2 declared `dark` here over a white page,
-        which tells the UA to render form controls and scrollbars for a theme
-        the page doesn't have. */}
     <meta name="color-scheme" content="light" />
     <title>{title}</title>
   </head>
-  <body>
+  <body class={bodyClass}>
     <a class="skip-link" href="#main">Skip to content</a>
     <slot />
   </body>

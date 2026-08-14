@@ -1,0 +1,45 @@
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { JSDOM } from "jsdom";
+import { describe, expect, it } from "vitest";
+
+const versions = ["windows-1", "windows-2", "windows-3", "windows-95", "windows-98", "windows-2000", "windows-xp", "windows-vista", "windows-7", "windows-8", "windows-10", "windows-11"];
+const homeHtml = readFileSync(resolve("dist/index.html"), "utf8");
+const home = new JSDOM(homeHtml).window.document;
+
+describe("Windows Desktop Evolution", () => {
+  it("ships a separate static page for every major release", () => {
+    for (const version of versions) expect(existsSync(resolve("dist", version, "index.html")), version).toBe(true);
+  });
+
+  it("links all twelve releases from the overview", () => {
+    const links = [...home.querySelectorAll<HTMLAnchorElement>(".release-card")];
+    expect(links).toHaveLength(versions.length);
+    expect(links.every((link, index) => link.getAttribute("href")?.endsWith(`/${versions[index]}/`))).toBe(true);
+  });
+
+  it("renders a period-specific system recreation on every release page", () => {
+    for (const version of versions) {
+      const html = readFileSync(resolve("dist", version, "index.html"), "utf8");
+      const doc = new JSDOM(html).window.document;
+      expect(doc.querySelector(".desktop"), version).not.toBeNull();
+      expect(doc.querySelector(".release-details"), version).not.toBeNull();
+      expect(doc.querySelector("nav.version-nav"), version).not.toBeNull();
+    }
+  });
+
+  it("keeps system controls keyboard reachable", () => {
+    for (const version of versions) {
+      const html = readFileSync(resolve("dist", version, "index.html"), "utf8");
+      const doc = new JSDOM(html).window.document;
+      const controls = [...doc.querySelectorAll(".desktop button")];
+      expect(controls.length, version).toBeGreaterThan(0);
+      expect(controls.every((control) => control.getAttribute("type") === "button"), version).toBe(true);
+    }
+  });
+
+  it("contains no Chinese text in the generated experience", () => {
+    const pages = [resolve("dist/index.html"), ...versions.map((version) => resolve("dist", version, "index.html"))];
+    for (const page of pages) expect(readFileSync(page, "utf8"), page).not.toMatch(/\p{Script=Han}/u);
+  });
+});

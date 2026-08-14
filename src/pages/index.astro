@@ -1,147 +1,46 @@
 ---
-import ConcurrencyStrip from "../components/ConcurrencyStrip.astro";
-import DetailPanel from "../components/DetailPanel.astro";
-import EraBand from "../components/EraBand.astro";
-import Quiz from "../components/Quiz.astro";
-import ReferenceList from "../components/ReferenceList.astro";
-import Scoreboard from "../components/Scoreboard.astro";
 import Base from "../layouts/Base.astro";
-import { periods, regimes } from "../data/dynasties";
-import { buildBand } from "../data/layout";
+import { windowsReleases } from "../data/windows";
+import "../styles/global.css";
 
-// ?raw + is:inline, never a plain <script>. Astro would bundle that to
-// /_astro/*.js, which resolves against the Pages base path and 404s the links
-// check — while looking perfectly fine locally. Keeping them as real .js files
-// is what lets oxlint see them at all.
-import enhanceSrc from "../enhance.js?raw";
-import detailSrc from "../detail.js?raw";
-import scoreboardSrc from "../scoreboard.js?raw";
-import poolSrc from "../quiz-pool.js?raw";
-import quizSrc from "../quiz.js?raw";
-import modesSrc from "../modes.js?raw";
-
-const bands = periods.map((p) => buildBand(p, regimes));
+const base = import.meta.env.BASE_URL;
+const releaseHref = (slug: string) => `${base}${slug}/`;
 ---
 
-<Base
-  title="Chinese history was never one line"
-  description="Most timelines show the Chinese dynasties as a single sequence. For 333 of those 4,000 years, three or more regimes ruled at once. An interactive explainer you can also be tested on."
->
-  <header class="masthead shell">
-    <p><span class="eyebrow">An interactive explainer</span></p>
-    <h1>Chinese history was never one line</h1>
-    <p class="lede">
-      Almost every timeline of China is a single column — Xia, Shang, Zhou, Qin, Han, and on down to
-      Qing. It is the version taught in schools on both sides of the Pacific, and it is tidy,
-      memorable and wrong. For centuries at a stretch there was no one ruler of China at all: two
-      courts, three courts, once five states at the same moment, each keeping its own calendar and
-      each certain the others were pretenders.
-    </p>
+<Base title="Windows Desktop Evolution" description="Explore twelve separate, interactive recreations of Microsoft Windows desktop interfaces from Windows 1.0 to Windows 11." bodyClass="home-page">
+  <header class="site-header shell">
+    <a class="wordmark" href={base} aria-label="Windows Desktop Evolution home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Windows<br /><b>Desktop Evolution</b></span></a>
+    <nav class="home-nav" aria-label="Page navigation"><a href="#release-heading">Explore releases</a><span>1985—2021</span></nav>
   </header>
 
-  <nav class="modes shell" aria-label="Modes">
-    <ul>
-      <li><a href="#explore" aria-current="true">Explore the timeline</a></li>
-      <li><a href="#quiz">Test yourself</a></li>
-    </ul>
-  </nav>
-
   <main id="main">
-    <div class="shell">
-      <ConcurrencyStrip />
-    </div>
-
-    <section id="explore" class="shell" aria-labelledby="explore-title">
-      <h2 id="explore-title">Explore</h2>
-      <p class="lede">
-        Time runs downwards; regimes that ruled at the same time sit side by side. Bar heights are
-        compressed — a two-year regime and a five-century one have to both stay readable — so read
-        the dates, not the heights. Pick anything to see what it made.
-      </p>
-      <div class="explore-grid">
-        <ol class="timeline">
-          {bands.map((band) => <EraBand band={band} />)}
-        </ol>
-        <DetailPanel />
-      </div>
+    <section class="hero shell" aria-labelledby="page-title">
+      <p class="eyebrow">An interactive interface archive</p>
+      <h1 id="page-title">Twelve desktops.<br /><span>One evolving idea.</span></h1>
+      <div class="hero-copy"><p>Explore the major Windows interfaces from Windows 1.0 to Windows 11. Every release opens on its own page with a period-accurate system recreation.</p><a href={releaseHref(windowsReleases[0].slug)}>Begin with Windows 1.0 <span aria-hidden="true">→</span></a></div>
     </section>
 
-    <Quiz />
-    <Scoreboard />
+    <section class="release-index shell" aria-labelledby="release-heading">
+      <div class="section-heading"><p class="eyebrow">Choose a system</p><h2 id="release-heading">The desktop, release by release</h2></div>
+      <ol class="release-grid">
+        {windowsReleases.map((release, index) => (
+          <li>
+            <a href={releaseHref(release.slug)} class:list={["release-card", `card-${release.id}`]}>
+              <div class="card-preview" aria-hidden="true"><span class="preview-window"><i></i><b></b><em></em></span><span class="preview-bar"></span></div>
+              <div class="card-index">{String(index + 1).padStart(2, "0")}</div>
+              <div><p>{release.year}</p><h3>{release.name}</h3><span>{release.era}</span></div>
+              <i class="card-arrow" aria-hidden="true">↗</i>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
 
-    <ReferenceList />
-
-    <section class="sources shell" aria-labelledby="sources-title">
-      <h2 id="sources-title">Where the dates and the objects come from</h2>
-      <p>
-        Dates for the Xia, Shang and Western Zhou are the conventional figures from the
-        Xia–Shang–Zhou Chronology Project and are marked approximate throughout; the Xia's
-        historicity is itself still argued over, and nothing here treats it as settled. Every object
-        named on this page is a real surviving thing in a real collection, not an invention chosen
-        to sound plausible.
-      </p>
-      <ul>
-        <li>
-          <a href="https://www.worldhistory.org/china/" rel="external noopener">
-            World History Encyclopedia — China
-          </a>{" "}
-          — for periodisation and the narrative of each division.
-        </li>
-        <li>
-          <a href="https://en.wikipedia.org/wiki/Timeline_of_Chinese_history" rel="external noopener">
-            Timeline of Chinese history
-          </a>{" "}
-          — cross-checked against it for the concurrent regimes most single-column tables omit.
-        </li>
-        <li>
-          <a href="https://www.britishmuseum.org/collection" rel="external noopener">
-            The British Museum collection
-          </a>{" "}
-          — for the bronzes and the oracle bones.
-        </li>
-        <li>
-          <a href="https://en.wikipedia.org/wiki/Xia%E2%80%93Shang%E2%80%93Zhou_Chronology_Project" rel="external noopener">
-            The Xia–Shang–Zhou Chronology Project
-          </a>{" "}
-          — the source of the conventional early dates, and of the argument about them.
-        </li>
-      </ul>
+    <section class="archive-note shell">
+      <p class="eyebrow">About the archive</p>
+      <p>These recreations use semantic HTML, CSS, and small client-side interactions. They reproduce recognisable system layouts without relying on screenshots, so the controls remain sharp, responsive, and keyboard accessible.</p>
     </section>
   </main>
 
-  <footer class="site-footer shell">
-    <p>
-      Built as coursework for COMP4020 Agentic Coding Studio at ANU. The dynasty names are given in
-      English with the Chinese characters alongside; the prose is mine and the errors are too.
-    </p>
-  </footer>
-
-  {/* Marks for the quiz. Inline SVG, never emoji — the marking machine has no
-      emoji font and they render as tofu boxes, which C2 taught me the hard way. */}
-  <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0">
-    <symbol id="tick" viewBox="0 0 24 24">
-      <path
-        d="M20 6L9 17l-5-5"
-        fill="none"
-        stroke="currentcolor"
-        stroke-width="3"
-        stroke-linecap="round"
-        stroke-linejoin="round"></path>
-    </symbol>
-    <symbol id="cross" viewBox="0 0 24 24">
-      <path
-        d="M6 6l12 12M18 6L6 18"
-        fill="none"
-        stroke="currentcolor"
-        stroke-width="3"
-        stroke-linecap="round"></path>
-    </symbol>
-  </svg>
-
-  <script is:inline set:html={enhanceSrc} />
-  <script is:inline set:html={detailSrc} />
-  <script is:inline set:html={scoreboardSrc} />
-  <script is:inline set:html={poolSrc} />
-  <script is:inline set:html={quizSrc} />
-  <script is:inline set:html={modesSrc} />
+  <footer class="site-footer shell"><p>Windows Desktop Evolution · Educational interface study</p><a href="#main">Back to top</a></footer>
 </Base>
