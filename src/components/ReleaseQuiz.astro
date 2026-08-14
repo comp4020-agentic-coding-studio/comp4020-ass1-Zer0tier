@@ -1,0 +1,33 @@
+---
+import type { WindowsRelease } from "../data/windows";
+import { windowsQuiz } from "../data/windows-quiz";
+
+interface Props {
+  release: WindowsRelease;
+}
+
+const { release } = Astro.props;
+const questions = windowsQuiz[release.id];
+const first = questions[0];
+---
+
+<section class="release-quiz" data-release-quiz aria-labelledby="quiz-heading">
+  <div class="quiz-intro">
+    <div><p class="eyebrow">Random knowledge check</p><h2 id="quiz-heading">Do you remember {release.name}?</h2></div>
+    <p data-quiz-count>Question 1 of {questions.length}</p>
+  </div>
+  <form data-quiz-form>
+    <fieldset>
+      <legend data-quiz-prompt>{first.prompt}</legend>
+      <div class="quiz-choices" data-quiz-choices>
+        {first.choices.map((choice, index) => <label><input type="radio" name="quiz-answer" value={index} /><span>{choice}</span></label>)}
+      </div>
+    </fieldset>
+    <div class="quiz-actions">
+      <button type="submit" data-quiz-check>Reveal answer</button>
+      <button type="button" data-quiz-next hidden>Try another question</button>
+      <p class="quiz-feedback" data-quiz-feedback role="status" aria-live="polite"></p>
+    </div>
+  </form>
+  <script type="application/json" data-quiz-data set:html={JSON.stringify(questions)} />
+</section>

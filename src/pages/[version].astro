@@ -1,8 +1,10 @@
 ---
 import Base from "../layouts/Base.astro";
 import DesktopPreview from "../components/DesktopPreview.astro";
+import ReleaseQuiz from "../components/ReleaseQuiz.astro";
 import { windowsReleases, type WindowsRelease } from "../data/windows";
 import interactions from "../system-interactions.js?raw";
+import quizInteractions from "../release-quiz.js?raw";
 import "../styles/global.css";
 
 export function getStaticPaths() {
@@ -42,6 +44,8 @@ const releaseHref = (slug: string) => `${base}${slug}/`;
 
     <DesktopPreview release={release} />
 
+    <ReleaseQuiz release={release} />
+
     <section id="details" class="release-details" aria-labelledby="details-heading">
       <div class="section-heading"><p class="eyebrow">System notes</p><h2 id="details-heading">What this interface changed</h2></div>
       <div class="detail-grid">
@@ -60,4 +64,5 @@ const releaseHref = (slug: string) => `${base}${slug}/`;
 
   <footer class="site-footer shell"><p>{release.name} · Windows Desktop Evolution</p><a href={base}>All releases</a></footer>
   <script is:inline set:html={interactions} />
+  <script is:inline set:html={quizInteractions} />
 </Base>
