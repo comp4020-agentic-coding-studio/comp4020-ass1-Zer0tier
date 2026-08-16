@@ -25,7 +25,12 @@ const scale = getWindowsAdoptionScale(milestone.valueMillions);
     <h2 id="adoption-heading">Users and installed reach</h2>
   </div>
   <div class="release-adoption-number">
-    <strong data-adoption-count aria-label={`${milestone.display}, ${milestone.detail}`}>0</strong>
+    {/* The real figure is server-rendered, not counted up from a hardcoded 0.
+        With JavaScript off — or before the inline script below runs on a slow
+        connection — a "0" here would be a false number, not a pending one.
+        adoption-milestone.js zeroes it itself, but only once it knows it is
+        about to animate. */}
+    <strong data-adoption-count aria-label={`${milestone.display}, ${milestone.detail}`}>{milestone.display}</strong>
     <span>{milestone.period}</span>
   </div>
   <div class="release-adoption-detail">

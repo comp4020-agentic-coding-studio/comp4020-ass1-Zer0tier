@@ -7,6 +7,11 @@
     var finalDisplay = section.dataset.adoptionDisplay;
     var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var started = false;
+    // The markup carries the real figure so a no-JS visitor reads a true
+    // number. Only take it down to zero once we know we are the ones who will
+    // count it back up — same condition the animated branch of reveal() uses.
+    var willAnimate = !reduceMotion && typeof window.requestAnimationFrame === "function";
+    if (willAnimate) count.textContent = "0";
 
     function formatValue(value) {
       if (value >= 999.5) return (value / 1000).toFixed(0) + "B";
