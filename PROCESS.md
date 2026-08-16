@@ -4,62 +4,68 @@
 
 Windows Desktop Evolution is an interactive argument about the hidden cost of
 familiar interfaces: every redesign asked a larger public to relearn the same
-machine. The visitor changes Windows versions with the timeline, keyboard,
-wheel, or touch. The interface preview and a sourced reach milestone change
-together, turning 40 years of redesign into something the visitor operates
-rather than a catalogue they only read. The release pages deepen that same
-idea through client-side recreations; the homepage remains the core mechanic.
+machine. The visitor changes Windows versions through the timeline, keyboard,
+wheel, or touch. The interface preview and a sourced reach milestone update
+together, making forty years of redesign something the visitor performs rather
+than a catalogue they only read. Twelve static release pages deepen the same
+idea through client-side desktop recreations; the homepage remains the core
+mechanic.
 
 ## The moments that mattered
 
 ### 1. A green test briefly proved the wrong rule
 
-I started by translating the brief into tests before building a UI. In the
-first, later-discarded dynasty concept, a layout test reused the implementation's
-own overlap predicate, so reversing its interval convention left the test green.
-Instead of retrying the calculation, I added a literal boundary fixture and a
-rule to `CLAUDE.md`: conventions need an expected answer derived outside the
-implementation. I then committed the interaction contract red on purpose,
-clearly separating an unbuilt specification from a regression. The literal
-fixture failed on the injected error and passed after restoration
+I translated the brief into tests before building the first interface. In the
+later-discarded dynasty concept, however, a structural layout test reused the
+implementation's own overlap predicate. Reversing its interval convention left
+that test green. The obvious response was another implementation assertion;
+instead, I added a literal boundary fixture—Ming ends when Southern Ming
+begins—and recorded in `CLAUDE.md` that foundational conventions need an
+expected answer from outside their implementation. I knew the correction
+worked because the injected off-by-one made the fixture fail, while restoring
+the half-open rule made the unchanged fixture pass. I also committed the new
+interaction contract red on purpose, distinguishing an unbuilt specification
+from a regression
 ([`06c8141...ef309a0`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/compare/06c8141...ef309a0)).
 
-### 2. I kept the discarded answer visible
+### 2. I preserved the answer I rejected
 
-The dynasty prototype worked, but it was not the argument I wanted to own. I
-changed direction to Windows interface literacy rather than polishing the first
-answer. The obvious move was to overwrite it; instead, I moved its implementation
-and tests into `legacy/`, then replaced its contract with release-specific
-checks. This makes the discarded judgement inspectable and prevents old tests
-from manufacturing confidence in a different product. I accepted the pivot
-only when the build emitted twelve static routes and every recreation exposed
-keyboard-reachable system controls
+The dynasty prototype worked, but it was not the argument I wanted to own. The
+easy choice was to polish it because it already passed; the other easy choice
+was to erase it. Instead, I pivoted to Windows interface literacy and moved the
+old implementation and tests into `legacy/`. That keeps the discarded
+judgement inspectable while preventing an obsolete contract from manufacturing
+confidence in a different product. I accepted the pivot only when the build
+emitted all twelve release routes and the replacement tests found the shared
+timeline, themed recreation, and keyboard-reachable controls on every page
 ([`58bb221`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/58bb221)).
 
-### 3. “Looks right” became an asset contract
+### 3. Authenticity became a provenance contract
 
-> make sure all of the Interactive system recreation to be exactaly the same as
-> the real ones. do not fake them. use the original real ones.
-
-The early recreations used recognisable CSS approximations. Retrying the styling
-would still leave authenticity subjective, so I changed the acceptance rule:
-locally hosted extracted icons and cursor files, explicit provenance, and tests
-that reject inline fake SVG pointers and missing asset paths. The source notice,
-`data-system-assets="original-extracted"`, filesystem assertions, and binary
-cursor checks made “real” inspectable rather than rhetorical
+Early recreations used recognisable CSS approximations, and the review bubbles
+were explicitly fictional composites. More styling—or simply relabelling the
+quotes—could look convincing without becoming true. Instead, I made
+authenticity checkable: locally hosted historical icons and binary cursor files,
+an asset notice, source metadata for every review excerpt, and visible links to
+the period publications. The harness now rejects missing asset paths, fake
+inline cursor artwork, unsourced review cards, and the old fictional disclaimer.
+Filesystem and binary checks verified the assets; rendered modal tests verified
+that attribution survives the interaction
 ([`6baff07`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/6baff07),
-[`d9602a0`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/d9602a0)).
+[`d9602a0`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/d9602a0),
+[`29c4ba5`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/29c4ba5)).
 
-### 4. I tested the marker's behaviour, not a simulated layout
+### 4. The marker's behaviour became the browser harness
 
-All 162 jsdom tests were green, but they could not answer the rubric's resize
-question. I added Playwright cases for 1920×1080, 390×844, keyboard focus,
-resize mid-transition, no JavaScript, and failed media. The first real run went
-red: resizing immediately after selecting Windows 11 left an animation lock, so
-Arrow Left was dropped. After settling transitions on resize, all four browser
-cases passed. A screenshot then exposed the BSOD button covering phone
-instructions, which became a geometry assertion. Finally, the links check found
-twelve false 404s because CI ignored the Pages base path; a pinned, Pages-shaped
-link harness now scans fourteen links cleanly. Those corrections and the new
-`CLAUDE.md` acceptance gate are in
-[`296b6db`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/296b6db).
+The jsdom suite was green, but jsdom cannot observe layout or a resize
+mid-interaction. Rather than accepting its test count, I turned the marking
+sequence into Playwright: open at 1920×1080, change version, resize to 390×844,
+continue by keyboard, then repeat without JavaScript and with media blocked.
+The first run exposed a transition lock that dropped Arrow Left. A phone
+screenshot then revealed the BSOD button covering the instructions, so that
+became a geometry assertion. The link check also exposed a Pages base-path
+mismatch. I moved all three corrections into CI and added the acceptance gate
+to `CLAUDE.md`. I knew the result was right when the unchanged browser scenarios
+passed at both marking viewports, the Pages-shaped link scan was clean, and the
+deployed job verified the live URL
+([`296b6db`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/296b6db)).
