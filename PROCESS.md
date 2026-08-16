@@ -5,25 +5,32 @@
 Windows Desktop Evolution is an interactive explainer about how familiar
 interfaces keep changing and asking users to relearn the same machine. Visitors
 move through twelve Windows releases with the timeline, keyboard, wheel, or
-touch; the desktop recreation and user-reach milestone change with them. My
-interest came from watching videos about Apple product evolution while Windows
-was repeatedly asking to auto-update. That annoyance became a question: how did
+touch; the desktop recreation and user-reach milestone change with them. It
+started as an annoyance — Windows nagging me to auto-update while I watched
+videos about Apple's product evolution — that became a question: how did
 Windows arrive at what I use today?
 
 ## The moments that mattered
 
-### 1. I kept the first idea I rejected
+### 1. Twice I deleted work that already worked
 
-I began with Claude and planned a wiki-like explainer of Chinese dynasties such
-as Tang, Ming, and Qing. The prototype worked, but I did not like the result. I
-also felt the subject was becoming a broad catalogue for a niche audience,
-rather than one interactive idea I could confidently direct. The obvious move
-was to polish it because substantial code already existed, or quietly delete
-it. Instead, I pivoted and moved the dynasty implementation and tests into
-`legacy/`, so the abandoned judgement remains inspectable. I accepted the
-Windows direction only when one shared interaction generated all twelve
-release routes and worked through keyboard-reachable controls
+I began with a wiki-like explainer of the Chinese dynasties. The prototype
+worked; it was also becoming a broad catalogue for a niche audience rather than
+one interactive idea I could direct. The obvious move was to polish it, because
+substantial code already existed. Instead I moved the implementation and its
+tests into `legacy/`, where the abandoned judgement stays inspectable, and
+accepted the Windows direction only once one shared interaction generated all
+twelve release routes through keyboard-reachable controls
 ([`58bb221`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/58bb221)).
+
+The same call returned, harder, at the end. My release pages had grown a quiz,
+playable games, and two easter eggs, and I had been judging each addition alone,
+where each looked defensible. So I stopped arguing and measured: summing every
+section's rendered height at 390px showed that only 28% of the page argued the
+claim the prototype exists to make. That number is why four finished, passing
+features left for `legacy/` with their specs, and why `CLAUDE.md` now says to
+measure the page rather than the component
+([`72147c8`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/72147c8)).
 
 ### 2. I changed the harness, not just the prompt
 
@@ -43,10 +50,9 @@ quality
 ### 3. “Looks authentic” became checkable
 
 Claude's early Windows output gave me approximated interfaces and invented
-period comments. I later switched to Codex because its visual results were
-closer to what I wanted, and used design skills to improve the layout. However,
-more specific prompts alone could not guarantee authenticity. Instead, I made
-provenance part of the acceptance criteria: local historical icons, binary
+period comments. Switching to Codex improved the visuals, but no amount of
+prompt detail could guarantee authenticity. So I made provenance an acceptance
+criterion instead: local historical icons, binary
 cursor files, an asset notice, and source metadata plus visible links for every
 period review. Tests now reject missing assets, inline fake cursors, unsourced
 review cards, and the earlier fictional-review disclaimer. I knew the change
@@ -58,14 +64,13 @@ and rendered modal tests preserved each attribution
 
 ### 4. Phone failures became permanent tests
 
-I added quizzes, classic games, commands, and authentic themes after noticing
-how many real Windows releases hid playful easter eggs. The desktop version
-looked convincing, but on my phone the miniature command windows overlapped
-other apps, and resizing during a timeline animation could drop a key press.
-Rather than keep making screenshot-specific CSS fixes, I reproduced the
-marker's journey in Playwright: start at 1920×1080, interact, resize to 390×844,
-continue by keyboard, then repeat with slow media. I added geometry and stacking
-assertions for covered windows and the BSOD control, plus the acceptance gate in
-`CLAUDE.md`. The unchanged scenarios now pass at both marking viewports and CI
-verifies the deployed URL
+The desktop build looked convincing, but on my phone the miniature command
+windows overlapped other apps, and resizing during a timeline animation could
+drop a key press. Rather than keep making screenshot-specific CSS fixes, I
+reproduced the marker's journey in Playwright: start at 1920×1080, interact,
+resize to 390×844, continue by keyboard, then repeat with slow media. I added
+geometry and stacking assertions for covered windows, plus the acceptance gate
+in `CLAUDE.md`. Those scenarios passed unchanged through the deletions in
+moment 1: the harness outlived the code it was written against. CI verifies the
+deployed URL
 ([`296b6db`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/296b6db)).
