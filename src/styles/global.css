@@ -259,7 +259,12 @@ h1, h2, h3 { line-height: 1.05; }
 .site-footer { display: flex; justify-content: space-between; gap: 1rem; padding-block: 2rem 3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.76rem; }
 .site-footer p { margin: 0; }
 
-.version-nav { --version-glider-x: 0px; --version-glider-y: 0px; --version-glider-width: 0px; --version-glider-height: 0px; position: sticky; z-index: 100; top: 0; overflow: clip; border-bottom: 1px solid var(--line); background: rgb(244 245 242 / 94%); backdrop-filter: blur(14px); }
+/* Same column as .site-header. Using .shell itself would also add
+   padding-inline, which would inset the twelve cells; the bar wants to match
+   the header's box while its cells still run edge to edge inside it. Above
+   1440px the bar used to be full-bleed while the header was not — visible at
+   the 1920 marking viewport and at no size below it. */
+.version-nav { width: min(100%, var(--shell)); margin-inline: auto; --version-glider-x: 0px; --version-glider-y: 0px; --version-glider-width: 0px; --version-glider-height: 0px; position: sticky; z-index: 100; top: 0; overflow: clip; border-bottom: 1px solid var(--line); background: rgb(244 245 242 / 94%); backdrop-filter: blur(14px); }
 .version-nav ol { position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); width: 100%; margin: 0; padding: 0; list-style: none; }
 .version-nav li { min-width: 0; }
 .version-nav a { position: relative; z-index: 1; display: grid; justify-items: center; padding: 0.65rem 0.2rem 0.55rem; border-bottom: 2px solid transparent; color: var(--muted); text-decoration: none; transform: translateY(0); transition: color 180ms ease, filter 220ms ease, transform 220ms cubic-bezier(0.2, 0.75, 0.25, 1); }

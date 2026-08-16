@@ -231,23 +231,37 @@ test("release content remains usable when media is unavailable", async ({ page }
   await expect(page.getByRole("button", { name: /start/i }).first()).toBeEnabled();
 });
 
-test("the release switcher fills the desktop with twelve equal edge-to-edge cells", async ({ page }) => {
-  await page.setViewportSize(desktop);
-  await page.goto("./windows-xp/");
+// The bar sat in a different column from the header it sits under, and only
+// above 1440px — the shell's max width — so every viewport narrower than that
+// looked correct while the 1920 marking viewport did not. 2560 is here because
+// the bug lived entirely in the range this test would otherwise never visit.
+test("the release switcher shares the header's column and fills it with twelve equal cells", async ({ page }) => {
+  for (const width of [2560, 1920, 1440, 1280, 768]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("./windows-xp/");
 
-  const nav = page.locator("[data-version-nav]");
-  const track = nav.locator(":scope > ol");
-  const trackBox = await track.boundingBox();
-  const cells = await track.locator(":scope > li").evaluateAll((items) => items.map((item) => {
-    const box = item.getBoundingClientRect();
-    return { left: box.left, right: box.right, width: box.width };
-  }));
+    const headerBox = (await page.locator(".site-header").boundingBox())!;
+    const navBox = (await page.locator("[data-version-nav]").boundingBox())!;
+    expect(headerBox, `${width}px`).not.toBeNull();
+    expect(navBox, `${width}px`).not.toBeNull();
+    expect(Math.abs(navBox.x - headerBox.x), `${width}px: left edges differ`).toBeLessThanOrEqual(0.5);
+    expect(Math.abs(navBox.width - headerBox.width), `${width}px: widths differ`).toBeLessThanOrEqual(0.5);
 
-  expect(trackBox).not.toBeNull();
-  expect(cells).toHaveLength(12);
-  expect(Math.max(...cells.map(({ width }) => width)) - Math.min(...cells.map(({ width }) => width))).toBeLessThanOrEqual(1);
-  expect(Math.abs(cells[0].left - trackBox!.x)).toBeLessThanOrEqual(1);
-  expect(Math.abs(cells.at(-1)!.right - (trackBox!.x + trackBox!.width))).toBeLessThanOrEqual(1);
+    const track = page.locator("[data-version-nav] > ol");
+    const trackBox = (await track.boundingBox())!;
+    const cells = await track.locator(":scope > li").evaluateAll((items) => items.map((item) => {
+      const box = item.getBoundingClientRect();
+      return { left: box.left, right: box.right, width: box.width };
+    }));
+
+    expect(cells, `${width}px`).toHaveLength(12);
+    expect(
+      Math.max(...cells.map(({ width: w }) => w)) - Math.min(...cells.map(({ width: w }) => w)),
+      `${width}px: cells are not equal`,
+    ).toBeLessThanOrEqual(1);
+    expect(Math.abs(cells[0].left - trackBox.x), `${width}px: gap at the left edge`).toBeLessThanOrEqual(1);
+    expect(Math.abs(cells.at(-1)!.right - (trackBox.x + trackBox.width)), `${width}px: gap at the right edge`).toBeLessThanOrEqual(1);
+  }
 });
 
 test("Windows 3.1 and 95 active cells have an uninterrupted navy fill", async ({ page }) => {

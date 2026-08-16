@@ -300,6 +300,24 @@ than something a reader has to reconstruct.
   worth knowing before you reorder a stylesheet to satisfy a rule that is not
   running.
 
+### Test above `--shell`, not just at the two marking viewports
+
+`--shell` is 1440px, so anything full-bleed looks correctly aligned at every
+width up to 1440 and wrong above it. The release timeline bar sat in a
+different column from the header directly above it — invisible at 1280 and at
+390, plainly wrong at **1920, which is a marking viewport**. Checking the two
+graded sizes would have caught this one; checking 1280 and 390, as I had been,
+would not have.
+
+When a layout bug depends on a breakpoint, put the breakpoint's far side in the
+test. `e2e/marking-resilience.pw.ts` now walks 2560 / 1920 / 1440 / 1280 / 768
+and compares the bar's box against `.site-header`'s, because the bug lived
+entirely in the range a two-viewport test never visits.
+
+Also: `.shell` sets `padding-inline` as well as width. For a bar whose cells
+should run edge to edge inside it, take `width: min(100%, var(--shell))` and
+`margin-inline: auto` rather than the class.
+
 ### A new section must join the era panel rule, or it will look foreign
 
 Each era styles its page furniture through one shared selector list —
