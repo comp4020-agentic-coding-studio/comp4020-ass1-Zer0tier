@@ -111,7 +111,10 @@
       if (!legacy) writeLine("operable program or batch file.");
     }
 
-    openButton.addEventListener("click", showWindow);
+    // Six eras open the prompt from something already in the recreation --
+    // Program Manager's icon, the XP taskbar, a Metro tile -- and render no
+    // shortcut of their own, so there may be nothing here to bind.
+    if (openButton) openButton.addEventListener("click", showWindow);
     externalOpenButtons.forEach(function (button) { button.addEventListener("click", showWindow); });
     closeButton.addEventListener("click", function () {
       commandWindow.hidden = true;

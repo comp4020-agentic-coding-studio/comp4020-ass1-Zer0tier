@@ -318,6 +318,9 @@ h1, h2, h3 { line-height: 1.05; }
 .early-menubar button, .classic-menubar button { padding: 0.12rem 0.35rem; border: 0; background: transparent; color: inherit; font: inherit; }
 .early-menubar button::first-letter, .classic-menubar button::first-letter { text-decoration: underline; }
 .early-path { margin: 0.45rem; padding: 0.2rem 0.4rem; border: 1px solid #000; }
+.file-entry { padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.file-entry:hover { text-decoration: underline; }
+.file-entry:focus-visible { outline: 2px solid currentcolor; outline-offset: 2px; }
 .file-table { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem 1rem; padding: 0.5rem; }
 .analogue-clock, .gadget-clock { position: relative; width: 8rem; aspect-ratio: 1; margin: 2rem auto; border: 5px double #000; border-radius: 50%; background: repeating-conic-gradient(#000 0deg 1deg, transparent 1deg 30deg); box-shadow: inset 0 0 0 8px #fff; }
 .analogue-clock::after, .gadget-clock::after { position: absolute; inset: 11px; border-radius: 50%; background: #fff; content: ""; }
@@ -1399,9 +1402,7 @@ h1, h2, h3 { line-height: 1.05; }
 .command-shortcut { position: absolute; z-index: 1; top: 1rem; right: 1rem; display: grid; gap: 0.2rem; justify-items: center; width: 5.2rem; padding: 0.35rem; border: 0; background: transparent; color: inherit; font-size: 0.62rem; line-height: 1.15; text-align: center; text-shadow: 1px 1px 2px #000; }
 .command-shortcut img { width: 2.35rem; height: 2.35rem; object-fit: contain; image-rendering: auto; }
 .command-shortcut:hover, .command-shortcut:focus-visible { background: rgb(255 255 255 / 24%); }
-.desktop-win2 .command-shortcut { top: auto; right: 1rem; bottom: 1rem; }
 .desktop-win95 .command-shortcut, .desktop-win98 .command-shortcut, .desktop-win2000 .command-shortcut, .desktop-win7 .command-shortcut, .desktop-win10 .command-shortcut, .desktop-win11 .command-shortcut { inset: auto auto 3.8rem 0.7rem; }
-.desktop-win3 .command-shortcut, .desktop-winxp .command-shortcut, .desktop-vista .command-shortcut, .desktop-win8 .command-shortcut { display: none; }
 .command-task-launcher { flex: 0 0 auto; display: grid; place-items: center; padding: 0.2rem; }
 .command-task-launcher img { width: 1.75rem; height: 1.75rem; object-fit: contain; }
 .xp-command-task { width: 2.7rem; height: 2.15rem; margin-left: 0.35rem; border: 1px solid #1246a1; border-radius: 3px; background: #2c6bd1; }

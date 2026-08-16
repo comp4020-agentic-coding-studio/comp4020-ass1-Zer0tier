@@ -146,14 +146,22 @@ describe("Windows Desktop Evolution", () => {
       const { doc } = releasePages.get(version)!;
       const shell = doc.querySelector("[data-command-shell]");
       const window = shell?.querySelector("[data-command-window]");
-      const launcher = shell?.querySelector<HTMLButtonElement>("[data-command-open]");
       const input = shell?.querySelector<HTMLInputElement>("[data-command-input]");
+
+      // The launcher is not always the floating shortcut. Six recreations open
+      // the prompt from a control the era actually had — the Windows 1.0 icon
+      // bar, MS-DOS.EXE in the 2.0 file list, a Program Manager icon, the XP
+      // and Vista taskbars, a Windows 8 tile — and ship no shortcut of their
+      // own, because a second one would be a control that never existed.
+      const launcher = doc.querySelector<HTMLButtonElement>("[data-desktop] [data-command-open], [data-desktop] [data-command-external-open]");
 
       expect(shell, version).not.toBeNull();
       expect(shell?.getAttribute("data-command-version"), version).toContain("Microsoft");
       expect(window?.hasAttribute("hidden"), version).toBe(true);
       expect(launcher?.type, version).toBe("button");
-      expect(launcher?.querySelector("img")?.getAttribute("src"), version).toMatch(/\/media\/system-icons\/Windows(?:Dos|95MSDOSPrompt)\.png$/);
+      // The period-correct icon is asserted on the window's own title bar,
+      // which every era has; a text launcher like MS-DOS.EXE carries no image.
+      expect(window?.querySelector("img")?.getAttribute("src"), version).toMatch(/\/media\/system-icons\/Windows(?:Dos|95MSDOSPrompt)\.png$/);
       expect(input?.getAttribute("aria-label"), version).toBe("Command Prompt input");
     }
   });

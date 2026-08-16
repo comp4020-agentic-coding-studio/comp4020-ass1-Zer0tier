@@ -36,13 +36,14 @@ const systemAssetStyle = getWindowsSystemAssetStyle(release.id, base);
           <div class="early-path">C:\WINDOWS</div>
           <div class="file-table" aria-label="Files" data-relearn-target>
             <span>CALC.EXE</span><span>CALENDAR.EXE</span><span>CARDFILE.EXE</span><span>CLIPBRD.EXE</span><span>CONTROL.EXE</span><span>NOTEPAD.EXE</span><span>PAINT.EXE</span><span>REVERSI.EXE</span><span>WRITE.EXE</span><span>WIN.COM</span>
+            {release.id === "win2" && <button class="file-entry" type="button" data-command-external-open aria-label="Open MS-DOS Prompt">MS-DOS.EXE</button>}
           </div>
         </article>
         <article class="early-window early-tool" data-window>
           <header class="early-titlebar"><button class="system-box" type="button" aria-label="Window menu"></button><strong>{release.id === "win1" ? "Clock" : "Control Panel"}</strong></header>
           {release.id === "win1" ? <div class="analogue-clock" aria-label="Clock showing ten past ten"><i></i><b></b></div> : <div class="early-controls"><button type="button">Color</button><button type="button">Desktop</button><button type="button">Mouse</button><button type="button">Keyboard</button></div>}
         </article>
-        {release.id === "win1" && <div class="win1-iconbar" aria-label="Minimised applications"><button type="button"><span class="mini-icon write-icon"></span>Write</button><button type="button"><span class="mini-icon paint-icon"></span>Paint</button><button type="button"><span class="mini-icon terminal-icon"></span>MS-DOS</button></div>}
+        {release.id === "win1" && <div class="win1-iconbar" aria-label="Minimised applications"><button type="button"><span class="mini-icon write-icon"></span>Write</button><button type="button"><span class="mini-icon paint-icon"></span>Paint</button><button type="button" data-command-external-open aria-label="Open MS-DOS Prompt"><span class="mini-icon terminal-icon"></span>MS-DOS</button></div>}
       </>
     )}
 

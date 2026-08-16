@@ -24,6 +24,13 @@ const profiles: Record<string, { era: string; title: string; version: string; pr
 };
 const profile = profiles[release.id];
 const icon = `${base}media/system-icons/${["win1", "win2", "win3"].includes(release.id) ? "WindowsDos.png" : "Windows95MSDOSPrompt.png"}`;
+
+// Eras whose recreation already contains a real place to launch it: the
+// Windows 1.0 icon bar, MS-DOS.EXE in the 2.0 file list, Program Manager,
+// the XP and Vista taskbars, the Windows 8 tile. They get no floating
+// shortcut, because a second one would be a control the era never had.
+const selfOpening = ["win1", "win2", "win3", "winxp", "vista", "win8"];
+const showShortcut = !selfOpening.includes(release.id);
 ---
 
 <div
@@ -35,10 +42,12 @@ const icon = `${base}media/system-icons/${["win1", "win2", "win3"].includes(rele
   data-command-legacy={String(profile.legacy)}
   data-command-year={release.year}
 >
-  <button class="command-shortcut" type="button" data-command-open aria-label={`Open ${profile.title}`}>
-    <img src={icon} alt="" aria-hidden="true" />
-    <span>{profile.title}</span>
-  </button>
+  {showShortcut && (
+    <button class="command-shortcut" type="button" data-command-open aria-label={`Open ${profile.title}`}>
+      <img src={icon} alt="" aria-hidden="true" />
+      <span>{profile.title}</span>
+    </button>
+  )}
 
   <article class="command-window" data-command-window aria-label={`${profile.title} for ${release.name}`} hidden>
     <header class="command-titlebar" data-command-handle>
