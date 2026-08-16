@@ -72,34 +72,41 @@ const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
   <section class="memory-reviews" aria-labelledby={`memory-reviews-heading-${release.id}`} data-memory-reviews>
     <header class="memory-reviews-heading">
       <div>
-        <p class="eyebrow">User reviews, then</p>
-        <h3 id={`memory-reviews-heading-${release.id}`}>What people said back then</h3>
+        <p class="eyebrow">Period reviews</p>
+        <h3 id={`memory-reviews-heading-${release.id}`}>What reviewers said back then</h3>
       </div>
-      <p>Four period-style reactions to {release.name} and the software around it. Select a review to open it in an era-matched window.</p>
+      <p>Three short excerpts from reviews and reported reactions published around {release.name}’s release. Select one to open it in an era-matched window.</p>
     </header>
 
-    <div class="memory-bubbles" aria-label={`Period-style reviews of ${release.name}`}>
+    <div class="memory-bubbles" aria-label={`Contemporaneous reviews of ${release.name}`}>
       {scene.memories.map((memory, index) => (
-        <button
-          class="memory-bubble"
-          type="button"
-          data-memory-bubble
-          data-memory-handle={memory.handle}
-          data-memory-quote={memory.quote}
-          data-memory-context={memory.context}
-          data-memory-index={index + 1}
-          aria-haspopup="dialog"
-          aria-controls={dialogId}
-          aria-label={`Open full review from ${memory.handle}`}
-        >
-          <span class="memory-bubble-quote">“{memory.quote}”</span>
-          <span class="memory-bubble-context">{memory.context}</span>
-          <small>{memory.handle}</small>
-        </button>
+        <article class="memory-review-card">
+          <button
+            class="memory-bubble"
+            type="button"
+            data-memory-bubble
+            data-memory-handle={memory.handle}
+            data-memory-quote={memory.quote}
+            data-memory-context={memory.context}
+            data-memory-source-label={memory.sourceLabel}
+            data-memory-source-url={memory.sourceUrl}
+            data-memory-index={index + 1}
+            aria-haspopup="dialog"
+            aria-controls={dialogId}
+            aria-label={`Open review excerpt from ${memory.handle}`}
+          >
+            <span class="memory-bubble-quote">“{memory.quote}”</span>
+            <span class="memory-bubble-context">{memory.context}</span>
+            <small>{memory.handle}</small>
+          </button>
+          <a class="memory-review-source" href={memory.sourceUrl} target="_blank" rel="noreferrer">
+            Source: {memory.sourceLabel}<span aria-hidden="true"> ↗</span>
+          </a>
+        </article>
       ))}
     </div>
 
-    <p class="memory-disclaimer">These reviews are fictional composites written to reflect common experiences of the period.</p>
+    <p class="memory-disclaimer">Every excerpt is verbatim from a contemporaneous publication. Follow its source to read the original in context.</p>
   </section>
 
   <dialog class="memory-dialog" id={dialogId} data-memory-dialog aria-labelledby={`${dialogId}-title`}>
@@ -112,6 +119,7 @@ const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
         <p class="memory-dialog-context" data-memory-dialog-context></p>
         <blockquote data-memory-dialog-quote></blockquote>
         <p class="memory-dialog-handle" data-memory-dialog-handle></p>
+        <a class="memory-dialog-source" data-memory-dialog-source href="#" target="_blank" rel="noreferrer">Read the original review</a>
       </div>
     </div>
   </dialog>

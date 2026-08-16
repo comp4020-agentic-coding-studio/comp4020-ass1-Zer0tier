@@ -356,7 +356,7 @@ h1, h2, h3 { line-height: 1.05; }
 .bin-icon { background: repeating-linear-gradient(90deg, #e5e7eb 0 5px, #94a3b8 5px 8px); }
 .drive-icon, .disk-icon, .cd-icon { height: 1.5rem; margin-top: 0.4rem; background: linear-gradient(#eee 0 55%, #777 56% 68%, #bbb 69%); }
 .cd-icon { border-radius: 50%; background: radial-gradient(circle, #fff 0 12%, #7dd3fc 13% 50%, #e9d5ff 51% 70%, #fff 71%); }
-.classic-window { position: absolute; top: 10%; left: 18%; width: 66%; min-height: 55%; border: 3px outset #eee; background: #c0c0c0; box-shadow: 6px 7px 0 rgb(0 0 0 / 25%); }
+.classic-window { position: absolute; z-index: 3; top: 10%; left: 18%; width: 66%; min-height: 55%; border: 3px outset #eee; background: #c0c0c0; box-shadow: 6px 7px 0 rgb(0 0 0 / 25%); }
 .caption-buttons { display: flex; gap: 2px; }
 .title-icon { display: inline-block; width: 0.9rem; height: 0.9rem; background: linear-gradient(135deg, #eab308, #2563eb); }
 .classic-toolbar { display: flex; gap: 0.35rem; align-items: center; padding: 0.25rem; border-block: 1px solid #777; }
@@ -1045,8 +1045,9 @@ h1, h2, h3 { line-height: 1.05; }
 .memory-reviews-heading { display: flex; justify-content: space-between; gap: 2rem; align-items: end; margin-bottom: 1.3rem; }
 .memory-reviews-heading h3 { max-width: 42rem; margin: 0; font-size: clamp(1.8rem, 4vw, 3.4rem); letter-spacing: -0.05em; }
 .memory-reviews-heading > p { max-width: 31rem; margin: 0; color: var(--muted); }
-.memory-bubbles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 1.6rem); }
-.memory-bubble { position: relative; display: grid; gap: 0.75rem; align-content: start; min-height: 12rem; padding: clamp(1.1rem, 3vw, 1.6rem); border: 2px solid rgb(255 255 255 / 72%); border-radius: clamp(1rem, 2vw, 1.5rem); background: var(--memory-bubble); box-shadow: 0 8px 28px rgb(0 0 0 / 20%), inset 0 0 0 4px rgb(255 255 255 / 22%); color: var(--memory-bubble-ink); text-align: left; animation: memory-drift 6s ease-in-out infinite alternate; }
+.memory-bubbles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 1.6rem); }
+.memory-review-card { display: grid; grid-template-rows: 1fr auto; gap: 1rem; min-width: 0; }
+.memory-bubble { position: relative; display: grid; gap: 0.75rem; align-content: start; width: 100%; min-height: 12rem; padding: clamp(1.1rem, 3vw, 1.6rem); border: 2px solid rgb(255 255 255 / 72%); border-radius: clamp(1rem, 2vw, 1.5rem); background: var(--memory-bubble); box-shadow: 0 8px 28px rgb(0 0 0 / 20%), inset 0 0 0 4px rgb(255 255 255 / 22%); color: var(--memory-bubble-ink); text-align: left; animation: memory-drift 6s ease-in-out infinite alternate; }
 .memory-bubble::after { position: absolute; bottom: -0.55rem; left: 1.6rem; width: 1rem; aspect-ratio: 1; border-right: 2px solid rgb(255 255 255 / 72%); border-bottom: 2px solid rgb(255 255 255 / 72%); background: inherit; content: ""; rotate: 45deg; }
 .memory-bubble-quote { font-size: clamp(1rem, 2vw, 1.25rem); font-weight: 700; line-height: 1.35; }
 .memory-bubble-context { margin-top: auto; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; }
@@ -1054,7 +1055,8 @@ h1, h2, h3 { line-height: 1.05; }
 .memory-bubble:hover { filter: brightness(1.08); transform: translateY(-3px) scale(1.05); }
 .memory-bubble[data-memory-index="2"] { animation-delay: -1.4s; animation-duration: 7.2s; }
 .memory-bubble[data-memory-index="3"] { animation-delay: -2.8s; animation-duration: 6.6s; }
-.memory-bubble[data-memory-index="4"] { animation-delay: -4.2s; animation-duration: 7.8s; }
+.memory-review-source { position: relative; z-index: 1; width: fit-content; max-width: 100%; color: var(--memory-title); font-family: "Courier New", monospace; font-size: 0.66rem; font-weight: 700; line-height: 1.35; text-underline-offset: 0.2em; }
+.memory-review-source:hover { text-decoration-thickness: 2px; }
 .memory-desktop-label { position: absolute; z-index: 8; top: 0.75rem; left: 50%; display: flex; gap: 0.5rem; align-items: center; padding: 0.35rem 0.6rem; border-radius: 999px; background: rgb(0 0 0 / 42%); color: #fff; font-size: 0.62rem; letter-spacing: 0.09em; text-transform: uppercase; transform: translateX(-50%); }
 .memory-desktop-label span { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #73ef9b; box-shadow: 0 0 8px #73ef9b; }
 .memory-notes { border: 1px solid var(--line); border-top: 0; background: color-mix(in srgb, var(--paper) 65%, #fff); }
@@ -1075,6 +1077,7 @@ h1, h2, h3 { line-height: 1.05; }
 .memory-dialog-context { margin-bottom: 1.3rem; color: var(--memory-title); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .memory-dialog blockquote { margin: 0; font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 650; line-height: 1.25; letter-spacing: -0.035em; }
 .memory-dialog-handle { margin: 1.6rem 0 0; color: #566170; font-family: "Courier New", monospace; font-size: 0.75rem; }
+.memory-dialog-source { display: inline-block; margin-top: 0.7rem; color: var(--memory-title); font-size: 0.72rem; font-weight: 800; text-underline-offset: 0.2em; }
 
 .memory-scene-win1 { --memory-bg: #078a8e; --memory-surface: #fff; --memory-title: repeating-linear-gradient(#fff 0 2px, #000 2px 4px); --memory-title-ink: #000; --memory-border: 2px solid #000; --memory-shadow: 5px 5px 0 #000; --memory-bubble: #fff; --memory-bubble-ink: #000; }
 .memory-scene-win1 .memory-app-window > header strong, .memory-scene-win2 .memory-app-window > header strong { padding-inline: 0.25rem; background: #fff; }
@@ -1410,7 +1413,7 @@ h1, h2, h3 { line-height: 1.05; }
 .release-adoption.is-visible .release-adoption-meter span { transform: scaleX(var(--adoption-scale)); }
 
 /* Interactive era-specific DOS / Command Prompt. */
-.command-shortcut { position: absolute; z-index: 4; top: 1rem; right: 1rem; display: grid; gap: 0.2rem; justify-items: center; width: 5.2rem; padding: 0.35rem; border: 0; background: transparent; color: inherit; font-size: 0.62rem; line-height: 1.15; text-align: center; text-shadow: 1px 1px 2px #000; }
+.command-shortcut { position: absolute; z-index: 1; top: 1rem; right: 1rem; display: grid; gap: 0.2rem; justify-items: center; width: 5.2rem; padding: 0.35rem; border: 0; background: transparent; color: inherit; font-size: 0.62rem; line-height: 1.15; text-align: center; text-shadow: 1px 1px 2px #000; }
 .command-shortcut img { width: 2.35rem; height: 2.35rem; object-fit: contain; image-rendering: auto; }
 .command-shortcut:hover, .command-shortcut:focus-visible { background: rgb(255 255 255 / 24%); }
 .desktop-win2 .command-shortcut { top: auto; right: 1rem; bottom: 1rem; }

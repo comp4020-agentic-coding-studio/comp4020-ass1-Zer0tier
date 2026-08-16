@@ -90,7 +90,7 @@ test("the release switcher fills the desktop with twelve equal edge-to-edge cell
   expect(Math.abs(cells.at(-1)!.right - (trackBox!.x + trackBox!.width))).toBeLessThanOrEqual(1);
 });
 
-test("requested command shortcuts stay on the left without covering desktop icons on a phone", async ({ page }) => {
+test("requested command shortcuts stay left and yield to overlapping windows on a phone", async ({ page }) => {
   await page.setViewportSize(phone);
 
   for (const version of ["windows-95", "windows-98", "windows-2000", "windows-7", "windows-10", "windows-11"]) {
@@ -112,5 +112,18 @@ test("requested command shortcuts stay on the left without covering desktop icon
         && commandBox!.y + commandBox!.height > shortcut.y;
       expect(overlaps, `${version}: command shortcut overlaps a desktop icon`).toBe(false);
     }
+
+    const isCoveredByWindow = await page.evaluate(() => {
+      const desktop = document.querySelector<HTMLElement>("[data-desktop]")!;
+      const command = document.querySelector<HTMLElement>("[data-command-open]")!;
+      const frontWindow = [...desktop.querySelectorAll<HTMLElement>("[data-window]")].find((item) => getComputedStyle(item).display !== "none")!;
+      const desktopRect = desktop.getBoundingClientRect();
+      const windowRect = frontWindow.getBoundingClientRect();
+      command.style.inset = `${windowRect.top - desktopRect.top + 12}px auto auto ${windowRect.left - desktopRect.left + 12}px`;
+      const commandRect = command.getBoundingClientRect();
+      const topElement = document.elementFromPoint(commandRect.left + commandRect.width / 2, commandRect.top + commandRect.height / 2);
+      return topElement !== command && !command.contains(topElement);
+    });
+    expect(isCoveredByWindow, `${version}: an overlapping window should cover the command shortcut`).toBe(true);
   }
 });

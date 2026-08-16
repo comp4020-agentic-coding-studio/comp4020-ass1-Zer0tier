@@ -24,8 +24,10 @@ describe("time-capsule memories", () => {
     trigger?.click();
 
     expect(showModal).toHaveBeenCalledOnce();
-    expect(doc.querySelector("[data-memory-dialog-quote]")?.textContent).toContain("Winamp");
-    expect(doc.querySelector("[data-memory-dialog-handle]")?.textContent).toContain("1999");
+    expect(doc.querySelector("[data-memory-dialog-quote]")?.textContent).toContain("Windows 98 equals Windows 95.1");
+    expect(doc.querySelector("[data-memory-dialog-handle]")?.textContent).toContain("Chris LeTocq");
+    expect(doc.querySelector<HTMLAnchorElement>("[data-memory-dialog-source]")?.href).toBe("https://www.wired.com/1998/06/win98-whats-the-fuss/");
+    expect(doc.querySelector("[data-memory-dialog-source]")?.textContent).toContain("WIRED · 24 Jun 1998");
 
     closeButton?.click();
     expect(close).toHaveBeenCalledOnce();

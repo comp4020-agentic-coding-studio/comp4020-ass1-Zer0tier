@@ -7,6 +7,7 @@
     var dialogQuote = scene.querySelector("[data-memory-dialog-quote]");
     var dialogHandle = scene.querySelector("[data-memory-dialog-handle]");
     var dialogContext = scene.querySelector("[data-memory-dialog-context]");
+    var dialogSource = scene.querySelector("[data-memory-dialog-source]");
     var lastTrigger = null;
 
     if (!dialog) return;
@@ -17,6 +18,12 @@
         if (dialogQuote) dialogQuote.textContent = "“" + (bubble.dataset.memoryQuote || "") + "”";
         if (dialogHandle) dialogHandle.textContent = bubble.dataset.memoryHandle || "";
         if (dialogContext) dialogContext.textContent = bubble.dataset.memoryContext || "";
+        if (dialogSource) {
+          dialogSource.href = bubble.dataset.memorySourceUrl || "#";
+          dialogSource.textContent = bubble.dataset.memorySourceLabel
+            ? "Source: " + bubble.dataset.memorySourceLabel
+            : "Read the original review";
+        }
         dialog.showModal();
       });
     });
