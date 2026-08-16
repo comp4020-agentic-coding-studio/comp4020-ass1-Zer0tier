@@ -1,6 +1,7 @@
 ---
 import type { WindowsRelease } from "../data/windows";
 import { appSlug } from "../data/windows-memories";
+import { getAppStory } from "../data/windows-apps";
 import type { WindowsMemoryScene } from "../data/windows-memories";
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
 
 const { release, scene, base } = Astro.props;
 const dialogId = `memory-dialog-${release.id}`;
+const appDialogId = `app-dialog-${release.id}`;
 
 ---
 
@@ -48,7 +50,19 @@ const dialogId = `memory-dialog-${release.id}`;
                   accessible name; .memory-app-link::after stretches its hit
                   area over the whole window. Nothing else in the card is
                   interactive, so there is nothing for the overlay to cover. */}
-              <h3><a class="memory-app-link" href={`${base}${release.slug}/apps/${appSlug(application.name)}/`}>{application.name}</a></h3>
+              <h3><a
+                class="memory-app-link"
+                href={`${base}${release.slug}/apps/${appSlug(application.name)}/`}
+                data-app-open
+                data-app-name={application.name}
+                data-app-kind={application.kind}
+                data-app-why={getAppStory(release.id, appSlug(application.name)).why}
+                data-app-relearn={getAppStory(release.id, appSlug(application.name)).relearn}
+                data-app-source-label={getAppStory(release.id, appSlug(application.name)).source.label}
+                data-app-source-url={getAppStory(release.id, appSlug(application.name)).source.url}
+                aria-haspopup="dialog"
+                aria-controls={appDialogId}
+              >{application.name}</a></h3>
               <p>{application.detail}</p>
               <span class="memory-app-more" aria-hidden="true">Why it took over &rarr;</span>
             </div>
@@ -112,6 +126,26 @@ const dialogId = `memory-dialog-${release.id}`;
         <blockquote data-memory-dialog-quote></blockquote>
         <p class="memory-dialog-handle" data-memory-dialog-handle></p>
         <a class="memory-dialog-source" data-memory-dialog-source href="#" target="_blank" rel="noreferrer">Read the original review</a>
+      </div>
+    </div>
+  </dialog>
+
+  {/* Same era-matched window as the review dialog. The card is still a real
+      link to a real page, so with JavaScript off it navigates there; the
+      script calls preventDefault and opens this instead. */}
+  <dialog class="memory-dialog app-dialog" id={appDialogId} data-app-dialog aria-labelledby={`${appDialogId}-title`}>
+    <div class="memory-dialog-window">
+      <header>
+        <span id={`${appDialogId}-title`} data-app-dialog-title>Popular software</span>
+        <button type="button" data-app-close aria-label="Close">×</button>
+      </header>
+      <div class="memory-dialog-content">
+        <p class="memory-dialog-context" data-app-dialog-kind></p>
+        <p class="app-dialog-label">Why it took over</p>
+        <p class="app-dialog-body" data-app-dialog-why></p>
+        <p class="app-dialog-label">What it left behind</p>
+        <p class="app-dialog-body app-dialog-relearn" data-app-dialog-relearn></p>
+        <a class="memory-dialog-source" data-app-dialog-source href="#" target="_blank" rel="noreferrer">Reference</a>
       </div>
     </div>
   </dialog>

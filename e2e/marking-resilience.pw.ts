@@ -112,32 +112,70 @@ test("the relearning answer registers on click and keyboard without breaking the
   await expect(page.locator("[data-relearn]")).toHaveAttribute("data-relearn-state", "correct");
 });
 
-// The app pages are plain links to static pages, so the interesting failure is
-// not JavaScript — it is the base path. A wrong one looks perfect on
-// 127.0.0.1 and 404s on …github.io/<repo>/, which is why this walks the
-// journey rather than asserting an href.
-test("an app card opens its page, which links onward and back", async ({ page }) => {
+// An app card opens in place, in the same era window the review bubbles use.
+// The card is still a real anchor to a real page — that is the no-JS route and
+// what a middle click does — so this checks the enhanced path here and the
+// underlying page in the test below.
+test("an app card opens its story in the era window and gives focus back", async ({ page }) => {
   await page.setViewportSize(phone);
   await page.goto("./windows-xp/");
 
-  const card = page.locator(".memory-app-link").first();
+  const card = page.locator("[data-app-open]").first();
+  const appName = (await card.textContent())!.trim();
+  const dialog = page.locator("[data-app-dialog]");
+
+  await expect(card).toHaveAttribute("aria-haspopup", "dialog");
+  await expect(dialog).toBeHidden();
+
+  await card.click();
+  await expect(dialog).toBeVisible();
+  await expect(page, "opening the story should not navigate").toHaveURL(/\/windows-xp\/$/);
+  await expect(page.locator("[data-app-dialog-title]")).toHaveText(appName);
+  await expect(page.locator("[data-app-dialog-why]")).not.toBeEmpty();
+  await expect(page.locator("[data-app-dialog-relearn]")).not.toBeEmpty();
+  await expect(page.locator("[data-app-dialog-source]")).toHaveAttribute("href", /^https:\/\//);
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+
+  // Escape is the native dialog's own affordance; the thing worth asserting is
+  // that focus comes back to the card the visitor left, not to the top.
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(card).toBeFocused();
+
+  // A different card must refill the same window rather than repeat the first.
+  const other = page.locator("[data-app-open]").nth(2);
+  const otherName = (await other.textContent())!.trim();
+  await other.click();
+  await expect(page.locator("[data-app-dialog-title]")).toHaveText(otherName);
+  await page.locator("[data-app-close]").click();
+  await expect(dialog).toBeHidden();
+});
+
+test("every app card still resolves to a real page without JavaScript", async ({ browser }) => {
+  // reducedMotion, and not for cosmetic reasons. With scripting disabled the
+  // page's requestAnimationFrame callbacks never run, so Playwright — which
+  // compares bounding boxes across animation frames to decide an element has
+  // stopped moving — can never observe the release page's 460ms arrival
+  // animation finishing, and every click times out as "element is not
+  // stable". The global prefers-reduced-motion reset in global.css removes the
+  // animation, which is also a setting real visitors have switched on.
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: phone, reducedMotion: "reduce" });
+  const page = await context.newPage();
+  await page.goto("./windows-95/");
+
+  const card = page.locator("[data-app-open]").nth(3);
   const appName = (await card.textContent())!.trim();
   await card.click();
 
-  await expect(page).toHaveURL(/\/windows-xp\/apps\/[a-z0-9-]+\/$/);
+  await expect(page).toHaveURL(/\/windows-95\/apps\/[a-z0-9-]+\/$/);
   await expect(page.getByRole("heading", { level: 1, name: appName })).toBeVisible();
   await expect(page.locator("#why-heading")).toHaveText("Why it took over");
   await expect(page.locator("#relearn-heading")).toHaveText("What it left behind");
   await expect(page.locator(".app-source a")).toHaveAttribute("href", /^https:\/\//);
-  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-
-  await page.locator(".next-app").click();
-  await expect(page).toHaveURL(/\/windows-xp\/apps\/[a-z0-9-]+\/$/);
-  await expect(page.getByRole("heading", { level: 1 })).not.toHaveText(appName);
 
   await page.locator(".app-return a").click();
-  await expect(page).toHaveURL(/\/windows-xp\/#memory-heading-winxp$/);
-  await expect(page.locator(".memory-app-link").first()).toBeVisible();
+  await expect(page).toHaveURL(/\/windows-95\/#memory-heading-win95$/);
+  await context.close();
 });
 
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {

@@ -141,7 +141,7 @@ h1, h2, h3 { line-height: 1.05; }
 .timeline-scene-winxp { --scene-bg: linear-gradient(160deg, #72c3f2 0 43%, #65aa3c 44%); --scene-ink: #fff; --scene-muted: #fff; --preview-border: 3px solid #1b58be; --preview-radius: 8px 8px 0 0; --preview-title: linear-gradient(#448cf0, #1b58be); --preview-control: #fff; --preview-item: #d8eaff; --preview-bar: #1b58be; --preview-task: #fff; --preview-shadow: 0 12px 26px rgb(7 48 103 / 35%); }
 .timeline-scene-vista { --scene-bg: radial-gradient(circle at 72% 24%, #5ba8c6, transparent 22%), linear-gradient(145deg, #0a1e32, #1a638e); --scene-ink: #fff; --scene-muted: #d5edfa; --preview-border: 1px solid rgb(255 255 255 / 76%); --preview-radius: 7px; --preview-title: linear-gradient(rgb(255 255 255 / 78%), rgb(120 187 218 / 48%)); --preview-title-ink: #173b56; --preview-control: rgb(255 255 255 / 62%); --preview-item: rgb(255 255 255 / 67%); --preview-bar: rgb(187 225 242 / 54%); --preview-shadow: 0 14px 30px rgb(0 15 35 / 45%); }
 .timeline-scene-win7 { --scene-bg: radial-gradient(circle at 64% 20%, #d9fbff, transparent 18%), linear-gradient(145deg, #176493, #0d3558); --scene-ink: #fff; --scene-muted: #d6f0fb; --preview-border: 1px solid rgb(255 255 255 / 82%); --preview-radius: 7px; --preview-title: linear-gradient(rgb(255 255 255 / 75%), rgb(111 186 221 / 45%)); --preview-title-ink: #144666; --preview-control: rgb(255 255 255 / 62%); --preview-item: rgb(255 255 255 / 72%); --preview-bar: rgb(185 226 244 / 62%); --preview-shadow: 0 14px 30px rgb(0 20 45 / 44%); }
-.timeline-scene-win8 { --scene-bg: #5c2d91; --scene-ink: #fff; --scene-muted: #fff; --mark-1: #fff; --mark-2: #fff; --mark-3: #fff; --mark-4: #fff; --preview-border: 0; --preview-title: transparent; --preview-control: transparent; --preview-item: #0078d7; --preview-bar: transparent; --preview-task: #fff; --preview-shadow: none; }
+.timeline-scene-win8 { --scene-bg: #5c2d91; --scene-ink: #fff; --scene-muted: #fff; --mark-1: #fff; --mark-2: #fff; --mark-3: #fff; --mark-4: #fff; --preview-border: 0; --preview-title: transparent; --preview-control: transparent; --preview-item: #0074d0; --preview-bar: transparent; --preview-task: #fff; --preview-shadow: none; }
 .timeline-scene-win8 .mini-system-content { gap: 0.35rem; }
 .timeline-scene-win8 .mini-system-content span:nth-child(2) { background: #00a3a3; }
 .timeline-scene-win8 .mini-system-content span:nth-child(3) { background: #7e4aa3; }
@@ -173,8 +173,8 @@ h1, h2, h3 { line-height: 1.05; }
 .home-page[data-entry-version="winxp"] .timeline-selector { --selector-surface: linear-gradient(#eff7ff, #c8dcf4); --selector-ink: #14396f; --selector-muted: #42638d; --selector-border: #1857be; --selector-cell-border: #83a9d5; --selector-active-surface: linear-gradient(#448cf0 0 10%, #1b63ce 32% 78%, #1249a4); --selector-active-ink: #fff; --selector-accent: #70bd4b; --selector-font: tahoma, arial, sans-serif; --selector-active-radius: 7px; --selector-active-inset: 3px; --selector-active-shadow: inset 0 1px rgb(255 255 255 / 62%), 0 2px 5px rgb(7 48 103 / 28%); --selector-shadow: 0 3px 12px rgb(7 48 103 / 25%); }
 .home-page[data-entry-version="vista"] .timeline-selector { --selector-surface: linear-gradient(rgb(234 249 255 / 88%), rgb(90 158 193 / 78%)); --selector-ink: #173b56; --selector-muted: #315d78; --selector-border: rgb(225 247 255 / 88%); --selector-cell-border: rgb(66 118 150 / 45%); --selector-active-surface: linear-gradient(rgb(37 80 108 / 88%), rgb(11 39 62 / 92%)); --selector-active-ink: #fff; --selector-accent: #b9efff; --selector-font: "Segoe UI", arial, sans-serif; --selector-active-radius: 7px; --selector-active-inset: 4px; --selector-active-shadow: inset 0 1px rgb(255 255 255 / 52%), 0 3px 10px rgb(0 12 30 / 36%); --selector-shadow: 0 5px 18px rgb(0 12 30 / 30%); --selector-blur: blur(18px); }
 .home-page[data-entry-version="win7"] .timeline-selector { --selector-surface: linear-gradient(rgb(241 251 255 / 92%), rgb(125 190 220 / 78%)); --selector-ink: #144666; --selector-muted: #326b8d; --selector-border: rgb(255 255 255 / 90%); --selector-cell-border: rgb(62 119 153 / 42%); --selector-active-surface: linear-gradient(#72c7ed, #1477ad 58%, #0b5685); --selector-active-ink: #fff; --selector-accent: #d9fbff; --selector-font: "Segoe UI", arial, sans-serif; --selector-active-radius: 7px; --selector-active-inset: 4px; --selector-active-shadow: inset 0 1px rgb(255 255 255 / 70%), 0 3px 10px rgb(0 20 45 / 30%); --selector-shadow: 0 5px 18px rgb(0 20 45 / 26%); --selector-blur: blur(18px); }
-.home-page[data-entry-version="win8"] .timeline-selector { --selector-surface: #5c2d91; --selector-ink: #fff; --selector-muted: #eadff4; --selector-border: rgb(255 255 255 / 58%); --selector-cell-border: rgb(255 255 255 / 34%); --selector-active-surface: #0078d7; --selector-active-ink: #fff; --selector-accent: #fff; --selector-font: "Segoe UI", arial, sans-serif; }
-.home-page[data-entry-version="win10"] .timeline-selector { --selector-surface: rgb(17 23 31 / 96%); --selector-ink: #fff; --selector-muted: #bcc8d4; --selector-border: #263d50; --selector-cell-border: rgb(255 255 255 / 24%); --selector-active-surface: #0078d7; --selector-active-ink: #fff; --selector-accent: #fff; --selector-font: "Segoe UI", arial, sans-serif; --selector-shadow: 0 4px 16px rgb(0 0 0 / 35%); }
+.home-page[data-entry-version="win8"] .timeline-selector { --selector-surface: #5c2d91; --selector-ink: #fff; --selector-muted: #eadff4; --selector-border: rgb(255 255 255 / 58%); --selector-cell-border: rgb(255 255 255 / 34%); --selector-active-surface: #0074d0; --selector-active-ink: #fff; --selector-accent: #fff; --selector-font: "Segoe UI", arial, sans-serif; }
+.home-page[data-entry-version="win10"] .timeline-selector { --selector-surface: rgb(17 23 31 / 96%); --selector-ink: #fff; --selector-muted: #bcc8d4; --selector-border: #263d50; --selector-cell-border: rgb(255 255 255 / 24%); --selector-active-surface: #0074d0; --selector-active-ink: #fff; --selector-accent: #fff; --selector-font: "Segoe UI", arial, sans-serif; --selector-shadow: 0 4px 16px rgb(0 0 0 / 35%); }
 .home-page[data-entry-version="win11"] .timeline-selector { --selector-surface: rgb(244 249 252 / 84%); --selector-ink: #172538; --selector-muted: #52677b; --selector-border: rgb(255 255 255 / 90%); --selector-cell-border: rgb(130 155 177 / 42%); --selector-active-surface: linear-gradient(#1685dd, #0067c0); --selector-active-ink: #fff; --selector-accent: #fff; --selector-font: "Segoe UI Variable", "Segoe UI", arial, sans-serif; --selector-active-radius: 9px; --selector-active-inset: 4px; --selector-active-shadow: inset 0 1px rgb(255 255 255 / 36%), 0 4px 12px rgb(47 72 98 / 22%); --selector-shadow: 0 5px 20px rgb(47 72 98 / 18%); --selector-blur: blur(24px); }
 
 .home-page[data-entry-version="win3"] .timeline-window, .home-page[data-entry-version="win95"] .timeline-window, .home-page[data-entry-version="win98"] .timeline-window, .home-page[data-entry-version="win2000"] .timeline-window { border: 3px outset #eee; background: #c0c0c0; box-shadow: 9px 10px 0 rgb(0 0 0 / 24%); }
@@ -958,11 +958,11 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win8 .wordmark, .page-win8 .site-header > p, .page-win8 .site-footer a { color: #fff; }
 .page-win8 .version-nav { border: 0; background: #5c2d91; backdrop-filter: none; }
 .page-win8 .version-nav a { color: #e8dff0; }
-.page-win8 .version-nav a[aria-current="page"] { border-color: #fff; background: #0078d7; color: #fff; }
+.page-win8 .version-nav a[aria-current="page"] { border-color: #fff; background: #0074d0; color: #fff; }
 .page-win8 .version-hero, .page-win8 .demo-heading-row, .page-win8 .release-details, .page-win8 .release-pagination { margin-top: 0; padding: 1.7rem; border: 0; border-radius: 0; background: #5c2d91; }
 .page-win8 .version-headline, .page-win8 .version-summary, .page-win8 .demo-heading-row > p, .page-win8 .detail-grid p { color: #fff; }
 .page-win8 .version-number { color: rgb(255 255 255 / 32%); }
-.page-win8 .detail-grid article { border-color: rgb(255 255 255 / 58%); background: #0078d7; }
+.page-win8 .detail-grid article { border-color: rgb(255 255 255 / 58%); background: #0074d0; }
 .page-win8 .detail-grid h3, .page-win8 .detail-grid article > span { color: #fff; }
 
 .page-win10 {
@@ -1009,6 +1009,10 @@ h1, h2, h3 { line-height: 1.05; }
   --memory-bg: #137f83;
   --memory-surface: #c0c0c0;
   --memory-workspace: #fff;
+
+  /* Windows 8 is the only era whose workspace is a saturated colour rather
+     than a light panel, so the ink has to travel with it. */
+  --memory-workspace-ink: #111;
   --memory-title: #000080;
   --memory-title-ink: #fff;
   --memory-border: 3px outset #eee;
@@ -1055,7 +1059,13 @@ h1, h2, h3 { line-height: 1.05; }
 .memory-bubble:hover { filter: brightness(1.08); transform: translateY(-3px) scale(1.05); }
 .memory-bubble[data-memory-index="2"] { animation-delay: -1.4s; animation-duration: 7.2s; }
 .memory-bubble[data-memory-index="3"] { animation-delay: -2.8s; animation-duration: 6.6s; }
-.memory-review-source { position: relative; z-index: 1; width: fit-content; max-width: 100%; color: var(--memory-title); font-family: "Courier New", monospace; font-size: 0.66rem; font-weight: 700; line-height: 1.35; text-underline-offset: 0.2em; }
+
+/* --memory-title is a titlebar BACKGROUND, paired with --memory-title-ink.
+   Using it as a text colour put #f4f8fc on a #f1f7fc card on Windows 11 —
+   1.01:1, an invisible source link — and on Windows 8 the label matched its
+   own surface exactly. These inherit the surface's own ink instead; they stay
+   distinguishable by weight and underline rather than by hue. */
+.memory-review-source { position: relative; z-index: 1; width: fit-content; max-width: 100%; color: inherit; font-family: "Courier New", monospace; font-size: 0.66rem; font-weight: 700; line-height: 1.35; text-underline-offset: 0.2em; }
 .memory-review-source:hover { text-decoration-thickness: 2px; }
 .memory-desktop-label { position: absolute; z-index: 8; top: 0.75rem; left: 50%; display: flex; gap: 0.5rem; align-items: center; padding: 0.35rem 0.6rem; border-radius: 999px; background: rgb(0 0 0 / 42%); color: #fff; font-size: 0.62rem; letter-spacing: 0.09em; text-transform: uppercase; transform: translateX(-50%); }
 .memory-desktop-label span { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #73ef9b; box-shadow: 0 0 8px #73ef9b; }
@@ -1064,11 +1074,11 @@ h1, h2, h3 { line-height: 1.05; }
 .memory-dialog::backdrop { background: rgb(2 10 18 / 68%); backdrop-filter: blur(3px); }
 .memory-dialog-window > header { display: flex; justify-content: space-between; gap: 1rem; align-items: center; min-height: 2.5rem; padding: 0.25rem 0.35rem 0.25rem 0.65rem; background: var(--memory-title); color: var(--memory-title-ink); font-size: 0.8rem; font-weight: 700; }
 .memory-dialog-window > header button { display: grid; width: 1.8rem; height: 1.65rem; place-items: center; padding: 0; border: var(--memory-border); border-radius: calc(var(--memory-radius) / 2); background: var(--memory-surface); color: #111; font-weight: 800; line-height: 1; }
-.memory-dialog-content { padding: clamp(1.25rem, 4vw, 2.5rem); background: var(--memory-workspace); }
-.memory-dialog-context { margin-bottom: 1.3rem; color: var(--memory-title); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.memory-dialog-content { padding: clamp(1.25rem, 4vw, 2.5rem); background: var(--memory-workspace); color: var(--memory-workspace-ink); }
+.memory-dialog-context { margin-bottom: 1.3rem; color: inherit; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .memory-dialog blockquote { margin: 0; font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 650; line-height: 1.25; letter-spacing: -0.035em; }
 .memory-dialog-handle { margin: 1.6rem 0 0; color: #566170; font-family: "Courier New", monospace; font-size: 0.75rem; }
-.memory-dialog-source { display: inline-block; margin-top: 0.7rem; color: var(--memory-title); font-size: 0.72rem; font-weight: 800; text-underline-offset: 0.2em; }
+.memory-dialog-source { display: inline-block; margin-top: 0.7rem; color: inherit; font-size: 0.72rem; font-weight: 800; text-underline-offset: 0.2em; }
 
 .memory-scene-win1 { --memory-bg: #078a8e; --memory-surface: #fff; --memory-title: repeating-linear-gradient(#fff 0 2px, #000 2px 4px); --memory-title-ink: #000; --memory-border: 2px solid #000; --memory-shadow: 5px 5px 0 #000; --memory-bubble: #fff; --memory-bubble-ink: #000; }
 .memory-scene-win1 .memory-app-window > header strong, .memory-scene-win2 .memory-app-window > header strong { padding-inline: 0.25rem; background: #fff; }
@@ -1080,13 +1090,13 @@ h1, h2, h3 { line-height: 1.05; }
 .memory-scene-winxp { --memory-bg: linear-gradient(164deg, #68bdf5 0 45%, #65ab37 46% 65%, #2e7a22 66%); --memory-surface: #f4f0e6; --memory-title: linear-gradient(#3f8df4 0 8%, #1761d1 22% 78%, #0c48ad); --memory-border: 3px solid #1857be; --memory-radius: 8px 8px 0 0; --memory-shadow: 7px 9px 22px rgb(0 48 108 / 35%); --memory-bubble: linear-gradient(#75d35d, #3c902e); --memory-bubble-ink: #fff; }
 .memory-scene-vista { --memory-bg: radial-gradient(circle at 68% 20%, #4ca6c5, transparent 25%), linear-gradient(145deg, #071a2c, #164f73); --memory-surface: rgb(225 243 252 / 82%); --memory-workspace: rgb(246 251 255 / 92%); --memory-title: linear-gradient(rgb(255 255 255 / 78%), rgb(91 169 204 / 52%)); --memory-title-ink: #173b56; --memory-border: 1px solid rgb(225 247 255 / 82%); --memory-radius: 9px; --memory-shadow: 0 16px 38px rgb(0 12 30 / 42%); --memory-bubble: rgb(34 52 68 / 82%); --memory-bubble-ink: #b9efff; }
 .memory-scene-win7 { --memory-bg: radial-gradient(circle at 64% 20%, #d9fbff, transparent 18%), linear-gradient(145deg, #176493, #0d3558); --memory-surface: rgb(230 247 255 / 88%); --memory-workspace: rgb(255 255 255 / 93%); --memory-title: linear-gradient(rgb(255 255 255 / 82%), rgb(100 177 217 / 48%)); --memory-title-ink: #144666; --memory-border: 1px solid rgb(255 255 255 / 86%); --memory-radius: 8px; --memory-shadow: 0 16px 38px rgb(0 20 45 / 38%); --memory-bubble: rgb(225 248 255 / 88%); --memory-bubble-ink: #0b5d8c; }
-.memory-scene-win8 { --memory-bg: #5c2d91; --memory-surface: #0078d7; --memory-workspace: #006abb; --memory-title: #0078d7; --memory-border: 2px solid #fff; --memory-radius: 0; --memory-shadow: none; --memory-bubble: #fff; --memory-bubble-ink: #5c2d91; }
+.memory-scene-win8 { --memory-bg: #5c2d91; --memory-surface: #0074d0; --memory-workspace: #006abb; --memory-workspace-ink: #fff; --memory-title: #0074d0; --memory-border: 2px solid #fff; --memory-radius: 0; --memory-shadow: none; --memory-bubble: #fff; --memory-bubble-ink: #5c2d91; }
 .memory-scene-win8 .memory-app-window:nth-child(2) { --memory-surface: #7e4aa3; --memory-workspace: #693889; --memory-title: #7e4aa3; }
 .memory-scene-win8 .memory-app-window:nth-child(3) { --memory-surface: #2e9548; --memory-workspace: #23813b; --memory-title: #2e9548; }
 .memory-scene-win8 .memory-app-window:nth-child(4) { --memory-surface: #c94654; --memory-workspace: #b43a48; --memory-title: #c94654; }
 .memory-scene-win8 .memory-app-content, .memory-scene-win8 .memory-app-kind { color: #fff; }
 .memory-scene-win8 .memory-app-content > div i { background: rgb(255 255 255 / 32%); }
-.memory-scene-win10 { --memory-bg: linear-gradient(135deg, #0b2748, #176aa0 58%, #0b375a); --memory-surface: #171f27; --memory-workspace: #f2f2f2; --memory-title: #171f27; --memory-title-ink: #fff; --memory-border: 1px solid #263d50; --memory-radius: 0; --memory-shadow: 0 18px 42px rgb(0 0 0 / 42%); --memory-bubble: #0078d7; --memory-bubble-ink: #fff; }
+.memory-scene-win10 { --memory-bg: linear-gradient(135deg, #0b2748, #176aa0 58%, #0b375a); --memory-surface: #171f27; --memory-workspace: #f2f2f2; --memory-title: #171f27; --memory-title-ink: #fff; --memory-border: 1px solid #263d50; --memory-radius: 0; --memory-shadow: 0 18px 42px rgb(0 0 0 / 42%); --memory-bubble: #0074d0; --memory-bubble-ink: #fff; }
 .memory-scene-win11 { --memory-bg: radial-gradient(ellipse at 16% 80%, #f2cfe1 0 15%, transparent 32%), radial-gradient(ellipse at 77% 24%, #cae6fc 0 17%, transparent 38%), linear-gradient(135deg, #b8d6f2, #77aadb); --memory-surface: rgb(244 248 252 / 86%); --memory-workspace: rgb(255 255 255 / 82%); --memory-title: rgb(244 248 252 / 84%); --memory-title-ink: #172538; --memory-border: 1px solid rgb(255 255 255 / 88%); --memory-radius: 12px; --memory-shadow: 0 18px 45px rgb(47 72 98 / 24%); --memory-bubble: rgb(244 248 252 / 88%); --memory-bubble-ink: #086fc1; }
 
 @keyframes memory-drift {
@@ -1123,7 +1133,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-vista .startup-sound, .page-win10 .startup-sound { border-color: rgb(222 246 255 / 45%); background: rgb(15 39 59 / 78%); color: #fff; backdrop-filter: blur(18px); }
 .page-vista .startup-sound p, .page-vista .startup-sound a, .page-win10 .startup-sound p, .page-win10 .startup-sound a { color: #d6e8f4; }
 .page-win7 .startup-sound { border-color: rgb(255 255 255 / 82%); border-radius: 9px; background: rgb(238 249 255 / 86%); backdrop-filter: blur(14px); }
-.page-win8 .startup-sound { border: 0; border-radius: 0; background: #0078d7; color: #fff; box-shadow: none; }
+.page-win8 .startup-sound { border: 0; border-radius: 0; background: #0074d0; color: #fff; box-shadow: none; }
 .page-win8 .startup-sound p, .page-win8 .startup-sound a { color: #fff; }
 .page-win8 .startup-sound .sound-glyph, .page-win8 .startup-sound button { border: 2px solid #fff; border-radius: 0; background: #fff; color: #5c2d91; }
 .page-win11 .startup-sound { border-color: rgb(255 255 255 / 82%); border-radius: 14px; background: rgb(245 249 252 / 78%); backdrop-filter: blur(24px); }
@@ -1158,7 +1168,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-vista .story-layout p, .page-vista .contributors .section-heading > p, .page-vista .contributor-card p, .page-vista .contributor-card small, .page-win10 .story-layout p, .page-win10 .contributors .section-heading > p, .page-win10 .contributor-card p, .page-win10 .contributor-card small { color: #d6e8f4; }
 .page-win7 .release-story, .page-win7 .contributors { border-color: rgb(255 255 255 / 82%); border-radius: 9px; background: rgb(238 249 255 / 86%); box-shadow: 0 14px 32px rgb(11 55 88 / 24%); backdrop-filter: blur(14px); }
 .page-win7 .contributor-card { border-color: #9fc7dd; background: rgb(255 255 255 / 70%); }
-.page-win8 .release-story, .page-win8 .contributors { border: 0; background: #0078d7; color: #fff; }
+.page-win8 .release-story, .page-win8 .contributors { border: 0; background: #0074d0; color: #fff; }
 .page-win8 .contributor-card { border: 2px solid #fff; background: #0064b4; }
 .page-win8 .story-layout p, .page-win8 .contributors .section-heading > p, .page-win8 .contributor-card p, .page-win8 .contributor-card small { color: #fff; }
 .page-win11 .release-story, .page-win11 .contributors { border-color: rgb(255 255 255 / 82%); border-radius: 16px; background: rgb(245 249 252 / 78%); box-shadow: 0 16px 38px rgb(47 72 98 / 13%); backdrop-filter: blur(24px); }
@@ -1283,6 +1293,12 @@ h1, h2, h3 { line-height: 1.05; }
 .memory-app-more { display: inline-block; margin-top: 0.6rem; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; }
 .memory-app-window:hover { box-shadow: var(--memory-shadow), 0 0 0 3px currentcolor; }
 .memory-app-window:has(.memory-app-link:focus-visible) { box-shadow: var(--memory-shadow), 0 0 0 3px currentcolor; }
+
+/* The app dialog reuses .memory-dialog wholesale — same era window, same
+   chrome — and adds only the two labelled sections it needs. */
+.app-dialog-label { margin: 1.1rem 0 0.3rem; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
+.app-dialog-body { margin: 0; max-width: 54ch; font-size: 0.88rem; line-height: 1.65; }
+.app-dialog-relearn { font-weight: 650; }
 
 /* One app, one page. Reuses the release page's era body class, so each of the
    48 inherits its period's palette with no extra rules. */

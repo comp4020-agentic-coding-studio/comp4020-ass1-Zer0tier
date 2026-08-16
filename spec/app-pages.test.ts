@@ -89,6 +89,32 @@ describe("the app pages", () => {
     }
   });
 
+  // The card carries its whole story, so the dialog needs no request and works
+  // the instant the page is parsed. If an attribute goes missing the modal
+  // opens empty, which no build step would notice.
+  it("carries each app's story on the card that opens it", () => {
+    for (const release of windowsReleases) {
+      const doc = new JSDOM(readFileSync(resolve("dist", release.slug, "index.html"), "utf8")).window.document;
+      const dialog = doc.querySelector("[data-app-dialog]");
+      expect(dialog, `${release.slug}: no app dialog`).not.toBeNull();
+
+      const cards = [...doc.querySelectorAll<HTMLAnchorElement>("[data-app-open]")];
+      expect(cards, `${release.slug}`).toHaveLength(4);
+
+      for (const card of cards) {
+        const where = `${release.slug}/${card.dataset.appName}`;
+        for (const key of ["appName", "appKind", "appWhy", "appRelearn", "appSourceLabel", "appSourceUrl"]) {
+          expect(card.dataset[key]?.trim().length, `${where}: empty data-${key}`).toBeGreaterThan(0);
+        }
+        expect(card.dataset.appSourceUrl, where).toMatch(/^https:\/\//);
+        expect(card.getAttribute("aria-haspopup"), where).toBe("dialog");
+        // The control must point at a dialog that is actually on this page.
+        expect(card.getAttribute("aria-controls"), where).toBe(dialog!.id);
+        expect(doc.getElementById(card.getAttribute("aria-controls")!), `${where}: aria-controls dangles`).not.toBeNull();
+      }
+    }
+  });
+
   // Literal fixtures. The mechanism of adoption is the point of these pages,
   // so a couple of them are pinned from outside the data file.
   it("says why the ones that matter most spread", () => {

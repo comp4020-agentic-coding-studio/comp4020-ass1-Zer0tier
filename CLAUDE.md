@@ -323,11 +323,20 @@ teal it computes to roughly 2.6:1. These cards sit on twelve different era
 backgrounds, so there is no safe opacity. Carry hierarchy with size and weight;
 if a muted colour is genuinely needed, set the colour and measure it.
 
-Related, and still open: `--memory-title` is a *titlebar background* colour and
-three rules use it as *text* colour (`.memory-review-source`,
-`.memory-dialog-context`, `.memory-dialog-source`). On Windows 11 that is
-`#f4f8fc` on a `#f1f7fc` card — **1.01:1, invisible**. The source links that
-moment 3 of `PROCESS.md` is about cannot be read on that page.
+Related, and the same mistake in a different costume: a colour token is named
+for the job it does. `--memory-title` is a titlebar *background*, paired with
+`--memory-title-ink`, and three rules used it as a *text* colour — which on
+Windows 11 put `#f4f8fc` on a `#f1f7fc` card, **1.01:1, an invisible source
+link**, on the very attributions moment 3 of `PROCESS.md` is about. They
+inherit the surface's own ink now and are told apart by weight and underline.
+
+Two more from the same sweep: Windows 8's `#0078d7` gives white text 4.49:1,
+which fails by 0.01 and appeared in five rules — nudged to `#0074d0` (4.76:1),
+which is imperceptible next to the real Windows 8 accent. And Windows 8 is the
+only era whose *workspace* is a saturated colour rather than a light panel, so
+`--memory-workspace` needed a matching `--memory-workspace-ink` instead of the
+inherited `#111`. **If a token sets a background, look for its ink token before
+using it anywhere else.**
 
 ### A link and the route it points at must share one slug function
 
