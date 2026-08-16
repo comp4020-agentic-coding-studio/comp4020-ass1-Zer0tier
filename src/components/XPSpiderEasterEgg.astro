@@ -5,9 +5,22 @@ interface Props {
 
 const { base } = Astro.props;
 const spiderIcon = `${base}media/xp-spider-solitaire.png`;
+const cardSheet = `${base}media/xp-spider-cards.webp`;
+const cardBack = `${base}media/xp-spider-card-back.webp`;
+const fireworkBursts = [
+  { x: 26, y: 35 },
+  { x: 50, y: 23 },
+  { x: 73, y: 38 },
+  { x: 40, y: 54 },
+  { x: 61, y: 57 },
+];
+const victoryLetters = [
+  ["Y", "#d9ff00"], ["o", "#2a3cff"], ["u", "#28a51b"], [" ", "transparent"],
+  ["W", "#fff000"], ["o", "#1d37ff"], ["n", "#35a91d"], ["!", "#d9ff00"],
+];
 ---
 
-<div class="xp-spider-easter-egg" data-xp-spider-easter-egg>
+<div class="xp-spider-easter-egg" data-xp-spider-easter-egg style={`--xp-spider-cards: url("${cardSheet}"); --xp-spider-back: url("${cardBack}");`}>
   <button class="xp-crawling-spider" type="button" data-xp-spider aria-label="Catch the Spider Solitaire spider">
     <img src={spiderIcon} alt="" width="32" height="32" draggable="false" />
   </button>
@@ -16,7 +29,7 @@ const spiderIcon = `${base}media/xp-spider-solitaire.png`;
     <button class="xp-game-backdrop" type="button" data-spider-close tabindex="-1" aria-label="Close Spider Solitaire"></button>
     <section class="xp-spider-window" role="dialog" aria-modal="true" aria-labelledby="spider-game-title" data-spider-game-window>
       <header class="xp-spider-titlebar">
-        <span><img src={spiderIcon} alt="" width="20" height="20" /><strong id="spider-game-title">Spider Solitaire</strong></span>
+        <span><img src={spiderIcon} alt="" width="16" height="16" /><strong id="spider-game-title">Spider</strong></span>
         <div>
           <button type="button" data-spider-minimise aria-label="Minimise Spider Solitaire">_</button>
           <button type="button" data-spider-maximise aria-label="Maximise Spider Solitaire">□</button>
@@ -31,29 +44,32 @@ const spiderIcon = `${base}media/xp-spider-solitaire.png`;
       <div class="xp-spider-game" data-spider-game>
         <div class="xp-spider-tableau" data-spider-tableau aria-label="Spider Solitaire tableau"></div>
         <div class="xp-spider-victory" data-spider-victory hidden aria-hidden="true">
-          <div class="xp-spider-card-shower">
-            {Array.from({ length: 24 }, (_, index) => (
-              <span
-                class="xp-spider-victory-card"
-                style={`--victory-left: ${(index * 37) % 96}%; --victory-delay: ${index * 95}ms; --victory-tilt: ${(index % 2 ? 1 : -1) * (18 + (index % 5) * 7)}deg`}
-              >{index % 4 === 0 ? "K" : index % 4 === 1 ? "Q" : index % 4 === 2 ? "J" : "A"}<i>♠</i></span>
+          <div class="xp-spider-fireworks" aria-hidden="true">
+            {fireworkBursts.map((burst, burstIndex) => (
+              <i class="xp-spider-firework" style={`--burst-x: ${burst.x}%; --burst-y: ${burst.y}%; --burst-delay: ${burstIndex * 260}ms`}>
+                {Array.from({ length: 18 }, (_, particleIndex) => (
+                  <span style={`--particle-angle: ${particleIndex * 20}deg; --particle-distance: ${48 + (particleIndex % 4) * 18}px; --particle-colour: ${particleIndex % 2 ? "#193cff" : "#48ad10"}; --particle-delay: ${(particleIndex % 3) * 35}ms`}></span>
+                ))}
+              </i>
             ))}
           </div>
-          <div class="xp-spider-victory-message"><strong>You won!</strong><span>All eight sequences are complete.</span></div>
+          <strong class="xp-spider-victory-message" aria-label="You Won!">
+            {victoryLetters.map(([letter, colour]) => <span style={`--victory-colour: ${colour}`}>{letter === " " ? "\u00a0" : letter}</span>)}
+          </strong>
         </div>
         <footer class="xp-spider-game-footer">
           <div class="xp-spider-completed" data-spider-completed aria-label="Completed sequences"></div>
-          <p data-spider-status role="status" aria-live="polite">Build descending runs from King to Ace. Select a card, then choose its destination.</p>
+          <div class="xp-spider-scoreboard" aria-label="Game score and move count">
+            <span>Score: <output data-spider-score>500</output></span>
+            <span>Moves: <output data-spider-moves>0</output></span>
+          </div>
+          <p class="visually-hidden" data-spider-status role="status" aria-live="polite">Build descending runs from King to Ace. Select a card, then choose its destination.</p>
           <button class="xp-spider-stock" type="button" data-spider-stock aria-label="Deal a new row of cards">
-            <span aria-hidden="true"></span><b data-spider-stock-count>50</b>
+            {Array.from({ length: 5 }, (_, index) => <span aria-hidden="true" style={`--stock-index: ${index}`}></span>)}
+            <b class="visually-hidden" data-spider-stock-count>50</b>
           </button>
         </footer>
       </div>
-      <footer class="xp-spider-statusbar">
-        <span>Score: <output data-spider-score>500</output></span>
-        <span>Moves: <output data-spider-moves>0</output></span>
-        <span>Easy · One suit</span>
-      </footer>
     </section>
     <button class="xp-spider-task" type="button" data-spider-task hidden><img src={spiderIcon} alt="" width="18" height="18" /> Spider Solitaire</button>
   </div>

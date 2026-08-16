@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { JSDOM } from "jsdom";
 import { describe, expect, it, vi } from "vitest";
@@ -13,6 +13,15 @@ function xpPage() {
 }
 
 describe("Windows XP Spider Solitaire Easter egg", () => {
+  it("uses the original XP card-face sheet and spider-web card back", () => {
+    const html = readFileSync(resolve("dist/windows-xp/index.html"), "utf8");
+
+    expect(html).toContain("xp-spider-cards.webp");
+    expect(html).toContain("xp-spider-card-back.webp");
+    expect(existsSync(resolve("public/media/xp-spider-cards.webp"))).toBe(true);
+    expect(existsSync(resolve("public/media/xp-spider-card-back.webp"))).toBe(true);
+  });
+
   it("appears only on the Windows XP release page", () => {
     for (const version of versions) {
       const html = readFileSync(resolve("dist", version, "index.html"), "utf8");
@@ -39,6 +48,8 @@ describe("Windows XP Spider Solitaire Easter egg", () => {
     expect(doc.querySelector("[role='dialog']")?.getAttribute("aria-labelledby")).toBe("spider-game-title");
     expect(doc.querySelectorAll(".xp-spider-column")).toHaveLength(10);
     expect(doc.querySelectorAll(".xp-spider-card")).toHaveLength(54);
+    expect(doc.querySelector("#spider-game-title")?.textContent).toBe("Spider");
+    expect(doc.querySelectorAll(".xp-spider-stock span")).toHaveLength(5);
     instantTimeout.mockRestore();
     dom.window.close();
   });
@@ -75,7 +86,8 @@ describe("Windows XP Spider Solitaire Easter egg", () => {
     expect(doc.querySelector<HTMLElement>("[data-spider-game-layer]")?.hidden).toBe(false);
     expect(victory?.hidden).toBe(false);
     expect(victory?.classList.contains("is-playing")).toBe(true);
-    expect(doc.querySelectorAll(".xp-spider-victory-card")).toHaveLength(24);
+    expect(doc.querySelectorAll(".xp-spider-firework")).toHaveLength(5);
+    expect(doc.querySelector(".xp-spider-victory-message")?.textContent?.replace(/\s+/g, " ").trim()).toBe("You Won!");
     expect(doc.querySelectorAll(".xp-spider-card")).toHaveLength(0);
     expect(doc.querySelectorAll(".xp-spider-completed .is-complete")).toHaveLength(8);
     expect(doc.querySelector("[data-spider-score]")?.textContent).toBe("1300");

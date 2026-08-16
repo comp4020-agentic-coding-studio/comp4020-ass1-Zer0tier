@@ -29,6 +29,18 @@
   var reducedMotion = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var rankNames = ["", "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 
+  function spriteRow(rank) {
+    if (rank === 13) return 0;
+    if (rank === 12) return 1;
+    if (rank === 11) return 2;
+    if (rank === 1) return 3;
+    return rank + 2;
+  }
+
+  function spritePositionY(rank) {
+    return String(((5 + spriteRow(rank) * 100) / 1210) * 100) + "%";
+  }
+
   function shuffle(cards) {
     for (var index = cards.length - 1; index > 0; index -= 1) {
       var swapIndex = Math.floor(Math.random() * (index + 1));
@@ -79,7 +91,7 @@
     for (var index = 0; index < 8; index += 1) {
       var marker = document.createElement("span");
       marker.className = index < completed ? "is-complete" : "";
-      marker.textContent = index < completed ? "K♠" : "";
+      marker.style.setProperty("--complete-index", String(index));
       completedOutput.appendChild(marker);
     }
   }
@@ -98,17 +110,10 @@
         cardButton.type = "button";
         cardButton.className = "xp-spider-card " + (card.faceUp ? "is-face-up" : "is-face-down");
         cardButton.setAttribute("data-card-index", String(cardIndex));
+        cardButton.setAttribute("data-card-rank", String(card.rank));
         cardButton.setAttribute("aria-label", card.faceUp ? rankNames[card.rank] + " of spades" : "Face-down card");
         if (selected && selected.column === columnIndex && cardIndex >= selected.index) cardButton.classList.add("is-selected");
-        if (card.faceUp) {
-          var top = document.createElement("span");
-          top.innerHTML = "<b>" + rankNames[card.rank] + "</b><i>♠</i>";
-          var center = document.createElement("strong");
-          center.textContent = "♠";
-          var bottom = document.createElement("span");
-          bottom.innerHTML = "<b>" + rankNames[card.rank] + "</b><i>♠</i>";
-          cardButton.append(top, center, bottom);
-        }
+        if (card.faceUp) cardButton.style.setProperty("--sprite-y", spritePositionY(card.rank));
         cardButton.addEventListener("click", function (event) {
           event.stopPropagation();
           chooseCard(columnIndex, cardIndex);

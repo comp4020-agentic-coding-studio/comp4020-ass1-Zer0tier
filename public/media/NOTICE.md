@@ -6,6 +6,8 @@ Contributor photographs are credited on the page where they appear. Most are Wik
 
 The Windows XP Spider Solitaire icon is an extracted system-game icon preserved by the Vintage Icons archive and indexed by the Windows Icon Archive. Microsoft retains the rights to the original icon artwork.
 
+The Windows XP Spider Solitaire card-face sprite sheet and 71×96 spider-web card back are preserved screenshots of Microsoft game resources documented by the [Microsoft Windows XP Wiki](https://the-microsoft-windows-xp.fandom.com/wiki/Spider). They are included locally for pixel-accurate historical reconstruction in this non-commercial university assignment; Microsoft retains the rights to the original card artwork.
+
 ## Application icons and logos
 
 The app gallery uses locally hosted historical icon artwork rather than recreated lettermarks.
