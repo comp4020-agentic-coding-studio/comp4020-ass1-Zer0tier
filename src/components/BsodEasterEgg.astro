@@ -1,0 +1,49 @@
+---
+import bsodInteractions from "../bsod-easter-egg.js?raw";
+---
+
+<div class="bsod-easter-egg" data-bsod-root>
+  <button class="bsod-trigger" type="button" data-bsod-trigger>DO NOT CLICK</button>
+  <section class="bsod-screen" data-bsod-screen role="alertdialog" aria-modal="true" aria-labelledby="bsod-title" tabindex="-1" hidden>
+    <div class="bsod-copy">
+      <p class="bsod-label" id="bsod-title">Windows</p>
+      <p>A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00010E36.</p>
+      <p>The current application will be terminated.</p>
+      <ul>
+        <li>The system has been halted to prevent damage to your computer.</li>
+        <li>Unsaved information may be lost.</li>
+      </ul>
+      <p class="bsod-restart">Press F5 to refresh and restart.</p>
+      <p class="bsod-cursor" aria-hidden="true">_</p>
+    </div>
+  </section>
+</div>
+
+<script is:inline set:html={bsodInteractions} />
+
+<style is:global>
+  .bsod-easter-egg { display: contents; }
+  .bsod-trigger { position: fixed; z-index: 9000; right: 0.75rem; bottom: 0.75rem; min-height: 2rem; padding: 0.35rem 0.55rem; border: 1px solid rgb(0 0 0 / 28%); border-radius: 2px; background: rgb(239 239 239 / 84%); box-shadow: 1px 1px 0 rgb(255 255 255 / 72%); color: #555; font: 600 0.56rem/1 "Courier New", "Lucida Console", monospace; letter-spacing: 0.035em; opacity: 0.68; cursor: pointer; }
+  .bsod-trigger:hover, .bsod-trigger:focus-visible { border-color: #111; background: #fff; color: #111; opacity: 1; }
+  .bsod-trigger:focus-visible { outline: 3px solid #f0b24a; outline-offset: 3px; }
+  .bsod-screen { position: fixed; z-index: 2147483647; inset: 0; overflow: auto; padding: clamp(2rem, 9vw, 7rem) clamp(1.25rem, 10vw, 9rem); background: #0000AA; color: #fff; font-family: "Lucida Console", "Courier New", monospace; font-size: clamp(0.82rem, 1.55vw, 1.24rem); line-height: 1.55; cursor: none; }
+  .bsod-screen[hidden] { display: none; }
+  .bsod-copy { width: min(58rem, 100%); margin-inline: auto; }
+  .bsod-copy p { margin-block: 0 1.45em; }
+  .bsod-label { width: max-content; margin-inline: auto; padding-inline: 0.65em; background: #aaa; color: #0000AA; }
+  .bsod-copy ul { margin-block: 1.8em; padding: 0; list-style: none; }
+  .bsod-copy li { margin-block: 0.6em; }
+  .bsod-copy li::before { content: "* "; }
+  .bsod-restart { margin-top: 3em; text-align: center; }
+  .bsod-cursor { text-align: center; animation: bsod-cursor-blink 850ms steps(1, end) infinite; }
+  html.bsod-active, html.bsod-active body { overflow: hidden; }
+  body.bsod-active .bsod-trigger { display: none; }
+
+  @keyframes bsod-cursor-blink {
+    50% { opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bsod-cursor { animation: none; }
+  }
+</style>

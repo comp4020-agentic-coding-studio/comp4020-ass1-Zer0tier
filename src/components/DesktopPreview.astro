@@ -1,13 +1,17 @@
 ---
+import CommandPrompt from "./CommandPrompt.astro";
 import type { WindowsRelease } from "../data/windows";
+import { getWindowsSystemAssetStyle } from "../data/windows-system-assets";
 
 interface Props {
   release: WindowsRelease;
+  base: string;
 }
 
-const { release } = Astro.props;
+const { release, base } = Astro.props;
 const classic = ["win95", "win98", "win2000"].includes(release.id);
 const aero = ["vista", "win7"].includes(release.id);
+const systemAssetStyle = getWindowsSystemAssetStyle(release.id, base);
 ---
 
 <section class:list={["system-demo", `system-${release.id}`]} aria-labelledby="demo-heading">
@@ -16,10 +20,10 @@ const aero = ["vista", "win7"].includes(release.id);
       <p class="eyebrow">Interactive system recreation</p>
       <h2 id="demo-heading">The {release.name} desktop</h2>
     </div>
-    <p>Open Start, select desktop items, and use the window controls.</p>
+    <p>Open Start, launch the period-correct command prompt, and use the window controls.</p>
   </div>
 
-  <div class:list={["desktop", `desktop-${release.id}`]} data-desktop>
+  <div class:list={["desktop", `desktop-${release.id}`]} data-desktop data-system-assets="original-extracted" style={systemAssetStyle}>
     {(release.id === "win1" || release.id === "win2") && (
       <>
         <article class="early-window early-executive" data-window>
@@ -47,7 +51,7 @@ const aero = ["vista", "win7"].includes(release.id);
         <article class="program-manager" data-window>
           <header class="classic-titlebar" data-window-handle><button class="caption-menu" type="button" aria-label="Window menu"></button><strong>Program Manager</strong><span><button type="button" data-window-action="minimise" aria-label="Minimise">_</button><button type="button" data-window-action="maximise" aria-label="Maximise">□</button></span></header>
           <nav class="classic-menubar" aria-label="Program Manager menu"><button type="button">File</button><button type="button">Options</button><button type="button">Window</button><button type="button">Help</button></nav>
-          <section class="program-group"><header>Main</header><div class="program-icons"><button type="button"><span class="pixel-icon file-icon"></span>File Manager</button><button type="button"><span class="pixel-icon control-icon"></span>Control Panel</button><button type="button"><span class="pixel-icon print-icon"></span>Print Manager</button><button type="button"><span class="pixel-icon terminal-icon"></span>MS-DOS Prompt</button></div></section>
+          <section class="program-group"><header>Main</header><div class="program-icons"><button type="button"><span class="pixel-icon file-icon"></span>File Manager</button><button type="button"><span class="pixel-icon control-icon"></span>Control Panel</button><button type="button"><span class="pixel-icon print-icon"></span>Print Manager</button><button type="button" data-command-external-open><span class="pixel-icon terminal-icon"></span>MS-DOS Prompt</button></div></section>
           <section class="program-group accessories"><header>Accessories</header><div class="program-icons"><button type="button"><span class="pixel-icon write-icon"></span>Write</button><button type="button"><span class="pixel-icon paint-icon"></span>Paintbrush</button><button type="button"><span class="pixel-icon clock-icon"></span>Clock</button></div></section>
         </article>
       </>
@@ -97,7 +101,7 @@ const aero = ["vista", "win7"].includes(release.id);
           <nav aria-label="Window menu"><button type="button">File</button><button type="button">Edit</button><button type="button">View</button><button type="button">Favorites</button><button type="button">Tools</button><button type="button">Help</button></nav>
           <div class="xp-browser"><aside><section><b>Picture Tasks</b><a href="#details">View as a slide show</a><a href="#details">Order prints online</a><a href="#details">Print pictures</a></section><section><b>Other Places</b><a href="#details">My Documents</a><a href="#details">Shared Documents</a></section></aside><div class="xp-files"><button type="button"><span class="photo-thumb hills"></span>Bliss</button><button type="button"><span class="photo-thumb flowers"></span>Sample Pictures</button></div></div>
         </article>
-        <div class="xp-taskbar"><button class="start-button xp-start" type="button" data-start-button aria-expanded="false"><span class="windows-flag" aria-hidden="true"><i></i><i></i><i></i><i></i></span><b>start</b></button><button class="xp-task" type="button" data-open-window>My Pictures</button><time data-system-clock>4:20 PM</time></div>
+        <div class="xp-taskbar"><button class="start-button xp-start" type="button" data-start-button aria-expanded="false"><span class="windows-flag" aria-hidden="true"><i></i><i></i><i></i><i></i></span><b>start</b></button><button class="xp-task" type="button" data-open-window>My Pictures</button><button class="command-task-launcher xp-command-task" type="button" data-command-external-open aria-label="Open Command Prompt"><img src={`${base}media/system-icons/Windows95MSDOSPrompt.png`} alt="" aria-hidden="true" /></button><time data-system-clock>4:20 PM</time></div>
         <div class="xp-start-panel" data-start-panel hidden><header><span class="user-avatar" aria-hidden="true"></span><strong>Alex</strong></header><div><section><button type="button"><span class="pixel-icon internet-icon"></span><b>Internet</b><small>Internet Explorer</small></button><button type="button"><span class="pixel-icon mail-icon"></span><b>E-mail</b><small>Outlook Express</small></button><hr /><button type="button"><span class="pixel-icon paint-icon"></span>Paint</button><button type="button"><span class="pixel-icon player-icon"></span>Windows Media Player</button></section><aside><button type="button"><b>My Documents</b></button><button type="button"><b>My Pictures</b></button><button type="button">My Computer</button><hr /><button type="button">Control Panel</button><button type="button">Help and Support</button></aside></div><footer><button type="button">Log Off</button><button type="button">Turn Off Computer</button></footer></div>
       </>
     )}
@@ -111,14 +115,14 @@ const aero = ["vista", "win7"].includes(release.id);
           <div class="aero-command"><button type="button">Organize</button><button type="button">Views</button><label>Search <input aria-label="Search this window" /></label></div>
           <div class="aero-content"><aside><b>Favorite Links</b><span>Desktop</span><span>Downloads</span><span>Recent Places</span><b>Folders</b><span>Computer</span><span>Network</span></aside><section><h3>{release.id === "vista" ? "Hard Disk Drives" : "Libraries"}</h3><div class="library-grid"><button type="button"><span class="library-icon docs-library"></span>Documents</button><button type="button"><span class="library-icon music-library"></span>Music</button><button type="button"><span class="library-icon pictures-library"></span>Pictures</button><button type="button"><span class="library-icon video-library"></span>Videos</button></div></section></div>
         </article>
-        <div class:list={["aero-taskbar", release.id === "win7" && "superbar"]}><button class="start-button aero-start" type="button" data-start-button aria-expanded="false" aria-label="Start"><span class="orb-flag"><i></i><i></i><i></i><i></i></span></button><button class="aero-task explorer-task" type="button" data-open-window aria-label="Windows Explorer"></button><button class="aero-task browser-task" type="button" aria-label="Internet Explorer"></button><time data-system-clock>4:20 PM</time></div>
+        <div class:list={["aero-taskbar", release.id === "win7" && "superbar"]}><button class="start-button aero-start" type="button" data-start-button aria-expanded="false" aria-label="Start"><span class="orb-flag"><i></i><i></i><i></i><i></i></span></button><button class="aero-task explorer-task" type="button" data-open-window aria-label="Windows Explorer"></button><button class="aero-task browser-task" type="button" aria-label="Internet Explorer"></button>{release.id === "vista" && <button class="aero-task command-task-launcher" type="button" data-command-external-open aria-label="Open Command Prompt"><img src={`${base}media/system-icons/Windows95MSDOSPrompt.png`} alt="" aria-hidden="true" /></button>}<time data-system-clock>4:20 PM</time></div>
         <div class="aero-start-panel" data-start-panel hidden><div class="aero-start-left"><label>Search programs and files <input aria-label="Search programs and files" /></label><button type="button">Internet Explorer</button><button type="button">Windows Media Player</button><button type="button">Paint</button><button type="button">All Programs</button></div><aside><strong>Alex</strong><button type="button">Documents</button><button type="button">Pictures</button><button type="button">Music</button><button type="button">Computer</button><button type="button">Control Panel</button><button type="button">Help and Support</button></aside></div>
       </>
     )}
 
     {release.id === "win8" && (
       <>
-        <div class="metro-user"><span class="user-avatar"></span><b>Alex</b></div><h3 class="metro-heading">Start</h3><div class="metro-groups" aria-label="Start screen tiles"><div class="metro-grid"><button class="metro-tile wide tile-blue" type="button"><span class="line-icon mail-line"></span><b>Mail</b><small>3 new messages</small></button><button class="metro-tile tile-cyan" type="button"><span class="line-icon calendar-line">15</span><b>Calendar</b></button><button class="metro-tile tile-purple" type="button"><span class="line-icon people-line"></span><b>People</b></button><button class="metro-tile tile-orange" type="button"><span class="line-icon store-line"></span><b>Store</b></button><button class="metro-tile wide tile-green" type="button"><span class="weather-reading">18°</span><b>Weather</b><small>Sydney · Sunny</small></button><button class="metro-tile tile-red" type="button"><span class="line-icon camera-line"></span><b>Camera</b></button><button class="metro-tile tile-blue-dark" type="button"><span class="line-icon desktop-line"></span><b>Desktop</b></button><button class="metro-tile wide tile-photo" type="button"><b>Photos</b></button></div></div>
+        <div class="metro-user"><span class="user-avatar"></span><b>Alex</b></div><h3 class="metro-heading">Start</h3><div class="metro-groups" aria-label="Start screen tiles"><div class="metro-grid"><button class="metro-tile wide tile-blue" type="button"><span class="line-icon mail-line"></span><b>Mail</b><small>3 new messages</small></button><button class="metro-tile tile-cyan" type="button"><span class="line-icon calendar-line">15</span><b>Calendar</b></button><button class="metro-tile tile-purple" type="button"><span class="line-icon people-line"></span><b>People</b></button><button class="metro-tile tile-orange" type="button"><span class="line-icon store-line"></span><b>Store</b></button><button class="metro-tile wide tile-green" type="button"><span class="weather-reading">18°</span><b>Weather</b><small>Sydney · Sunny</small></button><button class="metro-tile tile-red" type="button"><span class="line-icon camera-line"></span><b>Camera</b></button><button class="metro-tile tile-blue-dark" type="button"><span class="line-icon desktop-line"></span><b>Desktop</b></button><button class="metro-tile tile-command" type="button" data-command-external-open><img src={`${base}media/system-icons/Windows95MSDOSPrompt.png`} alt="" aria-hidden="true" /><b>Command Prompt</b></button><button class="metro-tile wide tile-photo" type="button"><b>Photos</b></button></div></div>
         <aside class="charms-bar" aria-label="Charms"><button type="button"><span class="charm search-charm"></span>Search</button><button type="button"><span class="charm share-charm"></span>Share</button><button type="button"><span class="charm start-charm"></span>Start</button><button type="button"><span class="charm devices-charm"></span>Devices</button><button type="button"><span class="charm settings-charm"></span>Settings</button></aside>
       </>
     )}
@@ -140,5 +144,7 @@ const aero = ["vista", "win7"].includes(release.id);
         <div class="win11-start-panel" data-start-panel><label><span class="search-symbol"></span><input aria-label="Search for apps, settings, and documents" placeholder="Type here to search" /></label><div class="pinned-title"><b>Pinned</b><button type="button">All apps &gt;</button></div><div class="pinned-grid"><button type="button"><span class="pinned-icon edge-pin"></span>Edge</button><button type="button"><span class="pinned-icon mail-pin"></span>Mail</button><button type="button"><span class="pinned-icon store-pin"></span>Store</button><button type="button"><span class="pinned-icon photos-pin"></span>Photos</button><button type="button"><span class="pinned-icon settings-pin"></span>Settings</button><button type="button"><span class="pinned-icon calc-pin"></span>Calculator</button></div><b class="recommended-title">Recommended</b><div class="recommended"><button type="button"><span class="doc-card"></span><b>Windows design notes</b><small>2h ago</small></button><button type="button"><span class="photo-card"></span><b>Desktop references</b><small>Yesterday</small></button></div><footer><button type="button"><span class="user-avatar"></span>Alex</button><button type="button" aria-label="Power"><span class="power-outline"></span></button></footer></div>
       </>
     )}
+
+    <CommandPrompt release={release} base={base} />
   </div>
 </section>

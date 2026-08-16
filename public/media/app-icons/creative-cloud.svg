@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="260"
+   height="254"
+   version="1.1"
+   id="svg22">
+  <metadata
+     id="metadata28">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs26" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1600"
+     inkscape:window-height="830"
+     id="namedview24"
+     showgrid="false"
+     inkscape:zoom="0.25213675"
+     inkscape:cx="-811.02009"
+     inkscape:cy="617.56136"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg22" />
+  <radialGradient
+     id="a"
+     cx="93.660004"
+     cy="254"
+     r="383.64001"
+     gradientTransform="matrix(1.084718,0,0,-1.084718,0,256.16944)"
+     gradientUnits="userSpaceOnUse">
+    <stop
+       offset="0"
+       stop-color="#ec202b"
+       id="stop2" />
+    <stop
+       offset=".146"
+       stop-color="#e2202a"
+       id="stop4" />
+    <stop
+       offset=".399"
+       stop-color="#c51e26"
+       id="stop6" />
+    <stop
+       offset=".727"
+       stop-color="#981c20"
+       id="stop8" />
+    <stop
+       offset="1"
+       stop-color="#6d1a1b"
+       id="stop10" />
+  </radialGradient>
+  <path
+     d="M 0,0.1759917 H 260.33232 V 254 H 0 Z"
+     id="path13"
+     inkscape:connector-curvature="0"
+     style="fill:url(#a);stroke-width:1.08471799" />
+  <linearGradient
+     id="b"
+     x1="28.872"
+     x2="214.065"
+     y1="116.908"
+     y2="116.908"
+     gradientUnits="userSpaceOnUse">
+    <stop
+       offset=".14"
+       stop-color="#fff"
+       id="stop15" />
+    <stop
+       offset="1"
+       stop-color="#eaecea"
+       id="stop17" />
+  </linearGradient>
+  <g
+     transform="matrix(1.4952814,0,0,1.4952814,6.2322975,34.989178)"
+     id="g8"
+     style="fill:#fff6d5">
+    <g
+       id="g6"
+       style="fill:#fff6d5">
+      <path
+         inkscape:connector-curvature="0"
+         d="m 57.6,108.8 c -2.5,-0.3 -4.9,-0.5 -7.3,-1 C 37.3,105.5 26.8,99.3 20.1,87.6 16.7,81.6 15,75 14.5,68.2 c -0.6,-8.6 0.4,-17 3.8,-25 4.5,-10.5 12.1,-18.1 22.5,-22.6 13.8,-5.9 27.9,-6 42.2,-1.8 0.9,0.3 1.8,0.7 2.9,1.1 C 84.5,25.3 83.1,30.7 81.8,36 81.4,36 81.2,36 81,35.9 74.5,33.4 67.8,32.5 60.9,33 c -13.2,0.9 -23,10.2 -24.7,23.3 -0.8,5.8 -0.7,11.6 1.1,17.2 3.1,10 10.1,15.9 20.3,17.8 7.7,1.5 15.3,0.5 22.7,-1.8 0.4,-0.1 0.8,-0.3 1.4,-0.4 0.4,2.2 0.9,4.3 1.3,6.5 0.5,2.8 1,5.6 1.6,8.3 0.2,0.9 -0.1,1.2 -0.8,1.5 -4.2,1.6 -8.7,2.4 -13.2,2.9 -1.5,0.2 -3.1,0.3 -4.6,0.5 -2.8,0 -5.6,0 -8.4,0 z"
+         id="path2"
+         style="fill:#fff6d5" />
+      <path
+         inkscape:connector-curvature="0"
+         d="m 126,108.8 c -2.5,-0.3 -4.9,-0.5 -7.3,-1 -13,-2.3 -23.5,-8.5 -30.2,-20.2 -3.4,-6 -5.1,-12.6 -5.6,-19.4 -0.6,-8.6 0.4,-17 3.8,-25 4.5,-10.5 12.1,-18.1 22.5,-22.6 13.8,-5.9 27.9,-6 42.2,-1.8 0.7,0.2 1.4,0.5 2.1,0.8 0.2,0.1 0.4,0.2 0.7,0.4 -1.4,5.3 -2.7,10.7 -4.1,16.1 -0.3,-0.1 -0.5,-0.1 -0.7,-0.2 -6.5,-2.5 -13.2,-3.4 -20.1,-2.9 -13.2,0.9 -23,10.2 -24.7,23.3 -0.8,5.8 -0.7,11.6 1.1,17.2 3.1,10 10.1,15.9 20.3,17.8 7.7,1.5 15.3,0.5 22.7,-1.8 0.4,-0.1 0.8,-0.3 1.4,-0.4 0.4,2.2 0.9,4.3 1.3,6.5 0.5,2.8 1,5.6 1.6,8.3 0.2,0.9 -0.1,1.2 -0.8,1.5 -4.2,1.6 -8.7,2.4 -13.2,2.9 -1.5,0.2 -3.1,0.3 -4.6,0.5 -2.8,0 -5.6,0 -8.4,0 z"
+         id="path4"
+         style="fill:#fff6d5" />
+    </g>
+  </g>
+</svg>

@@ -56,4 +56,30 @@ describe("Windows XP Spider Solitaire Easter egg", () => {
     expect(doc.querySelector("[data-spider-status]")?.textContent).toBe("A new row was dealt.");
     dom.window.close();
   });
+
+  it("immediately plays the completed-game animation for Alt+Shift+2", () => {
+    const dom = xpPage();
+    const doc = dom.window.document;
+    const shortcut = new dom.window.KeyboardEvent("keydown", {
+      altKey: true,
+      shiftKey: true,
+      code: "Digit2",
+      bubbles: true,
+      cancelable: true,
+    });
+
+    doc.dispatchEvent(shortcut);
+
+    const victory = doc.querySelector<HTMLElement>("[data-spider-victory]");
+    expect(shortcut.defaultPrevented).toBe(true);
+    expect(doc.querySelector<HTMLElement>("[data-spider-game-layer]")?.hidden).toBe(false);
+    expect(victory?.hidden).toBe(false);
+    expect(victory?.classList.contains("is-playing")).toBe(true);
+    expect(doc.querySelectorAll(".xp-spider-victory-card")).toHaveLength(24);
+    expect(doc.querySelectorAll(".xp-spider-card")).toHaveLength(0);
+    expect(doc.querySelectorAll(".xp-spider-completed .is-complete")).toHaveLength(8);
+    expect(doc.querySelector("[data-spider-score]")?.textContent).toBe("1300");
+    expect(doc.querySelector("[data-spider-status]")?.textContent).toContain("You won!");
+    dom.window.close();
+  });
 });

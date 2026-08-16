@@ -1,0 +1,38 @@
+---
+import type { WindowsRelease } from "../data/windows";
+import { getWindowsAdoptionMilestone, getWindowsAdoptionScale } from "../data/windows-adoption";
+import adoptionInteractions from "../adoption-milestone.js?raw";
+
+interface Props {
+  release: WindowsRelease;
+}
+
+const { release } = Astro.props;
+const milestone = getWindowsAdoptionMilestone(release.id);
+const scale = getWindowsAdoptionScale(milestone.valueMillions);
+---
+
+<section
+  class="release-adoption"
+  data-adoption-milestone
+  data-adoption-value={milestone.valueMillions}
+  data-adoption-display={milestone.display}
+  style={`--adoption-scale:${scale}`}
+  aria-labelledby="adoption-heading"
+>
+  <div class="release-adoption-heading">
+    <p class="eyebrow">Published adoption milestone</p>
+    <h2 id="adoption-heading">Users and installed reach</h2>
+  </div>
+  <div class="release-adoption-number">
+    <strong data-adoption-count aria-label={`${milestone.display}, ${milestone.detail}`}>0</strong>
+    <span>{milestone.period}</span>
+  </div>
+  <div class="release-adoption-detail">
+    <div class="release-adoption-meter" aria-hidden="true"><span data-adoption-meter></span></div>
+    <p>{milestone.detail}. Historical reporting varies between copies, licences, installations, and active devices.</p>
+    <a href={milestone.sourceUrl} target="_blank" rel="noreferrer">Source: {milestone.sourceLabel}</a>
+  </div>
+</section>
+
+<script is:inline set:html={adoptionInteractions} />

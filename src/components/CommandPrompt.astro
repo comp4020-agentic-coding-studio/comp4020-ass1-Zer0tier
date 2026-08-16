@@ -1,0 +1,66 @@
+---
+import type { WindowsRelease } from "../data/windows";
+import commandInteractions from "../command-prompt.js?raw";
+
+interface Props {
+  release: WindowsRelease;
+  base: string;
+}
+
+const { release, base } = Astro.props;
+const profiles: Record<string, { era: string; title: string; version: string; prompt: string; legacy: boolean }> = {
+  win1: { era: "early", title: "MS-DOS Prompt", version: "Microsoft(R) MS-DOS(R) Version 3.10", prompt: "C:\\>", legacy: true },
+  win2: { era: "early", title: "MS-DOS Prompt", version: "Microsoft(R) MS-DOS(R) Version 3.30", prompt: "C:\\>", legacy: true },
+  win3: { era: "classic", title: "MS-DOS Prompt", version: "Microsoft(R) MS-DOS(R) Version 5.00", prompt: "C:\\WINDOWS>", legacy: true },
+  win95: { era: "classic", title: "MS-DOS Prompt", version: "Microsoft(R) Windows 95\n   (C)Copyright Microsoft Corp 1981-1995.", prompt: "C:\\WINDOWS>", legacy: true },
+  win98: { era: "classic", title: "MS-DOS Prompt", version: "Microsoft(R) Windows 98\n   (C)Copyright Microsoft Corp 1981-1998.", prompt: "C:\\WINDOWS>", legacy: true },
+  win2000: { era: "classic", title: "Command Prompt", version: "Microsoft Windows 2000 [Version 5.00.2195]", prompt: "C:\\Documents and Settings\\Alex>", legacy: false },
+  winxp: { era: "xp", title: "C:\\WINDOWS\\system32\\cmd.exe", version: "Microsoft Windows XP [Version 5.1.2600]", prompt: "C:\\Documents and Settings\\Alex>", legacy: false },
+  vista: { era: "aero", title: "Command Prompt", version: "Microsoft Windows [Version 6.0.6000]", prompt: "C:\\Users\\Alex>", legacy: false },
+  win7: { era: "aero", title: "Command Prompt", version: "Microsoft Windows [Version 6.1.7600]", prompt: "C:\\Users\\Alex>", legacy: false },
+  win8: { era: "modern", title: "Command Prompt", version: "Microsoft Windows [Version 6.2.9200]", prompt: "C:\\Users\\Alex>", legacy: false },
+  win10: { era: "modern", title: "Command Prompt", version: "Microsoft Windows [Version 10.0.10240]", prompt: "C:\\Users\\Alex>", legacy: false },
+  win11: { era: "win11", title: "Command Prompt", version: "Microsoft Windows [Version 10.0.22000.194]", prompt: "C:\\Users\\Alex>", legacy: false },
+};
+const profile = profiles[release.id];
+const icon = `${base}media/system-icons/${["win1", "win2", "win3"].includes(release.id) ? "WindowsDos.png" : "Windows95MSDOSPrompt.png"}`;
+---
+
+<div
+  class="command-shell"
+  data-command-shell
+  data-command-era={profile.era}
+  data-command-version={profile.version}
+  data-command-prompt={profile.prompt}
+  data-command-legacy={String(profile.legacy)}
+  data-command-year={release.year}
+>
+  <button class="command-shortcut" type="button" data-command-open aria-label={`Open ${profile.title}`}>
+    <img src={icon} alt="" aria-hidden="true" />
+    <span>{profile.title}</span>
+  </button>
+
+  <article class="command-window" data-command-window aria-label={`${profile.title} for ${release.name}`} hidden>
+    <header class="command-titlebar" data-command-handle>
+      <span><img src={icon} alt="" aria-hidden="true" />{profile.title}</span>
+      <div>
+        <button type="button" data-command-minimise aria-label="Minimise Command Prompt">_</button>
+        <button type="button" data-command-maximise aria-label="Maximise Command Prompt">□</button>
+        <button type="button" data-command-close aria-label="Close Command Prompt">×</button>
+      </div>
+    </header>
+    <div class="command-menu" aria-hidden="true"><span>Edit</span><span>Defaults</span><span>Properties</span></div>
+    <div class="command-screen" data-command-screen>
+      <div class="command-output" data-command-output>
+        {profile.version.split("\n").map((line) => <p>{line}</p>)}
+        {!profile.legacy && <p>(c) Microsoft Corporation. All rights reserved.</p>}
+        <p>&nbsp;</p>
+      </div>
+      <form data-command-form autocomplete="off">
+        <label><span data-command-prefix>{profile.prompt}</span><input data-command-input aria-label="Command Prompt input" autocapitalize="off" autocomplete="off" spellcheck="false" /></label>
+      </form>
+    </div>
+  </article>
+</div>
+
+<script is:inline set:html={commandInteractions} />

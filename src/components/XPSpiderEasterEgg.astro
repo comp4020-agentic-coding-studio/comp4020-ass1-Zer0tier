@@ -30,6 +30,17 @@ const spiderIcon = `${base}media/xp-spider-solitaire.png`;
       </nav>
       <div class="xp-spider-game" data-spider-game>
         <div class="xp-spider-tableau" data-spider-tableau aria-label="Spider Solitaire tableau"></div>
+        <div class="xp-spider-victory" data-spider-victory hidden aria-hidden="true">
+          <div class="xp-spider-card-shower">
+            {Array.from({ length: 24 }, (_, index) => (
+              <span
+                class="xp-spider-victory-card"
+                style={`--victory-left: ${(index * 37) % 96}%; --victory-delay: ${index * 95}ms; --victory-tilt: ${(index % 2 ? 1 : -1) * (18 + (index % 5) * 7)}deg`}
+              >{index % 4 === 0 ? "K" : index % 4 === 1 ? "Q" : index % 4 === 2 ? "J" : "A"}<i>♠</i></span>
+            ))}
+          </div>
+          <div class="xp-spider-victory-message"><strong>You won!</strong><span>All eight sequences are complete.</span></div>
+        </div>
         <footer class="xp-spider-game-footer">
           <div class="xp-spider-completed" data-spider-completed aria-label="Completed sequences"></div>
           <p data-spider-status role="status" aria-live="polite">Build descending runs from King to Ace. Select a card, then choose its destination.</p>

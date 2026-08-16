@@ -1,5 +1,6 @@
 ---
 import type { WindowsRelease } from "../data/windows";
+import { getWindowsAdoptionMilestone, getWindowsAdoptionScale } from "../data/windows-adoption";
 
 interface Props {
   releases: WindowsRelease[];
@@ -21,10 +22,31 @@ const titles: Record<string, string> = {
   win10: "Settings",
   win11: "Settings",
 };
+const timelineReleases = releases.map((release) => ({ release, adoption: getWindowsAdoptionMilestone(release.id) }));
+const firstAdoption = timelineReleases[0].adoption;
 ---
 
 <main id="main" class="timeline-entry" data-timeline-entry>
   <h1 class="sr-only">Windows Desktop Evolution</h1>
+  <nav class="timeline-selector" data-timeline-selector aria-label="Windows version timeline">
+    <div class="timeline-selector-track">
+      <span class="timeline-selector-highlight" data-timeline-highlight aria-hidden="true"></span>
+      {timelineReleases.map(({ release }, index) => (
+        <a
+          href={`${base}${release.slug}/`}
+          data-timeline-step
+          data-step-index={index}
+          data-active={index === 0 ? "true" : "false"}
+          aria-current={index === 0 ? "step" : undefined}
+          aria-label={`${release.name}, ${release.year}`}
+        >
+          <strong>{release.shortName}</strong>
+          <span>{release.year}</span>
+        </a>
+      ))}
+    </div>
+    <p class="sr-only" data-timeline-keyboard-status aria-live="polite">Windows 1.0 selected. Use Left Arrow or A, and Right Arrow or D, to move through the timeline.</p>
+  </nav>
   <div class="timeline-window" data-timeline-window aria-live="polite">
     <header class="timeline-titlebar">
       <span data-timeline-title>{titles[releases[0].id]}</span>
@@ -32,7 +54,7 @@ const titles: Record<string, string> = {
     </header>
 
     <div class="timeline-scenes">
-      {releases.map((release, index) => (
+      {timelineReleases.map(({ release, adoption }, index) => (
         <article
           class:list={["timeline-scene", `timeline-scene-${release.id}`]}
           data-timeline-scene
@@ -41,6 +63,13 @@ const titles: Record<string, string> = {
           data-year={release.year}
           data-title={titles[release.id]}
           data-href={`${base}${release.slug}/`}
+          data-reach-value={adoption.valueMillions}
+          data-reach-display={adoption.display}
+          data-reach-period={adoption.period}
+          data-reach-detail={adoption.detail}
+          data-reach-source={adoption.sourceLabel}
+          data-reach-source-url={adoption.sourceUrl}
+          data-reach-scale={getWindowsAdoptionScale(adoption.valueMillions)}
           hidden={index !== 0}
         >
           <div class="timeline-logo">
@@ -59,10 +88,22 @@ const titles: Record<string, string> = {
       ))}
     </div>
 
+    <section class="timeline-reach" data-timeline-reach aria-labelledby="timeline-reach-title">
+      <div class="timeline-reach-heading">
+        <p id="timeline-reach-title">Users / installed reach</p>
+        <strong data-reach-count>{firstAdoption.display}</strong>
+      </div>
+      <div class="timeline-reach-data">
+        <div class="timeline-reach-meter" aria-hidden="true"><span data-reach-meter style={`--reach-scale:${getWindowsAdoptionScale(firstAdoption.valueMillions)}`}></span></div>
+        <p><span data-reach-period>{firstAdoption.period}</span> · <span data-reach-detail>{firstAdoption.detail}</span></p>
+      </div>
+      <p class="timeline-reach-source">Source: <a href={firstAdoption.sourceUrl} data-reach-source target="_blank" rel="noreferrer">{firstAdoption.sourceLabel}</a></p>
+    </section>
+
     <footer class="timeline-statusbar">
       <span><b data-timeline-index>01</b> / {String(releases.length).padStart(2, "0")}</span>
       <p data-timeline-status>Windows 1.0 · 1985</p>
-      <span>Scroll to travel · Click to enter</span>
+      <span>Scroll or use A/D · Click to enter</span>
     </footer>
   </div>
 

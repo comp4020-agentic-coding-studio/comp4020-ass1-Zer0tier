@@ -1,19 +1,23 @@
 ---
 import Base from "../layouts/Base.astro";
+import AdoptionMilestone from "../components/AdoptionMilestone.astro";
 import ClassicGame from "../components/ClassicGame.astro";
 import Contributors from "../components/Contributors.astro";
 import DesktopPreview from "../components/DesktopPreview.astro";
+import MemoryScene from "../components/MemoryScene.astro";
 import ReleaseQuiz from "../components/ReleaseQuiz.astro";
 import ReleaseStory from "../components/ReleaseStory.astro";
 import StartupSound from "../components/StartupSound.astro";
 import XPSpiderEasterEgg from "../components/XPSpiderEasterEgg.astro";
 import { getStartupSound } from "../data/windows-audio";
 import { getWindowsHistory } from "../data/windows-history";
+import { getWindowsMemoryScene } from "../data/windows-memories";
 import { windowsReleases, type WindowsRelease } from "../data/windows";
 import interactions from "../system-interactions.js?raw";
 import gameInteractions from "../classic-games.js?raw";
 import quizInteractions from "../release-quiz.js?raw";
 import startupSoundInteractions from "../startup-sound.js?raw";
+import memoryCapsuleInteractions from "../memory-capsule.js?raw";
 import xpSpiderInteractions from "../xp-spider-easter-egg.js?raw";
 import xpSpiderStyles from "../styles/xp-spider.css?raw";
 import "../styles/global.css";
@@ -33,6 +37,7 @@ const previous = windowsReleases[currentIndex - 1];
 const next = windowsReleases[currentIndex + 1];
 const history = getWindowsHistory(release.id);
 const startupSound = getStartupSound(release.id);
+const memoryScene = getWindowsMemoryScene(release.id);
 const releaseHref = (slug: string) => `${base}${slug}/`;
 ---
 
@@ -58,7 +63,11 @@ const releaseHref = (slug: string) => `${base}${slug}/`;
       <p class="version-summary">{release.summary}</p>
     </section>
 
-    <DesktopPreview release={release} />
+    <DesktopPreview release={release} base={base} />
+
+    <AdoptionMilestone release={release} />
+
+    <MemoryScene release={release} scene={memoryScene} base={base} />
 
     <ReleaseQuiz release={release} />
 
@@ -90,5 +99,6 @@ const releaseHref = (slug: string) => `${base}${slug}/`;
   <script is:inline set:html={quizInteractions} />
   <script is:inline set:html={gameInteractions} />
   <script is:inline set:html={startupSoundInteractions} />
+  <script is:inline set:html={memoryCapsuleInteractions} />
   {release.id === "winxp" && <script is:inline set:html={xpSpiderInteractions} />}
 </Base>

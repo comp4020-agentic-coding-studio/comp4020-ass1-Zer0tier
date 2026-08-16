@@ -6,6 +6,14 @@ import { describe, expect, it } from "vitest";
 const versions = ["windows-1", "windows-2", "windows-3", "windows-95", "windows-98", "windows-2000", "windows-xp", "windows-vista", "windows-7", "windows-8", "windows-10", "windows-11"];
 
 describe("release quiz", () => {
+  it("keeps the Windows 8 next-question action readable after revealing an answer", () => {
+    const styles = readFileSync(resolve("src/styles/global.css"), "utf8");
+    const nextButtonRule = styles.match(/\.page-win8 \.quiz-actions button\[data-quiz-next\] \{([^}]*)\}/)?.[1] ?? "";
+
+    expect(nextButtonRule).toContain("background: #0064b4");
+    expect(nextButtonRule).toContain("color: #fff");
+  });
+
   it("includes a randomisable question pool on every release page", () => {
     for (const version of versions) {
       const html = readFileSync(resolve("dist", version, "index.html"), "utf8");

@@ -13,10 +13,11 @@
   var movesOutput = root.querySelector("[data-spider-moves]");
   var stockOutput = root.querySelector("[data-spider-stock-count]");
   var completedOutput = root.querySelector("[data-spider-completed]");
+  var victory = root.querySelector("[data-spider-victory]");
   var stockButton = root.querySelector("[data-spider-stock]");
   var taskButton = root.querySelector("[data-spider-task]");
   var announcement = root.querySelector("[data-spider-announcement]");
-  if (!crawler || !layer || !gameWindow || !tableau || !status || !scoreOutput || !movesOutput || !stockOutput || !completedOutput || !stockButton || !taskButton) return;
+  if (!crawler || !layer || !gameWindow || !tableau || !status || !scoreOutput || !movesOutput || !stockOutput || !completedOutput || !stockButton || !taskButton || !victory) return;
 
   var columns = [];
   var stock = [];
@@ -39,6 +40,8 @@
   }
 
   function newGame() {
+    victory.hidden = true;
+    victory.classList.remove("is-playing");
     var deck = [];
     for (var copy = 0; copy < 8; copy += 1) {
       for (var rank = 1; rank <= 13; rank += 1) deck.push({ rank: rank, faceUp: false });
@@ -211,6 +214,25 @@
     gameWindow.focus({ preventScroll: true });
   }
 
+  function playVictory() {
+    window.clearTimeout(crawlTimer);
+    crawler.hidden = true;
+    openGame();
+    columns = Array.from({ length: 10 }, function () { return []; });
+    stock = [];
+    selected = null;
+    moves = 92;
+    score = 1300;
+    completed = 8;
+    status.textContent = "You won! Every King-to-Ace sequence is complete.";
+    render();
+    victory.hidden = false;
+    victory.classList.remove("is-playing");
+    void victory.offsetWidth;
+    victory.classList.add("is-playing");
+    if (announcement) announcement.textContent = "Spider Solitaire complete. You won the game.";
+  }
+
   function closeGame() {
     layer.hidden = true;
     document.body.classList.remove("xp-spider-game-open");
@@ -273,6 +295,11 @@
   stockButton.addEventListener("click", dealRow);
   taskButton.addEventListener("click", restoreGame);
   document.addEventListener("keydown", function (event) {
+    if (event.altKey && event.shiftKey && !event.ctrlKey && !event.metaKey && event.code === "Digit2") {
+      event.preventDefault();
+      playVictory();
+      return;
+    }
     if (event.key === "Escape" && !layer.hidden && !layer.classList.contains("is-minimised")) closeGame();
   });
 

@@ -1,0 +1,107 @@
+---
+import type { WindowsRelease } from "../data/windows";
+import type { WindowsMemoryScene } from "../data/windows-memories";
+
+interface Props {
+  release: WindowsRelease;
+  scene: WindowsMemoryScene;
+  base: string;
+}
+
+const { release, scene, base } = Astro.props;
+const dialogId = `memory-dialog-${release.id}`;
+const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+---
+
+<section class:list={["memory-scene", `memory-scene-${release.id}`]} aria-labelledby={`memory-heading-${release.id}`} data-memory-scene>
+  <header class="memory-scene-heading">
+    <div>
+      <p class="eyebrow">Desktop time capsule</p>
+      <h2 id={`memory-heading-${release.id}`}>The apps everyone knew</h2>
+    </div>
+    <p>Four popular programs that made this era feel familiar. See what each one did, then select a drifting memory to hear a period-style voice.</p>
+  </header>
+
+  <div class="memory-desktop" aria-label={`A nostalgic ${release.name} software scene`}>
+    <div class="memory-app-stack" aria-label="Defining software applications">
+      {scene.applications.map((application, index) => (
+        <article class="memory-app-window" data-app-index={index + 1} data-app={appSlug(application.name)}>
+          <header>
+            <span class="memory-title-icon" aria-hidden="true"></span>
+            <strong>{application.name}</strong>
+            <span class="memory-window-controls" aria-hidden="true"><i></i><i></i><i></i></span>
+          </header>
+          <div class="memory-app-content">
+            <img
+              class="memory-app-icon"
+              src={`${base}${application.icon}`}
+              alt=""
+              width="96"
+              height="96"
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="memory-app-copy">
+              <span class="memory-app-kind">{application.kind}</span>
+              <h3>{application.name}</h3>
+              <p>{application.detail}</p>
+            </div>
+            <div class="memory-mini-interface" aria-hidden="true"><i></i><i></i><i></i></div>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="memory-bubbles" aria-label="Time capsule memories">
+      {scene.memories.map((memory, index) => (
+        <button
+          class="memory-bubble"
+          type="button"
+          data-memory-bubble
+          data-memory-handle={memory.handle}
+          data-memory-quote={memory.quote}
+          data-memory-context={memory.context}
+          data-memory-index={index + 1}
+          aria-haspopup="dialog"
+          aria-controls={dialogId}
+          aria-label={`Open memory ${index + 1}: ${memory.context}`}
+        >
+          <span aria-hidden="true">“</span>
+          <small>{String(index + 1).padStart(2, "0")}</small>
+        </button>
+      ))}
+    </div>
+
+    <div class="memory-desktop-label" aria-hidden="true"><span></span>Popular on {release.name}</div>
+  </div>
+
+  <div class="memory-notes">
+    <article>
+      <p class="eyebrow">Native design language</p>
+      <h3>Palette</h3>
+      <div class="memory-palette" aria-label={`Colour palette: ${scene.design.palette.join(", ")}`}>
+        {scene.design.palette.map((colour) => <span style={`--swatch: ${colour}`}><i></i>{colour}</span>)}
+      </div>
+      <h3>Typography</h3>
+      <p>{scene.design.typography}</p>
+      <h3>UI styling</h3>
+      <p>{scene.design.styling}</p>
+    </article>
+  </div>
+
+  <p class="memory-disclaimer">Time-capsule messages are fictional composites written to reflect common experiences of the period.</p>
+
+  <dialog class="memory-dialog" id={dialogId} data-memory-dialog aria-labelledby={`${dialogId}-title`}>
+    <div class="memory-dialog-window">
+      <header>
+        <span id={`${dialogId}-title`} data-memory-dialog-title>Time capsule memory</span>
+        <button type="button" data-memory-close aria-label="Close memory">×</button>
+      </header>
+      <div class="memory-dialog-content">
+        <p class="memory-dialog-context" data-memory-dialog-context></p>
+        <blockquote data-memory-dialog-quote></blockquote>
+        <p class="memory-dialog-handle" data-memory-dialog-handle></p>
+      </div>
+    </div>
+  </dialog>
+</section>
