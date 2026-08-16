@@ -971,10 +971,12 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win8 .version-nav a[aria-current="page"] { border-color: #0074d0; background: #5c2d91; color: #fff; }
 
 /* The selected cell is the Windows 8 purple with the era's blue as its frame.
-   The glider is the outermost of the two, so it is the one that has to carry
-   the blue; left at var(--accent) it drew a white outline around a blue fill,
-   which is the pairing reversed. */
-.page-win8 .version-nav-glider { border-color: #0074d0; }
+   The glider draws that frame, and it builds it out of var(--accent) three
+   times over: the border, the sheen gradient, and an inset 0 -3px line along
+   the bottom. Overriding border-color alone left that inset line white, which
+   read as a white strip under an otherwise blue box. Rebinding --accent on the
+   glider itself recolours all three and cannot fall out of step. */
+.page-win8 .version-nav-glider { --accent: #0074d0; }
 .page-win8 .version-hero, .page-win8 .demo-heading-row, .page-win8 .release-details, .page-win8 .detail-dialog-window, .page-win8 .relearn, .page-win8 .release-adoption, .page-win8 .release-pagination { margin-top: 0; padding: 1.7rem; border: 0; border-radius: 0; background: #5c2d91; }
 .page-win8 .version-headline, .page-win8 .version-summary, .page-win8 .demo-heading-row > p, .page-win8 .detail-grid p { color: #fff; }
 .page-win8 .version-number { color: rgb(255 255 255 / 32%); }
