@@ -353,6 +353,66 @@ test("both adoption bars are parallel and neither pushes the page wide", async (
   }
 });
 
+// The reach figure counts up, and every frame changes the string: "0", "116K",
+// "904K", "1.2M". While the middle grid track was `auto` it resized to fit each
+// one, shoving the label and the bar sideways — the shake, worst at K -> M
+// because the string gains a character. Windows 2.0 and 3.1 are the cases that
+// actually cross that boundary; the larger releases jump straight into M and
+// would let a broken build pass.
+test("nothing moves while the adoption figure counts up", async ({ page }) => {
+  await page.setViewportSize(desktop);
+
+  for (const version of ["windows-2", "windows-3"]) {
+    await page.goto(`./${version}/`);
+
+    // The strings are driven rather than sampled from the live animation. A
+    // first version watched real frames and was flaky: the eased curve crosses
+    // K to M in a few milliseconds, so the sampler sometimes stepped over the
+    // one transition the test exists to cover, and the run failed on its own
+    // anti-vacuity guard rather than on the page. Setting each string makes the
+    // case deterministic, and the layout contract — whatever the counter shows,
+    // nothing moves — is the same either way.
+    const samples = await page.evaluate((strings) => {
+      const value = document.querySelector(".adoption-value")!;
+      const bar = document.querySelector(".release-adoption-meter")!;
+      const label = document.querySelector(".adoption-label")!;
+      const counter = document.querySelector("[data-adoption-count]")!;
+
+      return strings.map((text) => {
+        counter.textContent = text;
+        // Read after writing so the measurement is of this string, not the last.
+        return {
+          text,
+          valueWidth: Number(value.getBoundingClientRect().width.toFixed(2)),
+          barLeft: Number(bar.getBoundingClientRect().left.toFixed(2)),
+          labelRight: Number(label.getBoundingClientRect().right.toFixed(2)),
+        };
+      });
+    }, ["0", "3K", "116K", "904K", "1.2M", "40M", "485M", "1B", "1B+"]);
+
+    expect(samples, `${version}`).toHaveLength(9);
+    for (const key of ["valueWidth", "barLeft", "labelRight"] as const) {
+      const distinct = new Set(samples.map((frame) => frame[key]));
+      expect([...distinct], `${version}: ${key} changed with the counter's text`).toHaveLength(1);
+    }
+
+    // And the counter really does animate, so the contract above is about
+    // something that happens rather than a static page.
+    await page.reload();
+    const live = await page.evaluate(async () => {
+      const counter = document.querySelector("[data-adoption-count]")!;
+      const seen = new Set<string>();
+      document.querySelector(".release-adoption")!.scrollIntoView({ block: "center" });
+      for (let i = 0; i < 60; i += 1) {
+        seen.add(counter.textContent!.trim());
+        await new Promise((resolve) => requestAnimationFrame(resolve));
+      }
+      return seen.size;
+    });
+    expect(live, `${version}: the counter never animated`).toBeGreaterThan(3);
+  }
+});
+
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: phone });
   const page = await context.newPage();

@@ -16,7 +16,10 @@ describe("release-page adoption milestone", () => {
     const section = dom.window.document.querySelector("[data-adoption-milestone]");
     expect(section?.classList.contains("is-visible")).toBe(true);
     expect(section?.querySelector("[data-adoption-count]")?.textContent).toBe("1B+");
-    expect(section?.textContent).toContain("devices powered by Windows 11");
+    // The detail sentence is no longer rendered as prose — the space went to
+    // the bars — but it is still what the figure announces to a screen reader,
+    // so it has to survive somewhere a visitor can reach.
+    expect(section?.querySelector("[data-adoption-count]")?.getAttribute("aria-label")).toContain("devices powered by Windows 11");
     dom.window.close();
   });
 

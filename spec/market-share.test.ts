@@ -75,14 +75,17 @@ describe("share of desktops, beside the adoption figure", () => {
 
       const value = doc.querySelector("[data-market-value]")?.textContent?.trim();
       expect(value, `${release.slug}`).toBe(entry.measured ? entry.display : "—");
-      expect(doc.querySelector("[data-market-note]")?.textContent?.trim(), release.slug).toBe(entry.note);
+      // The note is no longer on the page: it explained why a figure is
+      // missing, and the caption under the bar now says that in three words.
+      // It stays in the data as provenance for whoever edits these next.
+      expect(doc.querySelector("[data-market-note]"), `${release.slug}: the note should not be rendered`).toBeNull();
     }
   });
 
   it("keeps the adoption figure's own source alongside the share's", () => {
     const doc = pages.get("win7")!;
-    const links = [...doc.querySelectorAll(".release-adoption-detail a")].map((a) => a.textContent?.trim());
-    expect(links.some((text) => text?.startsWith("Source:")), "the reach source went missing").toBe(true);
+    const links = [...doc.querySelectorAll(".adoption-sources a")].map((a) => a.textContent?.trim());
+    expect(links.some((text) => text?.startsWith("Reach source:")), "the reach source went missing").toBe(true);
     expect(links.some((text) => text?.startsWith("Share source:")), "the share source is missing").toBe(true);
   });
 

@@ -406,6 +406,7 @@ h1, h2, h3 { line-height: 1.05; }
 .power-icon { border-radius: 50%; background: #ef4444; }
 
 /* Windows XP */
+
 .desktop-winxp { background: radial-gradient(ellipse at 77% 30%, #d9f6ff 0 10%, transparent 11%), linear-gradient(164deg, #68bdf5 0 45%, #65ab37 46% 65%, #2e7a22 66%); color: #111; font-family: Tahoma, Arial, sans-serif; font-size: 0.72rem; }
 .xp-shortcuts { z-index: 1; }
 .xp-window { position: absolute; z-index: 3; top: 8%; left: 19%; width: 65%; overflow: hidden; border: 3px solid #1857be; border-radius: 8px 8px 0 0; background: #fff; box-shadow: 7px 9px 22px rgb(0 48 108 / 35%); }
@@ -1289,7 +1290,7 @@ h1, h2, h3 { line-height: 1.05; }
 }
 
 /* Release-page adoption milestone. */
-.release-adoption { display: grid; grid-template-columns: minmax(10rem, 0.6fr) minmax(19rem, 1.5fr) minmax(13rem, 0.95fr); gap: clamp(1.2rem, 3vw, 3rem); align-items: end; margin-block: clamp(3rem, 7vw, 6rem); padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 65%, #fff); }
+.release-adoption { display: grid; grid-template-columns: minmax(10rem, 0.5fr) minmax(20rem, 1.5fr); gap: clamp(1.2rem, 3vw, 3rem); align-items: center; margin-block: clamp(3rem, 7vw, 6rem); padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 65%, #fff); }
 .release-adoption-heading h2 { max-width: 12ch; margin: 0; font-size: clamp(2rem, 4vw, 4rem); letter-spacing: -0.06em; }
 
 /* Sized to fit its own column now that a second figure shares the row; at
@@ -1305,10 +1306,28 @@ h1, h2, h3 { line-height: 1.05; }
 /* label | figure | bar, twice. One grid, six cells, so both bars sit in the
    same column and are parallel by construction rather than by two widths
    happening to agree. */
-.adoption-figures { display: grid; grid-template-columns: minmax(8rem, auto) minmax(4.5rem, auto) minmax(7rem, 1fr); gap: 0.7rem clamp(0.9rem, 2vw, 2rem); align-items: center; }
+
+/* The middle track is minmax(<length>, <flex>) on purpose. With `auto` the
+   column sizes to its content, so every frame of the count-up — "0", "12K",
+   "999K", "1.2M" — resized the column and shoved the label and the bar
+   sideways. That is the shaking, and it was worst at K -> M because the string
+   gains a character. A flexible track with a fixed minimum cannot be resized
+   by its contents at all. */
+.adoption-figures { display: grid; grid-template-columns: minmax(8rem, auto) minmax(5.5rem, 0.5fr) minmax(9rem, 1fr); gap: 0.9rem clamp(0.9rem, 2vw, 2rem); align-items: center; }
 .adoption-label { margin: 0; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.1em; line-height: 1.3; text-transform: uppercase; }
-.adoption-value { font-size: clamp(1.6rem, 3.4vw, 3rem); line-height: 0.9; letter-spacing: -0.05em; white-space: nowrap; }
+
+/* tabular-nums keeps every digit the same width, so the number does not
+   jitter between frames even before the track stops resizing. */
+.adoption-value { font-size: clamp(1.6rem, 3.4vw, 3rem); font-variant-numeric: tabular-nums; line-height: 0.9; letter-spacing: -0.04em; white-space: nowrap; }
 .adoption-value-share { font-size: clamp(1.4rem, 2.9vw, 2.5rem); }
+
+/* display: contents so the figures and the sources become grid items of the
+   section itself. Wrapped in a box, the sources sat inside the centred column
+   and pushed the two data rows above the middle; as a row of their own they
+   sit under both columns and the figures centre against the heading. */
+.adoption-body { display: contents; }
+.adoption-sources { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; margin: 0; font-size: 0.72rem; font-weight: 750; letter-spacing: 0.03em; }
+.adoption-sources a { text-underline-offset: 0.22em; }
 .adoption-track { display: grid; gap: 0.35rem; min-width: 0; }
 .adoption-caption { margin: 0; color: var(--muted); font-size: 0.64rem; line-height: 1.4; }
 
@@ -1319,7 +1338,7 @@ h1, h2, h3 { line-height: 1.05; }
 .release-adoption-detail { display: grid; gap: 0.8rem; }
 .release-adoption-detail p { margin: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.6; }
 .release-adoption-detail a { justify-self: start; font-size: 0.64rem; font-weight: 750; letter-spacing: 0.04em; text-underline-offset: 0.22em; }
-.release-adoption-meter { height: 0.72rem; overflow: hidden; border: 1px solid currentcolor; background: color-mix(in srgb, currentcolor 8%, transparent); }
+.release-adoption-meter { height: clamp(1.1rem, 2vw, 1.6rem); overflow: hidden; border: 1px solid currentcolor; background: color-mix(in srgb, currentcolor 8%, transparent); }
 .release-adoption-meter span { display: block; width: 100%; height: 100%; background: currentcolor; transform: scaleX(0); transform-origin: left; transition: transform 900ms cubic-bezier(0.2, 0.75, 0.25, 1); }
 .release-adoption.is-visible [data-adoption-meter] { transform: scaleX(var(--adoption-scale)); }
 .release-adoption.is-visible [data-market-meter] { transform: scaleX(var(--market-scale)); transition-delay: 120ms; }

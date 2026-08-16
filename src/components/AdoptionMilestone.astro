@@ -28,40 +28,43 @@ const shareScale = share.measured && share.percent !== undefined ? share.percent
     <h2 id="adoption-heading">Reach and share</h2>
   </div>
 
-  {/* Two rows through one grid rather than two nested ones, so the bars land
-      in the same column and stay parallel without anything having to agree on
-      a width. The scales differ and say so: copies shipped span 500K to 1.5B
-      and need a log axis, share is a plain percentage. */}
-  <div class="adoption-figures">
-    <p class="adoption-label">Users and installed reach</p>
-    {/* The real figure is server-rendered, not counted up from a hardcoded 0.
-        With JavaScript off — or before the inline script runs on a slow
-        connection — a "0" here would be a false number, not a pending one. */}
-    <strong class="adoption-value" data-adoption-count aria-label={`${milestone.display}, ${milestone.detail}`}>{milestone.display}</strong>
-    <div class="adoption-track">
-      <div class="release-adoption-meter" aria-hidden="true"><span data-adoption-meter></span></div>
-      <p class="adoption-caption">{milestone.period} · log scale to 1B</p>
+  <div class="adoption-body">
+    {/* Two rows through one grid rather than two nested ones, so the bars land
+        in the same column and stay parallel without anything having to agree
+        on a width. The scales differ and say so: copies shipped span 500K to
+        1.5B and need a log axis, share is a plain percentage. */}
+    <div class="adoption-figures">
+      <p class="adoption-label">Users and installed reach</p>
+      {/* The real figure is server-rendered, not counted up from a hardcoded
+          0. With JavaScript off — or before the inline script runs on a slow
+          connection — a "0" here would be a false number, not a pending one. */}
+      <strong class="adoption-value" data-adoption-count aria-label={`${milestone.display}, ${milestone.detail}`}>{milestone.display}</strong>
+      <div class="adoption-track">
+        <div class="release-adoption-meter" aria-hidden="true"><span data-adoption-meter></span></div>
+        <p class="adoption-caption">{milestone.period} · log scale to 1B</p>
+      </div>
+
+      <p class="adoption-label">Share of desktops</p>
+      <strong class="adoption-value adoption-value-share" data-market-value aria-label={share.measured ? `${share.display} ${share.basis}` : "Not measured for this period"}>
+        {share.measured ? share.display : "—"}
+      </strong>
+      <div class="adoption-track" data-market-share data-market-measured={String(share.measured)}>
+        <div class="release-adoption-meter" aria-hidden="true"><span data-market-meter></span></div>
+        <p class="adoption-caption">
+          {share.measured ? `${share.when} · ${share.basis}` : "not measured in this period"}
+        </p>
+      </div>
     </div>
 
-    <p class="adoption-label">Share of desktops</p>
-    <strong class="adoption-value adoption-value-share" data-market-value aria-label={share.measured ? `${share.display} ${share.basis}` : "Not measured for this period"}>
-      {share.measured ? share.display : "—"}
-    </strong>
-    <div class="adoption-track" data-market-share data-market-measured={String(share.measured)}>
-      <div class="release-adoption-meter" aria-hidden="true"><span data-market-meter></span></div>
-      <p class="adoption-caption">
-        {share.measured ? `${share.when} · ${share.basis}` : "not measured in this period"}
-      </p>
-    </div>
-  </div>
-
-  <div class="release-adoption-detail">
-    <p>{milestone.detail}. Historical reporting varies between copies, licences, installations, and active devices.</p>
-    <a href={milestone.sourceUrl} target="_blank" rel="noreferrer">Source: {milestone.sourceLabel}</a>
-    <p class="release-adoption-share-note" data-market-note>{share.note}</p>
-    {share.source && (
-      <a href={share.source.url} target="_blank" rel="noreferrer">Share source: {share.source.label}</a>
-    )}
+    {/* The prose that used to sit beside these is gone so the bars can have
+        the width. The sources stay: a figure without one is not worth
+        showing. */}
+    <p class="adoption-sources">
+      <a href={milestone.sourceUrl} target="_blank" rel="noreferrer">Reach source: {milestone.sourceLabel}</a>
+      {share.source && (
+        <a href={share.source.url} target="_blank" rel="noreferrer">Share source: {share.source.label}</a>
+      )}
+    </p>
   </div>
 </section>
 
