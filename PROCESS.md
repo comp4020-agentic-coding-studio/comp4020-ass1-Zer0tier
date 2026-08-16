@@ -6,9 +6,9 @@ Windows Desktop Evolution is an interactive explainer about how familiar
 interfaces keep changing and asking a larger public to relearn the same
 machine. Visitors move through twelve releases with the timeline, keyboard,
 wheel or touch; the desktop recreation and the reported-reach figure change
-with them. It started as an annoyance — Windows nagging me to auto-update
-while I watched videos about Apple's product evolution — that became a
-question: how did Windows arrive at what I use today?
+with them. It began as an annoyance — Windows nagging me to update while I
+watched videos about Apple's product evolution — and became a question: how
+did Windows arrive at what I use today?
 
 ## The moments that mattered
 
@@ -31,6 +31,11 @@ the prototype exists to make. Four finished, passing features left for
 component
 ([`72147c8`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/72147c8)).
 
+That cut set a standard, not a ceiling. The site is larger now than when I made
+it — a relearning test, six history pages per release, a page behind every app
+icon — and each had to answer the same question before it shipped
+([`8429cd5...319b515`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/compare/8429cd5...319b515)).
+
 ### 2. A test that marked its own homework
 
 The dynasty work exposed a deeper problem. A layout test asked `overlaps()`
@@ -46,11 +51,11 @@ turned the fixture red while the structural test stayed green
 ### 3. Three checks that could not fail
 
 That rule kept earning its keep. A base-path check passed on a build whose
-links were all wrong, until it resolved every `href` against the deployed base
-and looked for the file on disk. An overlap check reported two figures clear of
-each other while they were painted on top of one another, because
-`getBoundingClientRect` returns the grid cell rather than the glyphs — a
-`Range` over the text sees what is drawn. An anti-shake check failed
+links were all wrong, until it resolved each `href` against the deployed base
+and looked for the file on disk. An overlap check called two figures clear
+while they were painted on top of one another, because
+`getBoundingClientRect` returns the grid cell, not the glyphs; a `Range` over
+the text sees what is drawn. An anti-shake check failed
 intermittently on its own anti-vacuity guard, so I drove the strings
 deterministically instead of sampling frames. Each was settled the same way:
 break the thing on purpose, watch it go red, restore
@@ -63,9 +68,9 @@ usually the Start button, where the recreation calls `stopPropagation()`, so a
 bubble listener never fired. jsdom could not have found it — the markup and the
 handler were both correct
 ([`8429cd5`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/8429cd5)).
-Later a white strip under the Windows 8 selection survived a fix because every
-border and background reported blue; decoding a one-pixel column of the
-rendered screenshot showed a box-shadow drawing it
+A white strip under the Windows 8 selection then survived a fix because every
+border and background reported blue; decoding one pixel column of the
+screenshot found a box-shadow drawing it
 ([`0ccbb5c`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/0ccbb5c)).
 Rendering the page, and running axe at both marking viewports, is routine here
-now rather than a last step.
+now.
