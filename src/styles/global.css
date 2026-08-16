@@ -1050,7 +1050,13 @@ h1, h2, h3 { line-height: 1.05; }
 }
 .memory-scene-heading { display: flex; justify-content: space-between; gap: 2rem; align-items: end; margin-bottom: 1.3rem; }
 .memory-scene-heading h2 { max-width: 52rem; margin: 0; font-size: clamp(2rem, 5vw, 4.4rem); letter-spacing: -0.055em; }
-.memory-scene-heading > p { max-width: 31rem; margin: 0; color: var(--muted); }
+
+/* This heading sits on the memory scene's own background, not the page
+   panel, so the page-level muted and accent tokens are the wrong ones to
+   reach for — they failed at 2.64 and 3.35 on Windows 95. The scene's own ink
+   passes; size and weight still separate these from the h2. */
+.memory-scene-heading > p { max-width: 31rem; margin: 0; color: inherit; }
+.memory-scene-heading .eyebrow { color: inherit; }
 .memory-desktop { position: relative; overflow: hidden; padding: 4.5rem clamp(4rem, 8vw, 8rem); border: var(--memory-border); border-radius: var(--memory-radius); background: var(--memory-bg); box-shadow: var(--memory-shadow); isolation: isolate; }
 .memory-desktop::before { position: absolute; inset: 0; z-index: -1; background: linear-gradient(115deg, rgb(255 255 255 / 8%), transparent 45%, rgb(0 0 0 / 12%)); content: ""; pointer-events: none; }
 .memory-app-stack { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 2rem); }
@@ -1073,7 +1079,12 @@ h1, h2, h3 { line-height: 1.05; }
 .memory-reviews { margin-top: clamp(1.5rem, 4vw, 3rem); padding: clamp(1.2rem, 3vw, 2rem); border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 65%, #fff); }
 .memory-reviews-heading { display: flex; justify-content: space-between; gap: 2rem; align-items: end; margin-bottom: 1.3rem; }
 .memory-reviews-heading h3 { max-width: 42rem; margin: 0; font-size: clamp(1.8rem, 4vw, 3.4rem); letter-spacing: -0.05em; }
-.memory-reviews-heading > p { max-width: 31rem; margin: 0; color: var(--muted); }
+
+/* Same fix as .memory-scene-heading, and the same reason: this sits on the
+   scene background, so the page-level muted and accent tokens are measuring
+   against the wrong surface. */
+.memory-reviews-heading > p { max-width: 31rem; margin: 0; color: inherit; }
+.memory-reviews-heading .eyebrow { color: inherit; }
 .memory-bubbles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 1.6rem); }
 .memory-review-card { display: grid; grid-template-rows: 1fr auto; gap: 1rem; min-width: 0; }
 .memory-bubble { position: relative; display: grid; gap: 0.75rem; align-content: start; width: 100%; min-height: 12rem; padding: clamp(1.1rem, 3vw, 1.6rem); border: 2px solid rgb(255 255 255 / 72%); border-radius: clamp(1rem, 2vw, 1.5rem); background: var(--memory-bubble); box-shadow: 0 8px 28px rgb(0 0 0 / 20%), inset 0 0 0 4px rgb(255 255 255 / 22%); color: var(--memory-bubble-ink); text-align: left; animation: memory-drift 6s ease-in-out infinite alternate; }
@@ -1133,7 +1144,11 @@ h1, h2, h3 { line-height: 1.05; }
 .release-details { padding-block: clamp(5rem, 10vw, 9rem); }
 .detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .detail-grid article { position: relative; min-height: 16rem; padding: 1.2rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.detail-grid article > span { color: #a2a9b1; font-size: 0.7rem; }
+
+/* var(--muted), not a fixed grey. #a2a9b1 was chosen against the default
+   paper and sits at 2.37:1 on the era panels — four failures on every one of
+   the twelve pages. The token already adapts per era. */
+.detail-grid article > span { color: var(--muted); font-size: 0.7rem; }
 .detail-grid h3 { margin-top: 4rem; color: var(--accent); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
 .detail-grid p { margin: 0; color: #4f5b68; font-size: 0.94rem; }
 
