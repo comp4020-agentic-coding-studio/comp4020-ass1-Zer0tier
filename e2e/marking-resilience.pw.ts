@@ -270,6 +270,58 @@ test("the system-note window wears the same era panel as the section it opens fr
   }
 });
 
+// Six pages, two at a time, turned with Q and E or the buttons.
+test("the history book turns two pages at a time and stops at both covers", async ({ page }) => {
+  for (const viewport of [desktop, phone]) {
+    await page.setViewportSize(viewport);
+    await page.goto("./windows-95/");
+
+    const visible = () => page.locator("[data-book-page]:not([hidden])");
+    const progress = page.locator("[data-book-progress]");
+    const previous = page.locator("[data-book-previous]");
+    const next = page.locator("[data-book-next]");
+
+    await expect(visible()).toHaveCount(2);
+    await expect(progress).toHaveText("Pages 1–2 of 6");
+    await expect(previous, "there is nothing before page one").toBeDisabled();
+
+    await page.keyboard.press("e");
+    await expect(progress).toHaveText("Pages 3–4 of 6");
+    await page.keyboard.press("e");
+    await expect(progress).toHaveText("Pages 5–6 of 6");
+    await expect(next, "there is nothing after page six").toBeDisabled();
+
+    // Past the last page must do nothing rather than empty the book.
+    await page.keyboard.press("e");
+    await expect(progress).toHaveText("Pages 5–6 of 6");
+    await expect(visible()).toHaveCount(2);
+
+    await page.keyboard.press("q");
+    await expect(progress).toHaveText("Pages 3–4 of 6");
+    await previous.click();
+    await expect(progress).toHaveText("Pages 1–2 of 6");
+    await page.keyboard.press("q");
+    await expect(progress).toHaveText("Pages 1–2 of 6");
+
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  }
+});
+
+// Q and E are ordinary letters, and this page has a command prompt with a text
+// input in it. Typing a word containing either must type it, not turn a page.
+test("typing q or e into the command prompt does not turn the page", async ({ page }) => {
+  await page.setViewportSize(desktop);
+  await page.goto("./windows-95/");
+
+  await page.locator("[data-command-open], [data-command-external-open]").first().click();
+  const input = page.locator("[data-command-input]");
+  await input.fill("");
+  await input.type("queue");
+
+  await expect(input).toHaveValue("queue");
+  await expect(page.locator("[data-book-progress]")).toHaveText("Pages 1–2 of 6");
+});
+
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: phone });
   const page = await context.newPage();

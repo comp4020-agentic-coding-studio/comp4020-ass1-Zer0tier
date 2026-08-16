@@ -10,6 +10,7 @@ import StartupSound from "../components/StartupSound.astro";
 import { getStartupSound } from "../data/windows-audio";
 import { getWindowsHistory } from "../data/windows-history";
 import { getWindowsMemoryScene } from "../data/windows-memories";
+import HistoryBook from "../components/HistoryBook.astro";
 import { detailFacets, getDetailNote } from "../data/windows-detail";
 import { windowsReleases, type WindowsRelease } from "../data/windows";
 import interactions from "../system-interactions.js?raw";
@@ -17,6 +18,7 @@ import startupSoundInteractions from "../startup-sound.js?raw";
 import memoryCapsuleInteractions from "../memory-capsule.js?raw";
 import relearnInteractions from "../relearn-challenge.js?raw";
 import detailInteractions from "../detail-notes.js?raw";
+import historyBookInteractions from "../history-book.js?raw";
 import "../styles/global.css";
 
 export function getStaticPaths() {
@@ -67,6 +69,8 @@ const detailDialogId = `detail-dialog-${release.id}`;
     <RelearnChallenge release={release} />
 
     <AdoptionMilestone release={release} />
+
+    <HistoryBook release={release} />
 
     <MemoryScene release={release} scene={memoryScene} base={base} />
 
@@ -129,4 +133,5 @@ const detailDialogId = `detail-dialog-${release.id}`;
   <script is:inline set:html={memoryCapsuleInteractions} />
   <script is:inline set:html={relearnInteractions} />
   <script is:inline set:html={detailInteractions} />
+  <script is:inline set:html={historyBookInteractions} />
 </Base>

@@ -1,0 +1,60 @@
+---
+import type { WindowsRelease } from "../data/windows";
+import { getHistoryBook } from "../data/windows-history-book";
+
+interface Props {
+  release: WindowsRelease;
+}
+
+const { release } = Astro.props;
+const book = getHistoryBook(release.id);
+const spreads = Math.ceil(book.pages.length / 2);
+---
+
+{/* All six pages are rendered, in order, as ordinary prose. With no script
+    that is exactly what a visitor gets: a readable history, no controls, no
+    empty book. history-book.js folds it into spreads and turns the leaves. */}
+<section class="history" data-history-book aria-labelledby={`history-heading-${release.id}`}>
+  <div class="history-heading">
+    <p class="eyebrow">History · {book.pages.length} pages</p>
+    <h2 id={`history-heading-${release.id}`}>How {release.name} happened</h2>
+    <p class="history-lede" data-history-lede>
+      Six pages on the making of this release, and what it cost.
+    </p>
+  </div>
+
+  <div class="book" data-book data-book-spreads={spreads}>
+    <div class="book-spine" aria-hidden="true"></div>
+    <ol class="book-pages" data-book-pages>
+      {book.pages.map((page, index) => (
+        <li
+          class="book-leaf"
+          data-book-page={index}
+          data-book-side={index % 2 === 0 ? "left" : "right"}
+        >
+          <article class="book-page">
+            <h3>{page.title}</h3>
+            <p>{page.body}</p>
+            <p class="book-folio" aria-hidden="true">{index + 1}</p>
+          </article>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  {/* Buttons as well as the keys. A shortcut nobody can see is not a control,
+      and Q/E cannot be discovered or reached on a phone. */}
+  <div class="book-controls" data-book-controls hidden>
+    <button class="book-turn" type="button" data-book-previous>
+      <span aria-hidden="true">←</span> Previous <kbd>Q</kbd>
+    </button>
+    <p class="book-progress" data-book-progress role="status" aria-live="polite"></p>
+    <button class="book-turn" type="button" data-book-next>
+      Next <kbd>E</kbd> <span aria-hidden="true">→</span>
+    </button>
+  </div>
+
+  <p class="history-source">
+    Reference: <a href={book.source.url} target="_blank" rel="noreferrer">{book.source.label}</a>
+  </p>
+</section>
