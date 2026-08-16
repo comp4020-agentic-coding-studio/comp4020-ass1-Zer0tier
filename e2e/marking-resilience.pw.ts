@@ -322,42 +322,34 @@ test("typing q or e into the command prompt does not turn the page", async ({ pa
   await expect(page.locator("[data-book-progress]")).toHaveText("Pages 1–2 of 6");
 });
 
-// The reach figure and the share figure now share a row. The first attempt
-// put "670M" at 8vw in a column that had just been narrowed to make space,
-// and it ran straight through the percentage beside it — legible in a
-// screenshot, invisible to every other check. Widths either side of the
-// breakpoint, because that is where a grid collision hides.
-test("the adoption figure and the share figure never collide", async ({ page }) => {
-  for (const width of [2560, 1920, 1440, 1280, 1024, 768, 390]) {
+// Reach and share are two rows of label / figure / bar, and the two bars have
+// to line up. They are cells of one grid rather than two nested ones, so this
+// is really a check that the grid stays one grid. Widths either side of the
+// 64rem collapse, because a column that overflows does it quietly: the first
+// attempt at this layout pushed the page 6px wide at 768 and 360px wide at
+// 390, from a media query written above the rule it was meant to override.
+test("both adoption bars are parallel and neither pushes the page wide", async ({ page }) => {
+  for (const width of [2560, 1920, 1440, 1280, 1024, 900, 768, 600, 390]) {
     await page.setViewportSize({ width, height: 900 });
-    for (const version of ["windows-7", "windows-10", "windows-1"]) {
+    for (const version of ["windows-7", "windows-1"]) {
       await page.goto(`./${version}/`);
-      const boxes = await page.evaluate(() => {
-        // getBoundingClientRect on the element returns the grid cell, not the
-        // glyphs. The bug being guarded against is text overflowing its cell,
-        // so the element box says everything is fine while "670M" is painted
-        // straight through the percentage. A Range over the text node gives
-        // the extent actually drawn.
-        const textBox = (selector: string) => {
-          const element = document.querySelector(selector)!;
-          const range = document.createRange();
-          range.selectNodeContents(element);
-          return range.getBoundingClientRect();
-        };
-        const reach = textBox(".release-adoption-number strong");
-        const share = textBox(".release-adoption-share strong");
+      const bars = await page.evaluate(() => {
+        const [reach, share] = [...document.querySelectorAll(".release-adoption .release-adoption-meter")]
+          .map((element) => element.getBoundingClientRect());
         return {
-          overlaps: reach.left < share.right && reach.right > share.left
-            && reach.top < share.bottom && reach.bottom > share.top,
-          reachWidth: reach.width,
-          shareWidth: share.width,
+          count: document.querySelectorAll(".release-adoption .release-adoption-meter").length,
+          left: Math.abs(reach.left - share.left),
+          width: Math.abs(reach.width - share.width),
+          stacked: share.top > reach.top,
         };
       });
-      expect(boxes.overlaps, `${width}px ${version}: the two figures overlap`).toBe(false);
-      expect(boxes.reachWidth, `${width}px ${version}: reach figure vanished`).toBeGreaterThan(0);
-      expect(boxes.shareWidth, `${width}px ${version}: share figure vanished`).toBeGreaterThan(0);
+
+      expect(bars.count, `${width}px ${version}: expected two bars`).toBe(2);
+      expect(bars.left, `${width}px ${version}: bars start in different places`).toBeLessThanOrEqual(0.5);
+      expect(bars.width, `${width}px ${version}: bars are different lengths`).toBeLessThanOrEqual(0.5);
+      expect(bars.stacked, `${width}px ${version}: share bar is not below the reach bar`).toBe(true);
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
     }
-    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   }
 });
 

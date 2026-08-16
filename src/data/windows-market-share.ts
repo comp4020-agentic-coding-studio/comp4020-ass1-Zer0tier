@@ -25,6 +25,8 @@ export interface MarketShare {
   measured: boolean;
   /** e.g. "55.75%" */
   display?: string;
+  /** The same figure as a number, for the meter. Linear 0-100. */
+  percent?: number;
   /** The month the figure is from. */
   when?: string;
   /** What the percentage is a percentage of. Differs between sources. */
@@ -73,6 +75,7 @@ export const marketShares: MarketShare[] = [
   {
     release: "winxp",
     measured: true,
+    percent: 18.93,
     display: "18.93%",
     when: "January 2015",
     basis: "of desktop computers worldwide",
@@ -82,6 +85,7 @@ export const marketShares: MarketShare[] = [
   {
     release: "vista",
     measured: true,
+    percent: 23,
     display: "about 23%",
     when: "October 2009",
     basis: "of desktop computers worldwide",
@@ -91,6 +95,7 @@ export const marketShares: MarketShare[] = [
   {
     release: "win7",
     measured: true,
+    percent: 55.75,
     display: "55.75%",
     when: "November 2014",
     basis: "of desktop computers worldwide",
@@ -100,6 +105,7 @@ export const marketShares: MarketShare[] = [
   {
     release: "win8",
     measured: true,
+    percent: 8.02,
     display: "8.02%",
     when: "September 2013",
     basis: "of desktop computers worldwide",
@@ -109,6 +115,7 @@ export const marketShares: MarketShare[] = [
   {
     release: "win10",
     measured: true,
+    percent: 79.79,
     display: "79.79%",
     when: "5 October 2021",
     basis: "of Windows desktops",
@@ -118,6 +125,7 @@ export const marketShares: MarketShare[] = [
   {
     release: "win11",
     measured: true,
+    percent: 69.92,
     display: "69.92%",
     when: "June 2026",
     basis: "of Windows desktops",

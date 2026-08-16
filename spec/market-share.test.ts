@@ -63,13 +63,17 @@ describe("share of desktops, beside the adoption figure", () => {
   it("renders the figure, or the absence of one, on every release page", () => {
     for (const release of windowsReleases) {
       const doc = pages.get(release.id)!;
-      const block = doc.querySelector("[data-market-share]");
+      // The measured flag lives on the track (which styles the bar) while the
+      // figure is its sibling in the same grid row, so these are queried from
+      // the document rather than from inside one another.
+      const track = doc.querySelector("[data-market-share]");
       const entry = getMarketShare(release.id);
 
-      expect(block, `${release.slug}: no share block`).not.toBeNull();
-      expect(block!.getAttribute("data-market-measured"), release.slug).toBe(String(entry.measured));
+      expect(track, `${release.slug}: no share track`).not.toBeNull();
+      expect(track!.getAttribute("data-market-measured"), release.slug).toBe(String(entry.measured));
+      expect(track!.querySelector("[data-market-meter]"), `${release.slug}: no share bar`).not.toBeNull();
 
-      const value = block!.querySelector("[data-market-value]")?.textContent?.trim();
+      const value = doc.querySelector("[data-market-value]")?.textContent?.trim();
       expect(value, `${release.slug}`).toBe(entry.measured ? entry.display : "—");
       expect(doc.querySelector("[data-market-note]")?.textContent?.trim(), release.slug).toBe(entry.note);
     }
@@ -90,5 +94,37 @@ describe("share of desktops, beside the adoption figure", () => {
     expect(getMarketShare("win8").display).toBe("8.02%");
     expect(getMarketShare("win8").source?.label).toContain("Net Applications");
     expect(getMarketShare("win1").measured).toBe(false);
+  });
+});
+
+describe("both figures carry a bar", () => {
+  it("gives the reach figure and the share figure a meter each, on every release", () => {
+    for (const release of windowsReleases) {
+      const doc = pages.get(release.id)!;
+      const meters = doc.querySelectorAll(".release-adoption .release-adoption-meter");
+      expect(meters, `${release.slug}: expected two bars`).toHaveLength(2);
+      expect(doc.querySelector("[data-adoption-meter]"), `${release.slug}: no reach fill`).not.toBeNull();
+      expect(doc.querySelector("[data-market-meter]"), `${release.slug}: no share fill`).not.toBeNull();
+    }
+  });
+
+  // The two bars are not on the same scale and must not pretend to be: copies
+  // shipped run from 500K to 1.5B and need a log axis, share is a plain
+  // percentage. Both say so next to themselves.
+  it("labels the scale each bar is drawn on", () => {
+    const captions = [...pages.get("win7")!.querySelectorAll(".adoption-caption")].map((p) => p.textContent?.trim());
+    expect(captions).toHaveLength(2);
+    expect(captions[0], "the reach bar does not admit its log scale").toContain("log scale");
+    expect(captions[1], "the share bar does not state its basis").toContain("of desktop computers worldwide");
+  });
+
+  it("scales the share bar from the number it displays", () => {
+    for (const release of windowsReleases) {
+      const doc = pages.get(release.id)!;
+      const style = doc.querySelector(".release-adoption")!.getAttribute("style") ?? "";
+      const entry = getMarketShare(release.id);
+      const expected = entry.measured && entry.percent !== undefined ? entry.percent / 100 : 0;
+      expect(style, `${release.slug}`).toContain(`--market-scale:${expected}`);
+    }
   });
 });

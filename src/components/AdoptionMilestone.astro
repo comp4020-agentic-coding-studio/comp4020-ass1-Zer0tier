@@ -12,6 +12,7 @@ const { release } = Astro.props;
 const milestone = getWindowsAdoptionMilestone(release.id);
 const scale = getWindowsAdoptionScale(milestone.valueMillions);
 const share = getMarketShare(release.id);
+const shareScale = share.measured && share.percent !== undefined ? share.percent / 100 : 0;
 ---
 
 <section
@@ -19,43 +20,42 @@ const share = getMarketShare(release.id);
   data-adoption-milestone
   data-adoption-value={milestone.valueMillions}
   data-adoption-display={milestone.display}
-  style={`--adoption-scale:${scale}`}
+  style={`--adoption-scale:${scale}; --market-scale:${shareScale}`}
   aria-labelledby="adoption-heading"
 >
   <div class="release-adoption-heading">
     <p class="eyebrow">Published adoption milestone</p>
-    <h2 id="adoption-heading">Users and installed reach</h2>
+    <h2 id="adoption-heading">Reach and share</h2>
   </div>
-  <div class="release-adoption-number">
+
+  {/* Two rows through one grid rather than two nested ones, so the bars land
+      in the same column and stay parallel without anything having to agree on
+      a width. The scales differ and say so: copies shipped span 500K to 1.5B
+      and need a log axis, share is a plain percentage. */}
+  <div class="adoption-figures">
+    <p class="adoption-label">Users and installed reach</p>
     {/* The real figure is server-rendered, not counted up from a hardcoded 0.
-        With JavaScript off — or before the inline script below runs on a slow
-        connection — a "0" here would be a false number, not a pending one.
-        adoption-milestone.js zeroes it itself, but only once it knows it is
-        about to animate. */}
-    <strong data-adoption-count aria-label={`${milestone.display}, ${milestone.detail}`}>{milestone.display}</strong>
-    <span>{milestone.period}</span>
-  </div>
-  {/* The share of desktops, beside the copies shipped. Deliberately the
-      smaller of the two figures: reach is what this section is about, and
-      share is the check on it. Each figure states its own basis, because the
-      services measuring them do not all use the same denominator. */}
-  <div class="release-adoption-share" data-market-share data-market-measured={String(share.measured)}>
-    <p class="release-adoption-share-label">Share of desktops</p>
-    {share.measured ? (
-      <>
-        <strong data-market-value>{share.display}</strong>
-        <span>{share.when} · {share.basis}</span>
-      </>
-    ) : (
-      <>
-        <strong data-market-value aria-label="Not measured for this period">—</strong>
-        <span>not measured in this period</span>
-      </>
-    )}
+        With JavaScript off — or before the inline script runs on a slow
+        connection — a "0" here would be a false number, not a pending one. */}
+    <strong class="adoption-value" data-adoption-count aria-label={`${milestone.display}, ${milestone.detail}`}>{milestone.display}</strong>
+    <div class="adoption-track">
+      <div class="release-adoption-meter" aria-hidden="true"><span data-adoption-meter></span></div>
+      <p class="adoption-caption">{milestone.period} · log scale to 1B</p>
+    </div>
+
+    <p class="adoption-label">Share of desktops</p>
+    <strong class="adoption-value adoption-value-share" data-market-value aria-label={share.measured ? `${share.display} ${share.basis}` : "Not measured for this period"}>
+      {share.measured ? share.display : "—"}
+    </strong>
+    <div class="adoption-track" data-market-share data-market-measured={String(share.measured)}>
+      <div class="release-adoption-meter" aria-hidden="true"><span data-market-meter></span></div>
+      <p class="adoption-caption">
+        {share.measured ? `${share.when} · ${share.basis}` : "not measured in this period"}
+      </p>
+    </div>
   </div>
 
   <div class="release-adoption-detail">
-    <div class="release-adoption-meter" aria-hidden="true"><span data-adoption-meter></span></div>
     <p>{milestone.detail}. Historical reporting varies between copies, licences, installations, and active devices.</p>
     <a href={milestone.sourceUrl} target="_blank" rel="noreferrer">Source: {milestone.sourceLabel}</a>
     <p class="release-adoption-share-note" data-market-note>{share.note}</p>
