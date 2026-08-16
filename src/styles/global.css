@@ -1590,6 +1590,20 @@ h1, h2, h3 { line-height: 1.05; }
 }
 
 @media (width < 42rem) {
+  /* Both early desktops overflowed their own windows on a phone.
+     repeat(3, 1fr) looks flexible but each track keeps an auto minimum, so
+     "CARDFILE.EXE" set a min-content floor and the grid grew to 284px inside a
+     256px window — the filenames spilled out of the frame rather than
+     wrapping. minmax(0, 1fr) lets the track shrink, and two columns then give
+     each name more room than the three narrow ones did. */
+  .file-table { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.2rem 0.5rem; padding: 0.4rem; }
+  .file-table > * { overflow-wrap: anywhere; }
+
+  /* The Control Panel buttons were 28px wide holding labels needing 43-65px.
+     That window is 28% of the desktop, so on a phone two columns plus 1.5rem
+     of padding left nothing for the words. */
+  .early-controls { grid-template-columns: minmax(0, 1fr); gap: 0.4rem; padding: 0.6rem; align-content: start; }
+  .early-controls button { min-height: 2.2rem; box-shadow: 2px 2px #000; }
   .adoption-figures { grid-template-columns: 1fr; gap: 0.3rem 0; }
   .adoption-label { margin-top: 0.9rem; }
   .command-shortcut { top: 0.6rem; right: 0.3rem; width: 4.6rem; }

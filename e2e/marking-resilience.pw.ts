@@ -413,6 +413,45 @@ test("nothing moves while the adoption figure counts up", async ({ page }) => {
   }
 });
 
+// The early recreations put fixed-percentage windows on the desktop and fill
+// them with text, so a phone squeezes the window without squeezing what is
+// inside it. Windows 1.0 spilled three filenames out of the MS-DOS Executive
+// frame — `repeat(3, 1fr)` keeps an auto minimum per track, so "CARDFILE.EXE"
+// set a floor and the grid grew past its own window — and Windows 2.0's
+// Control Panel gave 28px buttons to labels needing 65px. Neither shows up in
+// jsdom, and neither widens the page, so the horizontal-scroll checks stay
+// green through both.
+test("the early desktops keep their contents inside their own windows on a phone", async ({ page }) => {
+  for (const width of [390, 360, 320]) {
+    await page.setViewportSize({ width, height: 844 });
+
+    await page.goto("./windows-1/");
+    const spilled = await page.evaluate(() => {
+      const frame = document.querySelector(".early-executive")!.getBoundingClientRect();
+      return [...document.querySelectorAll(".file-table > *")]
+        .filter((cell) => {
+          const box = cell.getBoundingClientRect();
+          return box.right > frame.right + 0.5 || box.bottom > frame.bottom + 0.5
+            || cell.scrollWidth > Math.ceil(box.width);
+        })
+        .map((cell) => cell.textContent!.trim());
+    });
+    expect(spilled, `${width}px: filenames outside the MS-DOS Executive window`).toEqual([]);
+
+    await page.goto("./windows-2/");
+    const cramped = await page.evaluate(() => {
+      const frame = document.querySelector(".early-tool")!.getBoundingClientRect();
+      return [...document.querySelectorAll(".early-controls button")]
+        .filter((button) => {
+          const box = button.getBoundingClientRect();
+          return button.scrollWidth > Math.ceil(box.width) || box.bottom > frame.bottom + 0.5;
+        })
+        .map((button) => `${button.textContent!.trim()} (${Math.round(button.getBoundingClientRect().width)}px < ${button.scrollWidth}px)`);
+    });
+    expect(cramped, `${width}px: Control Panel labels do not fit their buttons`).toEqual([]);
+  }
+});
+
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: phone });
   const page = await context.newPage();
