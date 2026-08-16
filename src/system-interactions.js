@@ -5,6 +5,66 @@
   var startButton = document.querySelector("[data-start-button]");
   var startPanel = document.querySelector("[data-start-panel]");
   var systemWindow = document.querySelector("[data-window]");
+  var versionNav = document.querySelector("[data-version-nav]");
+  var versionGlider = versionNav && versionNav.querySelector("[data-version-nav-glider]");
+  var versionLinks = versionNav ? Array.from(versionNav.querySelectorAll("a[data-version-index]")) : [];
+  var activeVersion = versionNav && versionNav.querySelector('a[aria-current="page"]');
+  var reduceMotion = typeof window.matchMedia === "function" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var navigationStarted = false;
+
+  function placeVersionGlider(link, instant) {
+    if (!versionNav || !versionGlider || !link) return;
+    var navRect = versionNav.getBoundingClientRect();
+    var linkRect = link.getBoundingClientRect();
+    if (instant) versionNav.classList.add("is-positioning");
+    versionNav.style.setProperty("--version-glider-x", String(linkRect.left - navRect.left + versionNav.scrollLeft) + "px");
+    versionNav.style.setProperty("--version-glider-y", String(linkRect.top - navRect.top) + "px");
+    versionNav.style.setProperty("--version-glider-width", String(linkRect.width) + "px");
+    versionNav.style.setProperty("--version-glider-height", String(linkRect.height) + "px");
+    if (instant) {
+      versionNav.getBoundingClientRect();
+      versionNav.classList.remove("is-positioning");
+    }
+  }
+
+  function beginVersionNavigation(link) {
+    if (!link || navigationStarted) return;
+    if (link.getAttribute("aria-current") === "page") {
+      versionNav.classList.remove("is-current-pulsing");
+      versionNav.getBoundingClientRect();
+      versionNav.classList.add("is-current-pulsing");
+      return;
+    }
+    if (reduceMotion) {
+      window.location.href = link.href;
+      return;
+    }
+    navigationStarted = true;
+    versionLinks.forEach(function (item) { item.classList.toggle("is-transition-target", item === link); });
+    versionNav.classList.add("is-navigating");
+    document.body.classList.add("is-version-leaving");
+    placeVersionGlider(link, false);
+    window.setTimeout(function () { window.location.href = link.href; }, 380);
+  }
+
+  function stepVersion(direction) {
+    var currentIndex = versionLinks.indexOf(activeVersion);
+    var target = versionLinks[currentIndex + direction];
+    beginVersionNavigation(target || activeVersion);
+  }
+
+  if (versionNav && versionGlider && activeVersion) {
+    placeVersionGlider(activeVersion, true);
+    versionNav.classList.add("is-enhanced");
+    window.addEventListener("resize", function () { placeVersionGlider(activeVersion, true); });
+    versionLinks.forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        if (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+        event.preventDefault();
+        beginVersionNavigation(link);
+      });
+    });
+  }
 
   function setStart(open) {
     if (!startButton || !startPanel) return;
@@ -60,14 +120,15 @@
       startButton.focus();
       return;
     }
-    if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.target.matches("input, textarea, select")) return;
-    if (event.key === "ArrowLeft") {
-      var previous = document.querySelector(".previous-release");
-      if (previous) window.location.href = previous.href;
+    var eventTarget = event.target;
+    if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || (eventTarget && typeof eventTarget.matches === "function" && eventTarget.matches("input, textarea, select"))) return;
+    if (event.key === "ArrowLeft" || event.key.toLowerCase() === "a") {
+      event.preventDefault();
+      stepVersion(-1);
     }
-    if (event.key === "ArrowRight") {
-      var next = document.querySelector(".next-release");
-      if (next) window.location.href = next.href;
+    if (event.key === "ArrowRight" || event.key.toLowerCase() === "d") {
+      event.preventDefault();
+      stepVersion(1);
     }
   });
 })();

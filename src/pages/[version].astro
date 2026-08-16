@@ -48,9 +48,10 @@ const releaseHref = (slug: string) => `${base}${slug}/`;
     <p>{String(currentIndex + 1).padStart(2, "0")} / {String(windowsReleases.length).padStart(2, "0")}</p>
   </header>
 
-  <nav class="version-nav" aria-label="Windows versions">
+  <nav class="version-nav" aria-label="Windows versions" data-version-nav>
+    <span class="version-nav-glider" data-version-nav-glider aria-hidden="true"></span>
     <ol class="shell">
-      {windowsReleases.map((item) => <li><a href={releaseHref(item.slug)} aria-current={item.id === release.id ? "page" : undefined}><b>{item.shortName}</b><span>{item.year}</span></a></li>)}
+      {windowsReleases.map((item, index) => <li><a href={releaseHref(item.slug)} data-version-index={index} aria-current={item.id === release.id ? "page" : undefined}><b>{item.shortName}</b><span>{item.year}</span></a></li>)}
     </ol>
   </nav>
 

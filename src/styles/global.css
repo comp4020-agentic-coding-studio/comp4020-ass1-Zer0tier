@@ -258,13 +258,32 @@ h1, h2, h3 { line-height: 1.05; }
 .site-footer { display: flex; justify-content: space-between; gap: 1rem; padding-block: 2rem 3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.76rem; }
 .site-footer p { margin: 0; }
 
-.version-nav { position: sticky; z-index: 100; top: 0; border-bottom: 1px solid var(--line); background: rgb(244 245 242 / 94%); backdrop-filter: blur(14px); }
-.version-nav ol { display: grid; grid-template-columns: repeat(12, minmax(3.6rem, 1fr)); margin-block: 0; list-style: none; }
-.version-nav a { display: grid; justify-items: center; padding: 0.65rem 0.2rem 0.55rem; border-bottom: 2px solid transparent; color: var(--muted); text-decoration: none; }
+.version-nav { --version-glider-x: 0px; --version-glider-y: 0px; --version-glider-width: 0px; --version-glider-height: 0px; position: sticky; z-index: 100; top: 0; overflow: clip; border-bottom: 1px solid var(--line); background: rgb(244 245 242 / 94%); backdrop-filter: blur(14px); }
+.version-nav ol { position: relative; display: grid; grid-template-columns: repeat(12, minmax(3.6rem, 1fr)); margin-block: 0; list-style: none; }
+.version-nav li { min-width: 0; }
+.version-nav a { position: relative; z-index: 1; display: grid; justify-items: center; padding: 0.65rem 0.2rem 0.55rem; border-bottom: 2px solid transparent; color: var(--muted); text-decoration: none; transform: translateY(0); transition: color 180ms ease, filter 220ms ease, transform 220ms cubic-bezier(0.2, 0.75, 0.25, 1); }
 .version-nav a b { font-size: 0.73rem; }
 .version-nav a span { font-size: 0.58rem; }
-.version-nav a:hover { color: var(--accent); }
+.version-nav a:hover { color: var(--accent); transform: translateY(-2px); }
+.version-nav a:active { transform: translateY(1px) scale(0.97); }
+.version-nav a:focus-visible { z-index: 3; outline: 3px solid var(--accent); outline-offset: -4px; }
 .version-nav a[aria-current="page"] { border-color: var(--accent); color: var(--accent); background: rgb(7 103 209 / 6%); }
+.version-nav-glider { position: absolute; z-index: 2; top: 0; left: 0; width: var(--version-glider-width); height: var(--version-glider-height); border: 2px solid var(--accent); border-radius: 6px; background: linear-gradient(110deg, transparent 18%, color-mix(in srgb, var(--accent) 18%, transparent) 50%, transparent 82%); box-shadow: inset 0 -3px 0 var(--accent), 0 5px 18px color-mix(in srgb, var(--accent) 22%, transparent); opacity: 0; pointer-events: none; transform: translate3d(var(--version-glider-x), var(--version-glider-y), 0); transition: width 380ms cubic-bezier(0.22, 1, 0.36, 1), height 380ms cubic-bezier(0.22, 1, 0.36, 1), transform 380ms cubic-bezier(0.22, 1, 0.36, 1), opacity 160ms ease; will-change: width, height, transform; }
+.version-nav.is-enhanced .version-nav-glider { opacity: 1; }
+.version-nav.is-positioning .version-nav-glider { transition: none; }
+.version-nav.is-navigating a:not(.is-transition-target, [aria-current="page"]) { filter: saturate(0.35); }
+.version-nav a.is-transition-target { color: var(--accent); }
+.version-nav.is-current-pulsing .version-nav-glider { animation: version-nav-pulse 320ms ease-out; }
+.version-page main, .version-page .site-footer { animation: version-page-arrive 460ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.version-page.is-version-leaving main, .version-page.is-version-leaving .site-footer { opacity: 0; transform: translateY(10px); transition: opacity 300ms ease, transform 380ms cubic-bezier(0.4, 0, 1, 1); }
+
+@keyframes version-nav-pulse {
+  50% { filter: brightness(1.25); transform: translate3d(var(--version-glider-x), var(--version-glider-y), 0) scale(0.94); }
+}
+
+@keyframes version-page-arrive {
+  from { opacity: 0; transform: translateY(12px); }
+}
 .version-hero { display: grid; grid-template-columns: 0.25fr 1.25fr 0.65fr; gap: clamp(1.5rem, 5vw, 5rem); align-items: end; padding-block: clamp(4rem, 9vw, 8rem) clamp(3rem, 6vw, 5rem); }
 .version-number { color: #d1d5db; font-size: clamp(4rem, 9vw, 8rem); font-weight: 700; line-height: 0.8; letter-spacing: -0.09em; }
 .version-hero h1 { margin-bottom: 0.65rem; font-size: clamp(3rem, 7vw, 7rem); letter-spacing: -0.075em; }
