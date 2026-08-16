@@ -1,4 +1,4 @@
-# Assignment 1 reflection — the interaction became the explanation
+# Insight: smooth animation and era-specific themes transformed the homepage
 
 My breakthrough was realising that a collection of interactive pages was not
 yet an interactive explainer. Before commit `9aa6e9b`, I had asked the agent to
