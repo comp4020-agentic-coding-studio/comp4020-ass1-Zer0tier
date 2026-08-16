@@ -89,6 +89,20 @@ describe("Windows Desktop Evolution", () => {
     }
   });
 
+  it("packages modern Windows pointers as a single normal-size cursor frame", () => {
+    for (const version of ["windows-7", "windows-8", "windows-10", "windows-11"]) {
+      const cursor = readFileSync(resolve("public", "media", "cursors", `${version}.cur`));
+      const width = cursor[6] || 256;
+      const height = cursor[7] || 256;
+
+      expect(cursor.readUInt16LE(2), version).toBe(2);
+      expect(cursor.readUInt16LE(4), version).toBe(1);
+      expect({ width, height }, version).toEqual({ width: 32, height: 32 });
+      expect(cursor.readUInt16LE(10), version).toBeLessThan(width);
+      expect(cursor.readUInt16LE(12), version).toBeLessThan(height);
+    }
+  });
+
   it("uses local original artwork in every interactive system recreation", () => {
     for (const version of versions) {
       const { doc } = releasePages.get(version)!;
