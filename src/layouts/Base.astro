@@ -6,9 +6,10 @@ interface Props {
   title: string;
   description: string;
   bodyClass?: string;
+  bodyStyle?: string;
 }
 
-const { title, description, bodyClass = "" } = Astro.props;
+const { title, description, bodyClass = "", bodyStyle } = Astro.props;
 ---
 
 <!doctype html>
@@ -20,7 +21,7 @@ const { title, description, bodyClass = "" } = Astro.props;
     <meta name="color-scheme" content="light" />
     <title>{title}</title>
   </head>
-  <body class={bodyClass}>
+  <body class={bodyClass} style={bodyStyle}>
     <a class="skip-link" href="#main">Skip to content</a>
     <slot />
     <BsodEasterEgg />

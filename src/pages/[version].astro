@@ -39,9 +39,10 @@ const history = getWindowsHistory(release.id);
 const startupSound = getStartupSound(release.id);
 const memoryScene = getWindowsMemoryScene(release.id);
 const releaseHref = (slug: string) => `${base}${slug}/`;
+const cursorHref = `${base}media/cursors/${release.slug}.cur`;
 ---
 
-<Base title={`${release.name} — Windows Desktop Evolution`} description={`${release.summary} Explore a period-accurate interactive recreation of the ${release.name} desktop.`} bodyClass={`version-page page-${release.id}`}>
+<Base title={`${release.name} — Windows Desktop Evolution`} description={`${release.summary} Explore a period-accurate interactive recreation of the ${release.name} desktop.`} bodyClass={`version-page page-${release.id}`} bodyStyle={`--system-cursor: url("${cursorHref}")`}>
   {release.id === "winxp" && <style is:inline set:html={xpSpiderStyles} />}
   <header class="site-header shell">
     <a class="wordmark" href={base} aria-label="Windows Desktop Evolution home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Windows<br /><b>Desktop Evolution</b></span></a>

@@ -28,3 +28,9 @@ The icons displayed inside the interactive Windows desktops are locally hosted s
 - The era-correct Windows flag and pane logos used in Start controls are Microsoft logo artwork obtained from the corresponding [Wikimedia Commons Windows logo files](https://commons.wikimedia.org/wiki/Category:Windows_logos). Their individual public-domain text-logo and trademark notices remain applicable.
 
 The interface behavior and layout are implemented as accessible HTML, CSS, and JavaScript for historical study; no Microsoft executable code is distributed.
+
+## System cursor artwork
+
+Each Windows release page uses a locally hosted `.cur` resource instead of a CSS-drawn pointer. The classic Windows 1.0, 2.0, 3.1, 95, 98, 2000, and XP arrows are preserved or pixel-verified cursor resources from the [RealWorld cursor archive](https://www.rw-designer.com/) and the [Windows Default Cursors archive](https://lelegofrog.github.io/wincurdefault.html). The Vista, Windows 7, Windows 8, Windows 10, and Windows 11 Aero arrows were extracted from `%WINDIR%\Cursors` in installed Windows systems and preserved by the [Windows UI Assets archive](https://github.com/bartekl1/windows-ui-assets). Windows 10 and Windows 11 intentionally share the same default arrow artwork.
+
+The original hotspot and multi-resolution data remain embedded in each cursor file. Microsoft retains the rights to Microsoft-originated cursor artwork; the assets are included for non-commercial historical study and university coursework.

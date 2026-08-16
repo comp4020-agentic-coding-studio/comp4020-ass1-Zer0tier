@@ -83,7 +83,9 @@ describe("Windows Desktop Evolution", () => {
       const { html, doc } = releasePages.get(version)!;
       expect(doc.body.classList.contains(`page-${themeIds[index]}`), version).toBe(true);
       expect(html, version).toContain(`.page-${themeIds[index]}`);
-      expect(html, version).toContain("--system-cursor:");
+      expect(doc.body.getAttribute("style"), version).toContain(`--system-cursor: url("/comp4020-ass1-Zer0tier/media/cursors/${version}.cur")`);
+      expect(html, version).not.toContain("data:image/svg+xml");
+      expect(existsSync(resolve("public", "media", "cursors", `${version}.cur`)), version).toBe(true);
     }
   });
 
