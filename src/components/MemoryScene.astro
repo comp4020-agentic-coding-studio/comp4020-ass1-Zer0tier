@@ -55,20 +55,6 @@ const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
     <div class="memory-desktop-label" aria-hidden="true"><span></span>Popular on {release.name}</div>
   </div>
 
-  <div class="memory-notes">
-    <article>
-      <p class="eyebrow">Native design language</p>
-      <h3>Palette</h3>
-      <div class="memory-palette" aria-label={`Colour palette: ${scene.design.palette.join(", ")}`}>
-        {scene.design.palette.map((colour) => <span style={`--swatch: ${colour}`}><i></i>{colour}</span>)}
-      </div>
-      <h3>Typography</h3>
-      <p>{scene.design.typography}</p>
-      <h3>UI styling</h3>
-      <p>{scene.design.styling}</p>
-    </article>
-  </div>
-
   <section class="memory-reviews" aria-labelledby={`memory-reviews-heading-${release.id}`} data-memory-reviews>
     <header class="memory-reviews-heading">
       <div>

@@ -83,8 +83,8 @@ describe("Windows Desktop Evolution", () => {
       expect(doc.querySelector("[data-memory-dialog]"), version).not.toBeNull();
       expect(doc.querySelector("[data-memory-dialog-source]"), version).not.toBeNull();
       expect(reviews?.textContent, version).not.toContain("fictional");
-      expect(scene?.textContent, version).toContain("Typography");
-      expect(scene?.textContent, version).toContain("UI styling");
+      expect(doc.querySelector(".memory-notes"), version).toBeNull();
+      expect(scene?.textContent, version).not.toContain("Native design language");
     }
   });
 
