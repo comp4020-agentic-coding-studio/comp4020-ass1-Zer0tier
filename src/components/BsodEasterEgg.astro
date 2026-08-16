@@ -4,16 +4,27 @@ import bsodInteractions from "../bsod-easter-egg.js?raw";
 
 <div class="bsod-easter-egg" data-bsod-root>
   <button class="bsod-trigger" type="button" data-bsod-trigger>DO NOT CLICK</button>
-  <section class="bsod-screen" data-bsod-screen role="alertdialog" aria-modal="true" aria-labelledby="bsod-title" tabindex="-1" hidden>
+  <section
+    class="bsod-screen"
+    data-bsod-screen
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="bsod-title"
+    aria-describedby="bsod-message bsod-restart"
+    tabindex="-1"
+    hidden
+  >
     <div class="bsod-copy">
       <p class="bsod-label" id="bsod-title">Windows</p>
-      <p>A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00010E36.</p>
-      <p>The current application will be terminated.</p>
+      <div id="bsod-message">
+        <p>A fatal exception 0E has occurred at 0028:C0011E36 in VXD VMM(01) + 00010E36.</p>
+        <p>The current application will be terminated.</p>
+      </div>
       <ul>
-        <li>The system has been halted to prevent damage to your computer.</li>
-        <li>Unsaved information may be lost.</li>
+        <li>Press any key to terminate the current application.</li>
+        <li>Press CTRL+ALT+DEL again to restart your computer. You will lose any unsaved information in all applications.</li>
       </ul>
-      <p class="bsod-restart">Press F5 to refresh and restart.</p>
+      <p class="bsod-restart" id="bsod-restart">Press F5 to refresh and restart.</p>
       <p class="bsod-cursor" aria-hidden="true">_</p>
     </div>
   </section>
@@ -36,7 +47,7 @@ import bsodInteractions from "../bsod-easter-egg.js?raw";
   .bsod-copy li::before { content: "* "; }
   .bsod-restart { margin-top: 3em; text-align: center; }
   .bsod-cursor { text-align: center; animation: bsod-cursor-blink 850ms steps(1, end) infinite; }
-  html.bsod-active, html.bsod-active body { overflow: hidden; }
+  html.bsod-active, html.bsod-active body { overflow: hidden; background: #0000AA; }
   body.bsod-active .bsod-trigger { display: none; }
 
   @keyframes bsod-cursor-blink {

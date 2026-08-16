@@ -12,12 +12,18 @@ function bsodPage(page = "index.html") {
 
 describe("DO NOT CLICK BSOD easter egg", () => {
   it("ships the hidden fixed trigger and BSOD on the home and release pages", () => {
-    expect(readFileSync(resolve("src/components/BsodEasterEgg.astro"), "utf8")).toContain("background: #0000AA");
+    const source = readFileSync(resolve("src/components/BsodEasterEgg.astro"), "utf8");
+    expect(source).toContain("background: #0000AA");
+    expect(source).toContain("position: fixed");
+    expect(source).toContain('font-family: "Lucida Console", "Courier New", monospace');
     for (const page of ["index.html", "windows-1/index.html", "windows-11/index.html"]) {
       const dom = bsodPage(page);
       const doc = dom.window.document;
       expect(doc.querySelector("[data-bsod-trigger]")?.textContent).toBe("DO NOT CLICK");
       expect(doc.querySelector<HTMLElement>("[data-bsod-screen]")?.hidden).toBe(true);
+      expect(doc.querySelector("[data-bsod-screen]")?.getAttribute("aria-describedby")).toBe("bsod-message bsod-restart");
+      expect(doc.querySelector("[data-bsod-screen]")?.textContent).toContain("A fatal exception 0E has occurred");
+      expect(doc.querySelector("[data-bsod-screen]")?.textContent).toContain("Press CTRL+ALT+DEL again");
       expect(doc.querySelector("[data-bsod-screen]")?.textContent).toContain("Press F5 to refresh and restart.");
       dom.window.close();
     }
