@@ -1171,8 +1171,16 @@ h1, h2, h3 { line-height: 1.05; }
 
 .page-win1 .startup-sound, .page-win2 .startup-sound { border: 2px solid #000; background: #fff; box-shadow: none; }
 .page-win1 .startup-sound .sound-glyph, .page-win2 .startup-sound .sound-glyph, .page-win1 .startup-sound button, .page-win2 .startup-sound button { border: 2px solid #000; border-radius: 0; background: #fff; color: #000; }
-.page-win3 .startup-sound, .page-win95 .startup-sound, .page-win98 .startup-sound, .page-win2000 .startup-sound { border: 3px outset #eee; background: #d4d0c8; box-shadow: none; }
-.page-win3 .startup-sound .sound-glyph, .page-win95 .startup-sound .sound-glyph, .page-win98 .startup-sound .sound-glyph, .page-win2000 .startup-sound .sound-glyph, .page-win3 .startup-sound button, .page-win95 .startup-sound button, .page-win98 .startup-sound button, .page-win2000 .startup-sound button { border: 2px outset #eee; border-radius: 0; background: #d4d0c8; color: #000; }
+
+/* Four eras were sharing one treatment and it was wrong for all of them.
+   Windows 3.1 and 95 dress their chrome in classic silver #c0c0c0 with a 3px
+   outset #eee edge; #d4d0c8 with a 2px outset #fff edge is the Windows 98
+   scheme, which 2000 kept. Split so each pair matches the header, nav and
+   footer already on its own page. */
+.page-win3 .startup-sound, .page-win95 .startup-sound { border: 3px outset #eee; background: #c0c0c0; box-shadow: none; }
+.page-win98 .startup-sound, .page-win2000 .startup-sound { border: 2px outset #fff; background: #d4d0c8; box-shadow: none; }
+.page-win3 .startup-sound .sound-glyph, .page-win95 .startup-sound .sound-glyph, .page-win3 .startup-sound button, .page-win95 .startup-sound button { border: 2px outset #eee; border-radius: 0; background: #c0c0c0; color: #000; }
+.page-win98 .startup-sound .sound-glyph, .page-win2000 .startup-sound .sound-glyph, .page-win98 .startup-sound button, .page-win2000 .startup-sound button { border: 2px outset #fff; border-radius: 0; background: #d4d0c8; color: #000; }
 .page-winxp .startup-sound { border: 2px solid #2b68c8; border-radius: 10px; background: #f5fbff; }
 .page-winxp .startup-sound button { border-radius: 8px; background: linear-gradient(#4c93ef, #1d5ac1); }
 .page-vista .startup-sound, .page-win10 .startup-sound { border-color: rgb(222 246 255 / 45%); background: rgb(15 39 59 / 78%); color: #fff; backdrop-filter: blur(18px); }
@@ -1531,7 +1539,13 @@ h1, h2, h3 { line-height: 1.05; }
 
 /* The answer, once found. Outline rather than background so it reads on every
    era, including the dark ones. */
-.is-relearn-found { position: relative; outline: 3px solid currentcolor; outline-offset: 2px; animation: relearn-found-pulse 900ms ease-out 2; }
+
+/* No position here. This class lands on whatever element is the era's answer,
+   and on Windows 3.1 that is a .program-group which is absolutely positioned
+   inside Program Manager — setting position: relative dropped it into normal
+   flow and the whole group jumped the moment the visitor got it right. An
+   outline needs no positioning to paint. */
+.is-relearn-found { outline: 3px solid currentcolor; outline-offset: 2px; animation: relearn-found-pulse 900ms ease-out 2; }
 
 @keyframes relearn-found-pulse {
   0%, 100% { outline-color: currentcolor; }
@@ -1595,6 +1609,13 @@ h1, h2, h3 { line-height: 1.05; }
 }
 
 @media (width < 42rem) {
+  /* Accessories sat at top: 48% and covered the bottom-right quadrant of Main
+     — exactly where the fourth icon is, so on a phone it hid MS-DOS Prompt,
+     which is Windows 3.1's only command-prompt launcher. Main ends at 58%, so
+     Accessories starts below that and the two stop fighting for the same
+     pixels at this width. */
+  .program-group.accessories { top: 60%; left: 18%; width: 66%; height: 34%; }
+
   /* Program Manager on a phone. Four icons in a row with 1.5rem gaps and 1rem
      padding left about 12px per button inside a 160px group, so the labels —
      "MS-DOS Prompt" is 37px wide — hung out of the group's right edge. The
