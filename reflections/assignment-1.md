@@ -24,6 +24,8 @@ always opens the release currently shown. It also explicitly rejected the old
 
 ![After: scroll-driven Windows timeline.](assets/assignment-1-after.png)
 
+![After animation.](assets/assignment-1-after-animation.gif)
+
 After that change, the agent replaced the long card page with a single
 full-screen Windows-style window. As the visitor moves from Windows 1.0 to
 Windows 11, the layout, colour, typography, and system preview transform with
