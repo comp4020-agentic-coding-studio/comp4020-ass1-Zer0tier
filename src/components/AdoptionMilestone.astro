@@ -1,6 +1,7 @@
 ---
 import type { WindowsRelease } from "../data/windows";
 import { getWindowsAdoptionMilestone, getWindowsAdoptionScale } from "../data/windows-adoption";
+import { getMarketShare } from "../data/windows-market-share";
 import adoptionInteractions from "../adoption-milestone.js?raw";
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 const { release } = Astro.props;
 const milestone = getWindowsAdoptionMilestone(release.id);
 const scale = getWindowsAdoptionScale(milestone.valueMillions);
+const share = getMarketShare(release.id);
 ---
 
 <section
@@ -33,10 +35,33 @@ const scale = getWindowsAdoptionScale(milestone.valueMillions);
     <strong data-adoption-count aria-label={`${milestone.display}, ${milestone.detail}`}>{milestone.display}</strong>
     <span>{milestone.period}</span>
   </div>
+  {/* The share of desktops, beside the copies shipped. Deliberately the
+      smaller of the two figures: reach is what this section is about, and
+      share is the check on it. Each figure states its own basis, because the
+      services measuring them do not all use the same denominator. */}
+  <div class="release-adoption-share" data-market-share data-market-measured={String(share.measured)}>
+    <p class="release-adoption-share-label">Share of desktops</p>
+    {share.measured ? (
+      <>
+        <strong data-market-value>{share.display}</strong>
+        <span>{share.when} · {share.basis}</span>
+      </>
+    ) : (
+      <>
+        <strong data-market-value aria-label="Not measured for this period">—</strong>
+        <span>not measured in this period</span>
+      </>
+    )}
+  </div>
+
   <div class="release-adoption-detail">
     <div class="release-adoption-meter" aria-hidden="true"><span data-adoption-meter></span></div>
     <p>{milestone.detail}. Historical reporting varies between copies, licences, installations, and active devices.</p>
     <a href={milestone.sourceUrl} target="_blank" rel="noreferrer">Source: {milestone.sourceLabel}</a>
+    <p class="release-adoption-share-note" data-market-note>{share.note}</p>
+    {share.source && (
+      <a href={share.source.url} target="_blank" rel="noreferrer">Share source: {share.source.label}</a>
+    )}
   </div>
 </section>
 

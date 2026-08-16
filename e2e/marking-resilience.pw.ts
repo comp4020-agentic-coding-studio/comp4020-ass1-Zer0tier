@@ -322,6 +322,45 @@ test("typing q or e into the command prompt does not turn the page", async ({ pa
   await expect(page.locator("[data-book-progress]")).toHaveText("Pages 1–2 of 6");
 });
 
+// The reach figure and the share figure now share a row. The first attempt
+// put "670M" at 8vw in a column that had just been narrowed to make space,
+// and it ran straight through the percentage beside it — legible in a
+// screenshot, invisible to every other check. Widths either side of the
+// breakpoint, because that is where a grid collision hides.
+test("the adoption figure and the share figure never collide", async ({ page }) => {
+  for (const width of [2560, 1920, 1440, 1280, 1024, 768, 390]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const version of ["windows-7", "windows-10", "windows-1"]) {
+      await page.goto(`./${version}/`);
+      const boxes = await page.evaluate(() => {
+        // getBoundingClientRect on the element returns the grid cell, not the
+        // glyphs. The bug being guarded against is text overflowing its cell,
+        // so the element box says everything is fine while "670M" is painted
+        // straight through the percentage. A Range over the text node gives
+        // the extent actually drawn.
+        const textBox = (selector: string) => {
+          const element = document.querySelector(selector)!;
+          const range = document.createRange();
+          range.selectNodeContents(element);
+          return range.getBoundingClientRect();
+        };
+        const reach = textBox(".release-adoption-number strong");
+        const share = textBox(".release-adoption-share strong");
+        return {
+          overlaps: reach.left < share.right && reach.right > share.left
+            && reach.top < share.bottom && reach.bottom > share.top,
+          reachWidth: reach.width,
+          shareWidth: share.width,
+        };
+      });
+      expect(boxes.overlaps, `${width}px ${version}: the two figures overlap`).toBe(false);
+      expect(boxes.reachWidth, `${width}px ${version}: reach figure vanished`).toBeGreaterThan(0);
+      expect(boxes.shareWidth, `${width}px ${version}: share figure vanished`).toBeGreaterThan(0);
+    }
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  }
+});
+
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: phone });
   const page = await context.newPage();
