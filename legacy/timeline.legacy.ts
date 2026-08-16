@@ -31,7 +31,7 @@ const shipped: Shipped[] = triggers
     end: Number(attr(t, "data-end")),
   }));
 
-// Re-derived here on purpose rather than imported from src/data/layout.ts.
+// Re-derived here on purpose rather than imported from legacy/data/layout.ts.
 // A test that borrows the implementation's own predicate can only check that
 // the code is self-consistent, never that the convention is right.
 const overlap = (a: Shipped, b: Shipped): boolean => a.start < b.end && b.start < a.end;

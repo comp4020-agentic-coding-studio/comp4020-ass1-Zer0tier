@@ -114,7 +114,7 @@ export const periods: Period[] = [
     chinese: "南北朝",
     start: 386,
     end: 589,
-    blurb: "Two hundred years with no single ruler of China at all.",
+    blurb: "The better part of two centuries with no single ruler of China at all.",
   },
   {
     id: "sui-tang",
@@ -130,7 +130,7 @@ export const periods: Period[] = [
     chinese: "五代·辽·宋",
     start: 907,
     end: 1279,
-    blurb: "The crowded centuries. Six regimes at once, and the Song never held the north.",
+    blurb: "The crowded centuries — and the Song never once held the north.",
   },
   {
     id: "mongol",

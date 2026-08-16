@@ -2,8 +2,8 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
-import poolSrc from "../src/quiz-pool.js?raw";
-import { formatSpan, regimes } from "../src/data/dynasties";
+import poolSrc from "./quiz-pool.js?raw";
+import { formatSpan, regimes } from "./data/dynasties";
 
 // quiz-pool.js is deliberately DOM-free so it can be evaluated here directly —
 // the real shipped source, not a re-implementation of its logic in the test.
