@@ -8,6 +8,8 @@ The Windows XP Spider Solitaire icon is an extracted system-game icon preserved 
 
 The Windows XP Spider Solitaire card-face sprite sheet and 71×96 spider-web card back are preserved screenshots of Microsoft game resources documented by the [Microsoft Windows XP Wiki](https://the-microsoft-windows-xp.fandom.com/wiki/Spider). They are included locally for pixel-accurate historical reconstruction in this non-commercial university assignment; Microsoft retains the rights to the original card artwork.
 
+The Windows XP desktop wallpaper is *Bliss*, photographed by Charles O'Rear in the Sonoma Valley in 1996 and licensed by Microsoft as the Windows XP default background. The copy here is the file held at [Bliss (photograph)](https://en.wikipedia.org/wiki/Bliss_(photograph)) on English Wikipedia, converted to WebP and used at its source resolution of 365x274. Microsoft and the photographer retain all rights; it is included for pixel-accurate historical reconstruction in this non-commercial university assignment.
+
 ## Application icons and logos
 
 The app gallery uses locally hosted historical icon artwork rather than recreated lettermarks.

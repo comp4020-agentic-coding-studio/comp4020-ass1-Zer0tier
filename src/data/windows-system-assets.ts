@@ -51,6 +51,8 @@ const releaseAssets: Record<WindowsRelease["id"], SystemAssetMap> = {
     bin: "system-icons/Windows2000GuruRecycleBin.png",
   },
   winxp: {
+    // The real Bliss photograph rather than a gradient pretending to be it.
+    bliss: "wallpapers/xp-bliss.webp",
     logo: "system-icons/WindowsLogo1992.svg",
     computer: "system-icons/WindowsXPMyComputer.png",
     docs: "system-icons/WindowsXPMyDocuments.png",

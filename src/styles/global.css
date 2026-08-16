@@ -407,7 +407,13 @@ h1, h2, h3 { line-height: 1.05; }
 
 /* Windows XP */
 
-.desktop-winxp { background: radial-gradient(ellipse at 77% 30%, #d9f6ff 0 10%, transparent 11%), linear-gradient(164deg, #68bdf5 0 45%, #65ab37 46% 65%, #2e7a22 66%); color: #111; font-family: Tahoma, Arial, sans-serif; font-size: 0.72rem; }
+/* Bliss itself, not an approximation of it. The gradient stays underneath as
+   the bottom layer: the e2e suite blocks /media/ to check the page survives
+   missing assets, and without a floor the XP desktop would go transparent. The
+   photograph is 365x274 — the only resolution available from a source worth
+   citing — so it is stretched, which a sky-and-hill image tolerates in a way
+   detailed artwork would not. */
+.desktop-winxp { background-color: #68bdf5; background-image: var(--system-bliss), radial-gradient(ellipse at 77% 30%, #d9f6ff 0 10%, transparent 11%), linear-gradient(164deg, #68bdf5 0 45%, #65ab37 46% 65%, #2e7a22 66%); background-repeat: no-repeat; background-position: center; background-size: cover; color: #111; font-family: Tahoma, Arial, sans-serif; font-size: 0.72rem; }
 .xp-shortcuts { z-index: 1; }
 .xp-window { position: absolute; z-index: 3; top: 8%; left: 19%; width: 65%; overflow: hidden; border: 3px solid #1857be; border-radius: 8px 8px 0 0; background: #fff; box-shadow: 7px 9px 22px rgb(0 48 108 / 35%); }
 .xp-window > header { display: flex; justify-content: space-between; align-items: center; height: 2rem; padding-left: 0.45rem; background: linear-gradient(#3f8df4 0 8%, #1761d1 20% 75%, #0c48ad); color: #fff; font-weight: 700; text-shadow: 1px 1px #003a91; }

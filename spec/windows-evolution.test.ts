@@ -123,7 +123,11 @@ describe("Windows Desktop Evolution", () => {
 
       expect(desktop, version).not.toBeNull();
       expect(sources.length, version).toBeGreaterThan(0);
-      expect(sources.every((source) => /\/media\/(?:system-icons|app-icons)\/.+\.(?:png|svg)$/.test(source)), version).toBe(true);
+      // wallpapers/ joins system-icons/ and app-icons/ now that a desktop can
+      // carry its real background photograph as well as its icons; webp joins
+      // png and svg for the same reason. The contract is unchanged: every
+      // source is local, under media/, and the file is on disk.
+      expect(sources.every((source) => /\/media\/(?:system-icons|app-icons|wallpapers)\/.+\.(?:png|svg|webp)$/.test(source)), version).toBe(true);
 
       for (const source of sources) {
         const mediaPath = source.slice(source.indexOf("media/"));
