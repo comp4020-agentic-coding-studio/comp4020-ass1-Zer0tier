@@ -450,6 +450,43 @@ test("the early desktops keep their contents inside their own windows on a phone
     });
     expect(cramped, `${width}px: Control Panel labels do not fit their buttons`).toEqual([]);
   }
+
+  // Windows 3.1's Program Manager, same class again: four icons in a row left
+  // about 12px per button, so "MS-DOS Prompt" was laid out past the Main
+  // group's right edge. Measured as a Range over the label's own text node —
+  // the button box stayed inside the group the whole time, which is why a
+  // box-based check called this clean while the glyphs were outside.
+  //
+  // 320px is not asserted: the group windows clip like the real thing, so a
+  // narrow enough viewport truncates a label rather than spilling it, and that
+  // is below the 390 marking viewport.
+  for (const width of [390, 360]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("./windows-3/");
+
+    const outside = await page.evaluate(() => {
+      const escaped: string[] = [];
+      for (const group of document.querySelectorAll(".program-group")) {
+        const frame = group.getBoundingClientRect();
+        for (const button of group.querySelectorAll("button")) {
+          const textNode = [...button.childNodes].find((node) => node.nodeType === 3 && node.textContent!.trim());
+          if (!textNode) continue;
+          const range = document.createRange();
+          range.selectNodeContents(textNode);
+          const label = range.getBoundingClientRect();
+          const over = Math.max(
+            label.right - frame.right,
+            frame.left - label.left,
+            label.bottom - frame.bottom,
+            frame.top - label.top,
+          );
+          if (over > 0.5) escaped.push(`${button.textContent!.trim()} (+${over.toFixed(1)}px)`);
+        }
+      }
+      return escaped;
+    });
+    expect(outside, `${width}px: Program Manager labels laid out outside their group`).toEqual([]);
+  }
 });
 
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {
