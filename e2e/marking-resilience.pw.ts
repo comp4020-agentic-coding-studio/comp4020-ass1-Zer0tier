@@ -70,3 +70,22 @@ test("release content remains usable when media is unavailable", async ({ page }
   await expect(page.locator("[data-desktop]")).toBeVisible();
   await expect(page.getByRole("button", { name: /start/i }).first()).toBeEnabled();
 });
+
+test("the release switcher fills the desktop with twelve equal edge-to-edge cells", async ({ page }) => {
+  await page.setViewportSize(desktop);
+  await page.goto("./windows-xp/");
+
+  const nav = page.locator("[data-version-nav]");
+  const track = nav.locator(":scope > ol");
+  const trackBox = await track.boundingBox();
+  const cells = await track.locator(":scope > li").evaluateAll((items) => items.map((item) => {
+    const box = item.getBoundingClientRect();
+    return { left: box.left, right: box.right, width: box.width };
+  }));
+
+  expect(trackBox).not.toBeNull();
+  expect(cells).toHaveLength(12);
+  expect(Math.max(...cells.map(({ width }) => width)) - Math.min(...cells.map(({ width }) => width))).toBeLessThanOrEqual(1);
+  expect(Math.abs(cells[0].left - trackBox!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(cells.at(-1)!.right - (trackBox!.x + trackBox!.width))).toBeLessThanOrEqual(1);
+});

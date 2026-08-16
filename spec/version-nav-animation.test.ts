@@ -11,6 +11,20 @@ function releasePage(version: string) {
 }
 
 describe("release-page version switcher animation", () => {
+  it("renders only twelve equal-grid cells without the shared padded shell", () => {
+    const dom = releasePage("windows-xp");
+    const list = dom.window.document.querySelector<HTMLOListElement>("[data-version-nav] > ol")!;
+    const styles = readFileSync(resolve("src/styles/global.css"), "utf8");
+    const listRule = styles.match(/\.version-nav ol \{([^}]+)\}/)?.[1] ?? "";
+
+    expect(list.children).toHaveLength(12);
+    expect(list.classList.contains("shell")).toBe(false);
+    expect(listRule).toContain("grid-template-columns: repeat(12, minmax(0, 1fr))");
+    expect(listRule).toContain("width: 100%");
+    expect(listRule).toContain("padding: 0");
+    dom.window.close();
+  });
+
   it.each(["windows-1", "windows-xp", "windows-11"])("adds one animated glider to %s", (version) => {
     const dom = releasePage(version);
     const nav = dom.window.document.querySelector<HTMLElement>("[data-version-nav]")!;

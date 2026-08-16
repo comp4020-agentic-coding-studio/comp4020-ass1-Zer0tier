@@ -51,7 +51,7 @@ const cursorHref = `${base}media/cursors/${release.slug}.cur`;
 
   <nav class="version-nav" aria-label="Windows versions" data-version-nav>
     <span class="version-nav-glider" data-version-nav-glider aria-hidden="true"></span>
-    <ol class="shell">
+    <ol>
       {windowsReleases.map((item, index) => <li><a href={releaseHref(item.slug)} data-version-index={index} aria-current={item.id === release.id ? "page" : undefined}><b>{item.shortName}</b><span>{item.year}</span></a></li>)}
     </ol>
   </nav>
