@@ -293,10 +293,28 @@ than something a reader has to reconstruct.
   into the inlined output and confuses greps, and the closing form would end the
   block early.
 - stylelint-config-standard here means kebab-case classes (BEM `__` fails),
-  range media queries (`(width >= 48rem)`), percentage alpha
-  (`rgb(255 255 255 / 8%)`), and `no-descending-specificity` --- put a base
-  selector ahead of every context that overrides it, and prefer a class over a
-  bare descendant (`.card .zh`, not `.card h3 span`).
+  range media queries (`(width >= 48rem)`), and percentage alpha
+  (`rgb(255 255 255 / 8%)`). Prefer a class over a bare descendant
+  (`.card .zh`, not `.card h3 span`). `no-descending-specificity` is switched
+  **off** in `.stylelintrc.json` — this file used to claim it was on, which is
+  worth knowing before you reorder a stylesheet to satisfy a rule that is not
+  running.
+
+### A new section must join the era panel rule, or it will look foreign
+
+Each era styles its page furniture through one shared selector list —
+`.version-hero, .demo-heading-row, .release-details, .relearn,
+.release-adoption, .release-pagination` — which carries that era's border,
+background and padding. Two sections I added set their own `currentcolor`
+treatment instead, which looked deliberate in isolation and wrong on the page.
+
+Add the section to all twelve of those rules rather than inventing a
+"neutral" treatment; the era tokens already carry text colour, so the panel
+comes out right on the dark eras too. And assert it: `spec/` cannot, because
+jsdom computes no styles, so `e2e/marking-resilience.pw.ts` compares each
+section's computed background and border against `.release-details` on all
+twelve pages. Comparing to a sibling rather than a hardcoded palette keeps the
+test true when an era's colours change.
 
 ### A listener on an ancestor is not the same as a listener that fires
 

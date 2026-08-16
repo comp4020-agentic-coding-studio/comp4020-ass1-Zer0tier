@@ -178,6 +178,37 @@ test("every app card still resolves to a real page without JavaScript", async ({
   await context.close();
 });
 
+// Every era styles its panels through one shared rule, and two sections had
+// drifted out of it — they were carrying their own currentcolor treatment and
+// read as foreign on the page. Nothing could catch that: jsdom computes no
+// styles, so this has to be a browser check. Comparing against .release-details
+// rather than against a hardcoded palette means the assertion keeps holding
+// when an era's colours change.
+test("the relearning test and the reach figure use each era's panel colours", async ({ page }) => {
+  const versions = [
+    "windows-1", "windows-2", "windows-3", "windows-95", "windows-98", "windows-2000",
+    "windows-xp", "windows-vista", "windows-7", "windows-8", "windows-10", "windows-11",
+  ];
+
+  const paint = (selector: string) =>
+    page.locator(selector).evaluate((element) => {
+      const style = getComputedStyle(element);
+      return {
+        background: style.backgroundColor,
+        borderColor: style.borderTopColor,
+        borderWidth: style.borderTopWidth,
+        borderStyle: style.borderTopStyle,
+      };
+    });
+
+  for (const version of versions) {
+    await page.goto(`./${version}/`);
+    const reference = await paint(".release-details");
+    expect(await paint(".relearn"), `${version}: the relearning test does not match the page`).toEqual(reference);
+    expect(await paint(".release-adoption"), `${version}: the reach figure does not match the page`).toEqual(reference);
+  }
+});
+
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: phone });
   const page = await context.newPage();
