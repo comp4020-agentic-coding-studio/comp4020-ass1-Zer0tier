@@ -1273,6 +1273,45 @@ h1, h2, h3 { line-height: 1.05; }
 .release-adoption-meter span { display: block; width: 100%; height: 100%; background: currentcolor; transform: scaleX(0); transform-origin: left; transition: transform 900ms cubic-bezier(0.2, 0.75, 0.25, 1); }
 .release-adoption.is-visible .release-adoption-meter span { transform: scaleX(var(--adoption-scale)); }
 
+/* App cards as doors. The anchor sits on the title so it has one clear
+   accessible name; ::after stretches the hit area over the whole window, which
+   is safe because nothing else inside the card is interactive. */
+.memory-app-link { color: inherit; text-decoration: none; }
+.memory-app-link::after { position: absolute; z-index: 2; inset: 0; content: ""; }
+.memory-app-link:hover { text-decoration: underline; text-underline-offset: 0.16em; }
+.memory-app-link:focus-visible { outline: 3px solid currentcolor; outline-offset: 3px; }
+.memory-app-more { display: inline-block; margin-top: 0.6rem; font-size: 0.68rem; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; }
+.memory-app-window:hover { box-shadow: var(--memory-shadow), 0 0 0 3px currentcolor; }
+.memory-app-window:has(.memory-app-link:focus-visible) { box-shadow: var(--memory-shadow), 0 0 0 3px currentcolor; }
+
+/* One app, one page. Reuses the release page's era body class, so each of the
+   48 inherits its period's palette with no extra rules. */
+.app-story { display: grid; gap: clamp(1.6rem, 4vw, 2.6rem); max-width: 52rem; padding-block: clamp(2rem, 5vw, 4rem); }
+.app-breadcrumb ol { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0; padding: 0; list-style: none; font-size: 0.74rem; font-weight: 700; }
+.app-breadcrumb li + li::before { margin-right: 0.5rem; content: "/"; }
+.app-article { display: grid; gap: clamp(1.4rem, 3vw, 2.2rem); }
+.app-hero { display: flex; flex-wrap: wrap; gap: clamp(1rem, 3vw, 2rem); align-items: start; }
+.app-hero-icon { width: clamp(3.5rem, 8vw, 6rem); height: auto; image-rendering: pixelated; }
+.app-hero h1 { max-width: 18ch; margin: 0; font-size: clamp(2.2rem, 6vw, 4.5rem); line-height: 0.98; letter-spacing: -0.06em; }
+.app-hero-detail { max-width: 46ch; margin: 0.9rem 0 0; font-size: 1rem; line-height: 1.6; }
+.app-section { display: grid; gap: 0.7rem; padding-top: 1.4rem; border-top: 1px solid color-mix(in srgb, currentcolor 30%, transparent); }
+.app-section h2 { margin: 0; font-size: clamp(1.1rem, 2.4vw, 1.5rem); letter-spacing: -0.02em; }
+.app-section p { max-width: 62ch; margin: 0; font-size: 0.98rem; line-height: 1.72; }
+.app-section-relearn p { font-weight: 650; }
+.app-source { margin: 0; font-size: 0.76rem; font-weight: 700; }
+.app-pagination { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; padding-top: 1.4rem; border-top: 1px solid color-mix(in srgb, currentcolor 30%, transparent); }
+.app-pagination a { display: grid; gap: 0.2rem; min-height: 2.75rem; text-decoration: none; }
+.app-pagination a:hover b, .app-pagination a:focus-visible b { text-decoration: underline; }
+.app-pagination span { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.app-pagination b { font-size: 1rem; }
+.next-app { text-align: right; }
+.app-return { margin: 0; font-size: 0.84rem; font-weight: 700; }
+
+@media (width <= 40rem) {
+  .app-pagination { flex-direction: column; }
+  .next-app { text-align: left; }
+}
+
 /* The relearning test. Themed entirely through currentcolor and the era
    tokens, so it inherits each release's palette without a per-era override. */
 .relearn { display: grid; gap: 1.1rem; max-width: 46rem; margin-block: clamp(3rem, 7vw, 6rem); padding: clamp(1.2rem, 3vw, 2rem); border: 1px solid currentcolor; background: color-mix(in srgb, currentcolor 5%, transparent); }

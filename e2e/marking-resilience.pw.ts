@@ -112,6 +112,34 @@ test("the relearning answer registers on click and keyboard without breaking the
   await expect(page.locator("[data-relearn]")).toHaveAttribute("data-relearn-state", "correct");
 });
 
+// The app pages are plain links to static pages, so the interesting failure is
+// not JavaScript — it is the base path. A wrong one looks perfect on
+// 127.0.0.1 and 404s on …github.io/<repo>/, which is why this walks the
+// journey rather than asserting an href.
+test("an app card opens its page, which links onward and back", async ({ page }) => {
+  await page.setViewportSize(phone);
+  await page.goto("./windows-xp/");
+
+  const card = page.locator(".memory-app-link").first();
+  const appName = (await card.textContent())!.trim();
+  await card.click();
+
+  await expect(page).toHaveURL(/\/windows-xp\/apps\/[a-z0-9-]+\/$/);
+  await expect(page.getByRole("heading", { level: 1, name: appName })).toBeVisible();
+  await expect(page.locator("#why-heading")).toHaveText("Why it took over");
+  await expect(page.locator("#relearn-heading")).toHaveText("What it left behind");
+  await expect(page.locator(".app-source a")).toHaveAttribute("href", /^https:\/\//);
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+
+  await page.locator(".next-app").click();
+  await expect(page).toHaveURL(/\/windows-xp\/apps\/[a-z0-9-]+\/$/);
+  await expect(page.getByRole("heading", { level: 1 })).not.toHaveText(appName);
+
+  await page.locator(".app-return a").click();
+  await expect(page).toHaveURL(/\/windows-xp\/#memory-heading-winxp$/);
+  await expect(page.locator(".memory-app-link").first()).toBeVisible();
+});
+
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: phone });
   const page = await context.newPage();

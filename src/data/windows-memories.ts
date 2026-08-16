@@ -1,3 +1,9 @@
+// Single definition of the slug, imported by both the card that links to an
+// app page and the route that generates it. When these were two copies, a
+// rename in one place produced a 404 in the other with nothing to catch it.
+export const appSlug = (name: string) =>
+  name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
 export interface EraApplication {
   name: string;
   detail: string;

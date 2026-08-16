@@ -1,5 +1,6 @@
 ---
 import type { WindowsRelease } from "../data/windows";
+import { appSlug } from "../data/windows-memories";
 import type { WindowsMemoryScene } from "../data/windows-memories";
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 
 const { release, scene, base } = Astro.props;
 const dialogId = `memory-dialog-${release.id}`;
-const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
 ---
 
 <section class:list={["memory-scene", `memory-scene-${release.id}`]} aria-labelledby={`memory-heading-${release.id}`} data-memory-scene>
@@ -19,7 +20,7 @@ const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
       <p class="eyebrow">Desktop time capsule</p>
       <h2 id={`memory-heading-${release.id}`}>The apps everyone knew</h2>
     </div>
-    <p>Four popular programs that made this era feel familiar, with original icons and a short explanation of what each one did.</p>
+    <p>Four popular programs that made this era feel familiar. Open any of them for how it reached this many people, and what it left behind for the next redesign to keep or break.</p>
   </header>
 
   <div class="memory-desktop" aria-label={`A nostalgic ${release.name} software scene`}>
@@ -43,8 +44,13 @@ const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
             />
             <div class="memory-app-copy">
               <span class="memory-app-kind">{application.kind}</span>
-              <h3>{application.name}</h3>
+              {/* The link is on the title, not the card, so it has one clear
+                  accessible name; .memory-app-link::after stretches its hit
+                  area over the whole window. Nothing else in the card is
+                  interactive, so there is nothing for the overlay to cover. */}
+              <h3><a class="memory-app-link" href={`${base}${release.slug}/apps/${appSlug(application.name)}/`}>{application.name}</a></h3>
               <p>{application.detail}</p>
+              <span class="memory-app-more" aria-hidden="true">Why it took over &rarr;</span>
             </div>
             <div class="memory-mini-interface" aria-hidden="true"><i></i><i></i><i></i></div>
           </div>

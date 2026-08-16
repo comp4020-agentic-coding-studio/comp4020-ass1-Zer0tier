@@ -1,0 +1,95 @@
+---
+import Base from "../../../layouts/Base.astro";
+import { windowsReleases, type WindowsRelease } from "../../../data/windows";
+import { appSlug, windowsMemoryScenes, type EraApplication } from "../../../data/windows-memories";
+import { getAppStory, type AppStory } from "../../../data/windows-apps";
+import "../../../styles/global.css";
+
+export function getStaticPaths() {
+  return windowsReleases.flatMap((release) => {
+    const scene = windowsMemoryScenes[release.id];
+    return scene.applications.map((application, index) => ({
+      params: { version: release.slug, app: appSlug(application.name) },
+      props: {
+        release,
+        application,
+        story: getAppStory(release.id, appSlug(application.name)),
+        previous: scene.applications[index - 1],
+        next: scene.applications[index + 1],
+      },
+    }));
+  });
+}
+
+interface Props {
+  release: WindowsRelease;
+  application: EraApplication;
+  story: AppStory;
+  previous?: EraApplication;
+  next?: EraApplication;
+}
+
+const { release, application, story, previous, next } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const releaseHref = `${base}${release.slug}/`;
+const appHref = (name: string) => `${base}${release.slug}/apps/${appSlug(name)}/`;
+---
+
+<Base
+  title={`${application.name} on ${release.name} — Windows Desktop Evolution`}
+  description={`Why ${application.name} reached so many people on ${release.name}, and the habit it left behind.`}
+  bodyClass={`version-page app-page page-${release.id}`}
+>
+  <header class="site-header shell">
+    <a class="wordmark" href={base} aria-label="Windows Desktop Evolution home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Windows<br /><b>Desktop Evolution</b></span></a>
+    <p>{release.year}</p>
+  </header>
+
+  <main id="main" class="shell app-story">
+    <nav class="app-breadcrumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href={base}>All releases</a></li>
+        <li><a href={releaseHref}>{release.name}</a></li>
+        <li aria-current="page">{application.name}</li>
+      </ol>
+    </nav>
+
+    <article class="app-article">
+      <header class="app-hero">
+        <img class="app-hero-icon" src={`${base}${application.icon}`} alt="" width="96" height="96" decoding="async" />
+        <div>
+          <p class="eyebrow">{application.kind} · popular on {release.name}, {release.year}</p>
+          <h1>{application.name}</h1>
+          <p class="app-hero-detail">{application.detail}</p>
+        </div>
+      </header>
+
+      <section class="app-section" aria-labelledby="why-heading">
+        <h2 id="why-heading">Why it took over</h2>
+        <p>{story.why}</p>
+      </section>
+
+      <section class="app-section app-section-relearn" aria-labelledby="relearn-heading">
+        <h2 id="relearn-heading">What it left behind</h2>
+        <p>{story.relearn}</p>
+      </section>
+
+      <p class="app-source">
+        Reference: <a href={story.source.url} target="_blank" rel="noreferrer">{story.source.label}</a>
+      </p>
+    </article>
+
+    <nav class="app-pagination" aria-label={`Other apps everyone knew on ${release.name}`}>
+      {previous
+        ? <a class="previous-app" href={appHref(previous.name)}><span>← Previous app</span><b>{previous.name}</b></a>
+        : <span></span>}
+      {next
+        ? <a class="next-app" href={appHref(next.name)}><span>Next app →</span><b>{next.name}</b></a>
+        : <a class="next-app" href={releaseHref}><span>Back to</span><b>{release.name}</b></a>}
+    </nav>
+
+    <p class="app-return"><a href={`${releaseHref}#memory-heading-${release.id}`}>← Back to the apps everyone knew on {release.name}</a></p>
+  </main>
+
+  <footer class="site-footer shell"><p>{application.name} · {release.name} · Windows Desktop Evolution</p><a href={base}>All releases</a></footer>
+</Base>

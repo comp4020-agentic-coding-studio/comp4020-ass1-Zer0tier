@@ -329,6 +329,26 @@ three rules use it as *text* colour (`.memory-review-source`,
 `#f4f8fc` on a `#f1f7fc` card — **1.01:1, invisible**. The source links that
 moment 3 of `PROCESS.md` is about cannot be read on that page.
 
+### A link and the route it points at must share one slug function
+
+`MemoryScene.astro` had its own `appSlug`, and the app route needed the same
+one. Two copies of that regex is a 404 waiting for the first rename, and
+nothing in the build would have said so — Astro generates whatever
+`getStaticPaths` returns and the anchor points wherever the template says.
+`appSlug` now lives in `windows-memories.ts` and both import it.
+
+Then assert the link, not the intention: `spec/app-pages.test.ts` resolves every
+card's `href` against the deployed base and checks the resulting path exists in
+`dist/`. That is the assertion that catches a base-path mistake — the failure
+that looks perfect on 127.0.0.1 and 404s on `…github.io/<repo>/`. Verified by
+dropping `${base}` from the template and watching it go red.
+
+Note `linkinator` will not catch this: `pnpm check:links` runs without
+`--recurse`, so it only checks links found on the entry page — 14 of them.
+Adding `--recurse` would also start checking every external citation on every
+page, which is a lot of network flake for a check that runs on the deadline.
+The offline test is the better tool here.
+
 ### Run axe on the built pages, at both viewports
 
 `pnpm check` cannot see contrast and neither can jsdom. With the preview server
