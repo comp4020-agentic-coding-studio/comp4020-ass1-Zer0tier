@@ -36,13 +36,17 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Build, lint, and run the spec
         run: pnpm check
+      - name: Install the marking-view browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Check keyboard, resize, phone, and slow-media resilience
+        run: pnpm exec playwright test
       - name: Check the process evidence
         # skipped in the template repo itself, where PROCESS.md is still the
         # boilerplate every student replaces
         if: ${{ !github.event.repository.is_template }}
         run: pnpm check:evidence
       - name: Check internal links
-        run: pnpm dlx linkinator ./dist --silent
+        run: pnpm check:links
       - name: Scan for committed secrets
         # Pinned, both halves: the SHA fixes the action's script, and `version`
         # fixes the scanner image, which otherwise floats on :latest. These two

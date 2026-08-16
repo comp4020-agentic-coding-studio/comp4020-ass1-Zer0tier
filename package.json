@@ -9,13 +9,17 @@
     "preview": "astro preview",
     "typecheck": "tsc --noEmit",
     "check": "pnpm typecheck && pnpm build && oxlint --ignore-path .gitignore && stylelint \"**/*.css\" --ignore-path .gitignore --allow-empty-input && vitest run",
+    "check:browser": "pnpm build && playwright test",
     "check:evidence": "node scripts/check-evidence.ts",
+    "check:links": "pnpm build && node scripts/prepare-pages-link-check.mjs && linkinator ./dist --silent",
     "test": "vitest run"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/jsdom": "^27.0.0",
     "@types/node": "^24.0.0",
     "jsdom": "^29.1.1",
+    "linkinator": "^8.0.3",
     "oxlint": "^1.75.0",
     "stylelint": "^17.14.1",
     "stylelint-config-standard": "^40.0.0",

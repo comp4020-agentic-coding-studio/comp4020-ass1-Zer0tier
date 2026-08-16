@@ -273,10 +273,9 @@ than something a reader has to reconstruct.
 ### Astro, in this repo
 
 - **Base path.** Pages serves under `/<repo>/`, so `astro.config.mjs` sets
-  `site` + `base`. Belt and braces: `build.inlineStylesheets: "always"` and no
-  bitmap images means the built page references no external asset at all, so a
-  wrong base has nothing to break. `spec/redesign.test.ts` asserts this. Before
-  shipping any new asset, re-check that test.
+  `site` + `base`. `build.inlineStylesheets: "always"` keeps the first render
+  independent of a stylesheet request; locally hosted historical media still
+  has to use `import.meta.env.BASE_URL`, and the links check must verify it.
 - **Whitespace.** Astro strips the newline between trailing text and an inline
   element, so `text\n<a>` renders as `text<a>`. Use an explicit `{" "}`.
 - `.astro/` is generated --- gitignored, and oxlint skips it via
@@ -298,3 +297,20 @@ than something a reader has to reconstruct.
   (`rgb(255 255 255 / 8%)`), and `no-descending-specificity` --- put a base
   selector ahead of every context that overrides it, and prefer a class over a
   bare descendant (`.card .zh`, not `.card h3 span`).
+
+### Assignment 1 acceptance gate
+
+- The core interaction is `change-version`: wheel, A/D or arrow keys, touch
+  swipe, and the timeline links all change the selected Windows release; the
+  preview and reported-reach milestone must update together. Keep that
+  instruction visible at both marking viewports.
+- Every visible addition must support the single claim that each Windows
+  redesign made a larger public relearn the same machine. Do not add a new
+  mechanic merely as decoration.
+- Before shipping, run `pnpm check`, `pnpm check:browser`, `pnpm
+  check:evidence`, and `pnpm check:links`. The browser suite is the authority for
+  1920×1080, 390×844, keyboard focus, desktop-to-phone resize, no-JavaScript
+  navigation, and unavailable media; jsdom is not evidence for layout.
+- `PROCESS.md` stays between 400 and 600 words with three or four cited moments,
+  and `reflections/assignment-1.md` contains the one breakthrough to present at
+  the week 4 retro.

@@ -31,6 +31,7 @@
   var transitionToken = 0;
   var isTransitioning = false;
   var reachFrame = 0;
+  var resizeFrame = 0;
   var displayedReachValue = Number(scenes[0].dataset.reachValue);
 
   function cancelAnimations() {
@@ -118,12 +119,12 @@
     }
   }
 
-  function keepStepVisible(step) {
+  function keepStepVisible(step, instant) {
     if (!step || typeof step.scrollIntoView !== "function") return;
     var stepBox = step.getBoundingClientRect();
     var selectorBox = selector.getBoundingClientRect();
     if (stepBox.left < selectorBox.left || stepBox.right > selectorBox.right) {
-      step.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "nearest", inline: "center" });
+      step.scrollIntoView({ behavior: reduceMotion.matches || instant ? "auto" : "smooth", block: "nearest", inline: "center" });
     }
   }
 
@@ -281,6 +282,22 @@
   }, { passive: true });
 
   window.addEventListener("touchcancel", function () { touchStart = null; }, { passive: true });
+
+  window.addEventListener("resize", function () {
+    if (isTransitioning) {
+      cancelAnimations();
+      settleScenes(scenes[index]);
+    }
+    if (resizeFrame && typeof window.cancelAnimationFrame === "function") window.cancelAnimationFrame(resizeFrame);
+    if (typeof window.requestAnimationFrame !== "function") {
+      keepStepVisible(steps[index], true);
+      return;
+    }
+    resizeFrame = window.requestAnimationFrame(function () {
+      keepStepVisible(steps[index], true);
+      resizeFrame = 0;
+    });
+  });
 
   enter.addEventListener("click", function (event) {
     if (suppressClick) event.preventDefault();

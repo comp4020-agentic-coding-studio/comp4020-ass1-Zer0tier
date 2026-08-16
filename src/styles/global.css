@@ -91,6 +91,7 @@ h1, h2, h3 { line-height: 1.05; }
 .timeline-logo p { margin: 0; font-size: 0.65rem; letter-spacing: 0.04em; }
 .timeline-logo strong { display: block; margin-block: 0.05rem 0.3rem; font-size: clamp(1.7rem, 4.5vw, 3.7rem); font-weight: 650; line-height: 0.95; letter-spacing: -0.07em; }
 .timeline-logo small { color: var(--scene-muted, currentcolor); font-size: 0.75rem; }
+.timeline-logo .timeline-argument { max-width: 24ch; margin: 1.1rem 0 0; color: var(--scene-muted, currentcolor); font-size: clamp(0.72rem, 1.2vw, 0.86rem); font-weight: 650; line-height: 1.4; }
 .timeline-system-preview { display: grid; grid-template-rows: auto auto 1fr auto; min-height: 15rem; overflow: hidden; border: var(--preview-border, 2px solid #000); border-radius: var(--preview-radius, 0); background: var(--preview-surface, #fff); box-shadow: var(--preview-shadow, 4px 4px 0 rgb(0 0 0 / 22%)); }
 .mini-system-title { display: flex; gap: 3px; align-items: center; min-height: 1.55rem; padding: 0.2rem 0.3rem; background: var(--preview-title, #000); color: var(--preview-title-ink, #fff); font-size: 0.58rem; font-weight: 700; }
 .mini-system-title span { margin-right: auto; }
@@ -1312,16 +1313,18 @@ h1, h2, h3 { line-height: 1.05; }
 @media (width < 42rem) {
   :root { --pad: 1rem; }
   .timeline-entry { padding: 5.4rem 0.7rem 0.7rem; }
-  .timeline-window { width: 94vw; min-height: calc(100svh - 6.2rem); }
+  .timeline-window { width: 94vw; min-height: calc(100svh - 9.8rem); }
   .timeline-scene { grid-template-columns: 1fr; gap: 1rem; padding: 1.3rem; }
   .timeline-logo { grid-template-columns: auto 1fr; column-gap: 0.8rem; align-items: center; }
   .timeline-windows-mark { grid-row: span 3; margin-bottom: 0; }
   .timeline-logo p, .timeline-logo strong, .timeline-logo small { grid-column: 2; }
+  .timeline-logo .timeline-argument { margin-top: 0.45rem; }
   .timeline-system-preview { min-height: 10rem; }
   .mini-system-content { gap: 0.35rem; padding: 0.65rem; }
   .mini-system-content span { min-height: 1.55rem; }
   .timeline-statusbar { grid-template-columns: auto 1fr; }
-  .timeline-statusbar > span:last-child { display: none; }
+  .timeline-statusbar p { display: none; }
+  .timeline-statusbar > span:last-child { display: block; text-align: right; }
   .timeline-reach { grid-template-columns: 6.5rem 1fr; min-height: 5rem; }
   .timeline-reach-source { display: none; }
   .site-header { min-height: 5rem; }

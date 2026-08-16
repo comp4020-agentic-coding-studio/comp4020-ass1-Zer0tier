@@ -21,6 +21,9 @@ describe("scroll-controlled homepage timeline", () => {
     const dom = timelinePage();
     const doc = dom.window.document;
     expect(doc.querySelectorAll("[data-timeline-window]")).toHaveLength(1);
+    expect(doc.querySelector("[data-core-interaction]")?.getAttribute("data-core-interaction")).toBe("change-version");
+    expect(doc.querySelector("[data-core-instructions]")?.textContent).toContain("A–D");
+    expect(doc.querySelector(".timeline-argument")?.textContent).toContain("relearn the same machine");
     expect(doc.body.getAttribute("data-entry-version")).toBe("win1");
     expect(doc.querySelector("[data-timeline-status]")?.textContent).toBe("Windows 1.0 · 1985");
     expect(doc.querySelectorAll("[data-timeline-scene]:not([hidden])")).toHaveLength(1);

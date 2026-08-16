@@ -27,6 +27,15 @@
     }
   }
 
+  function keepVersionVisible(link) {
+    if (!versionNav || !link || typeof versionNav.scrollTo !== "function") return;
+    var navRect = versionNav.getBoundingClientRect();
+    var linkRect = link.getBoundingClientRect();
+    if (linkRect.left >= navRect.left && linkRect.right <= navRect.right) return;
+    var left = versionNav.scrollLeft + linkRect.left - navRect.left - (navRect.width - linkRect.width) / 2;
+    versionNav.scrollTo({ left: Math.max(0, left), behavior: "auto" });
+  }
+
   function beginVersionNavigation(link) {
     if (!link || navigationStarted) return;
     if (link.getAttribute("aria-current") === "page") {
@@ -54,9 +63,13 @@
   }
 
   if (versionNav && versionGlider && activeVersion) {
+    keepVersionVisible(activeVersion);
     placeVersionGlider(activeVersion, true);
     versionNav.classList.add("is-enhanced");
-    window.addEventListener("resize", function () { placeVersionGlider(activeVersion, true); });
+    window.addEventListener("resize", function () {
+      keepVersionVisible(activeVersion);
+      window.requestAnimationFrame(function () { placeVersionGlider(activeVersion, true); });
+    });
     versionLinks.forEach(function (link) {
       link.addEventListener("click", function (event) {
         if (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
