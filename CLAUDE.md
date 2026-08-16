@@ -298,6 +298,46 @@ than something a reader has to reconstruct.
   selector ahead of every context that overrides it, and prefer a class over a
   bare descendant (`.card .zh`, not `.card h3 span`).
 
+### A listener on an ancestor is not the same as a listener that fires
+
+The relearning test was silently dead on nine of twelve releases. Its answer is
+usually the Start button, and `system-interactions.js` calls
+`stopPropagation()` there so opening the Start menu does not immediately trip
+the desktop's click-outside-to-close handler. A bubble-phase listener on the
+desktop never saw the one click that mattered. `addEventListener(..., true)` —
+capture runs ancestor-first, before the target's own handlers.
+
+Nothing in `spec/` could have caught this: the markup was right, the script was
+attached, and jsdom dispatches no real click. Only driving it in a browser
+found it. **When adding an interaction on top of an existing one, assume the
+existing one already stops the event, and prove the new one fires.** The
+regression test asserts both halves — the guess registers *and* the Start menu
+still opens — because the fix shares the event path with the thing it must not
+break.
+
+### Don't dim text with `opacity` — I did it again
+
+C2's contrast failure was `opacity: 0.65` on a nav pill. I reached for
+`opacity: 0.78` on the new card's lede without thinking, and on the Windows 95
+teal it computes to roughly 2.6:1. These cards sit on twelve different era
+backgrounds, so there is no safe opacity. Carry hierarchy with size and weight;
+if a muted colour is genuinely needed, set the colour and measure it.
+
+Related, and still open: `--memory-title` is a *titlebar background* colour and
+three rules use it as *text* colour (`.memory-review-source`,
+`.memory-dialog-context`, `.memory-dialog-source`). On Windows 11 that is
+`#f4f8fc` on a `#f1f7fc` card — **1.01:1, invisible**. The source links that
+moment 3 of `PROCESS.md` is about cannot be read on that page.
+
+### Run axe on the built pages, at both viewports
+
+`pnpm check` cannot see contrast and neither can jsdom. With the preview server
+running, inject `node_modules/axe-core/axe.min.js` and call `axe.run(document)`
+at 1920 and 390 across a few eras — light, dark, and a recreation-heavy one.
+Doing this once turned up serious violations on every release page. Treat the
+recreations' own period-accurate low contrast as a separate judgement from the
+site's own chrome, which has no such excuse.
+
 ### "Supports the claim" is a measurement, not an opinion
 
 I wrote the rule below — every visible addition must support the single claim —

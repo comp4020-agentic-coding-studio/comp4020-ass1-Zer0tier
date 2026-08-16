@@ -60,6 +60,58 @@ test("the timeline has visible keyboard focus and a phone-friendly instruction",
   expect(covering, "something other than the enter overlay is covering the core instruction").toEqual([]);
 });
 
+// This exists because the first version of the relearning test was silently
+// dead on nine of the twelve releases. The answer there is the Start button,
+// and system-interactions.js calls stopPropagation() on it so opening the
+// Start menu does not trip the desktop's click-outside handler — so a
+// bubble-phase listener never saw the only click that mattered. jsdom could
+// not have caught it: the markup was correct and the handler was attached.
+// Both assertions matter — the guess must register AND the recreation must
+// still behave, since the fix runs in the capture phase alongside it.
+test("the relearning answer registers on click and keyboard without breaking the recreation", async ({ page }) => {
+  for (const [version, viewport] of [["windows-95", desktop], ["windows-11", phone]] as const) {
+    await page.setViewportSize(viewport);
+    await page.goto(`./${version}/`);
+
+    const section = page.locator("[data-relearn]");
+    await expect(section).toHaveAttribute("data-relearn-state", "asking");
+    await expect(page.locator("[data-relearn-answer]")).toBeHidden();
+
+    // The wrong guess is the desktop's own top-left corner rather than a named
+    // element. Two earlier attempts picked a desktop shortcut and then any
+    // visible button, and both broke on Windows 11 at phone width: that
+    // recreation ships with its Start panel open — correctly, it is how
+    // Windows 11 first looks — so the shortcuts underneath are covered and the
+    // panel itself overflows the stage. The corner is always present, always
+    // hittable, and is the answer on no release.
+    const answerBox = await page.locator("[data-relearn-target]").boundingBox();
+    const desktopBox = await page.locator("[data-desktop]").boundingBox();
+    expect(answerBox, version).not.toBeNull();
+    expect(desktopBox, version).not.toBeNull();
+    expect(
+      answerBox!.x > desktopBox!.x + 24 || answerBox!.y > desktopBox!.y + 24,
+      `${version}: the answer sits in the corner this test clicks as a miss`,
+    ).toBe(true);
+
+    await page.locator("[data-desktop]").click({ position: { x: 6, y: 6 } });
+    await expect(section, `${version}: a wrong guess should not settle it`).toHaveAttribute("data-relearn-state", "missed");
+
+    await page.locator("[data-relearn-target]").click();
+    await expect(section, `${version}: the answer did not register`).toHaveAttribute("data-relearn-state", "correct");
+    await expect(page.locator("[data-relearn-answer]")).toBeVisible();
+    await expect(page.locator("[data-relearn-target]")).toHaveClass(/is-relearn-found/);
+    await expect(page.locator("[data-start-panel]"), `${version}: the Start menu should still open`).toBeVisible();
+  }
+
+  // Enter on a focused answer must take the same path as a pointer, so the
+  // whole mechanic has a keyboard route rather than a pointer-only one.
+  await page.setViewportSize(phone);
+  await page.goto("./windows-xp/");
+  await page.locator("[data-relearn-target]").focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator("[data-relearn]")).toHaveAttribute("data-relearn-state", "correct");
+});
+
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: phone });
   const page = await context.newPage();

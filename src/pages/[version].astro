@@ -4,6 +4,7 @@ import AdoptionMilestone from "../components/AdoptionMilestone.astro";
 import Contributors from "../components/Contributors.astro";
 import DesktopPreview from "../components/DesktopPreview.astro";
 import MemoryScene from "../components/MemoryScene.astro";
+import RelearnChallenge from "../components/RelearnChallenge.astro";
 import ReleaseStory from "../components/ReleaseStory.astro";
 import StartupSound from "../components/StartupSound.astro";
 import { getStartupSound } from "../data/windows-audio";
@@ -13,6 +14,7 @@ import { windowsReleases, type WindowsRelease } from "../data/windows";
 import interactions from "../system-interactions.js?raw";
 import startupSoundInteractions from "../startup-sound.js?raw";
 import memoryCapsuleInteractions from "../memory-capsule.js?raw";
+import relearnInteractions from "../relearn-challenge.js?raw";
 import "../styles/global.css";
 
 export function getStaticPaths() {
@@ -59,6 +61,8 @@ const cursorHref = `${base}media/cursors/${release.slug}.cur`;
 
     <DesktopPreview release={release} base={base} />
 
+    <RelearnChallenge release={release} />
+
     <AdoptionMilestone release={release} />
 
     <MemoryScene release={release} scene={memoryScene} base={base} />
@@ -87,4 +91,5 @@ const cursorHref = `${base}media/cursors/${release.slug}.cur`;
   <script is:inline set:html={interactions} />
   <script is:inline set:html={startupSoundInteractions} />
   <script is:inline set:html={memoryCapsuleInteractions} />
+  <script is:inline set:html={relearnInteractions} />
 </Base>

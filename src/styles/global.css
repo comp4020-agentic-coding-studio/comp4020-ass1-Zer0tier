@@ -1273,6 +1273,42 @@ h1, h2, h3 { line-height: 1.05; }
 .release-adoption-meter span { display: block; width: 100%; height: 100%; background: currentcolor; transform: scaleX(0); transform-origin: left; transition: transform 900ms cubic-bezier(0.2, 0.75, 0.25, 1); }
 .release-adoption.is-visible .release-adoption-meter span { transform: scaleX(var(--adoption-scale)); }
 
+/* The relearning test. Themed entirely through currentcolor and the era
+   tokens, so it inherits each release's palette without a per-era override. */
+.relearn { display: grid; gap: 1.1rem; max-width: 46rem; margin-block: clamp(3rem, 7vw, 6rem); padding: clamp(1.2rem, 3vw, 2rem); border: 1px solid currentcolor; background: color-mix(in srgb, currentcolor 5%, transparent); }
+.relearn-head h2 { margin: 0; font-size: clamp(1.8rem, 4vw, 3.2rem); letter-spacing: -0.05em; }
+
+/* No opacity on any text in here. Dimming type with opacity is what broke
+   colour contrast in C2, and these cards sit on twelve different era
+   backgrounds, so hierarchy is carried by size and weight only. */
+.relearn-lede { max-width: 44ch; margin: 0.6rem 0 0; font-size: 0.86rem; line-height: 1.6; }
+.relearn p { margin: 0; }
+.relearn-answer, .relearn-ask { max-width: 52ch; font-size: 0.92rem; line-height: 1.65; }
+.relearn-answer b { font-weight: 750; }
+.relearn-status { min-height: 1.4rem; font-size: 0.88rem; font-weight: 650; line-height: 1.5; }
+.relearn-moved { max-width: 52ch; padding-top: 0.8rem; border-top: 1px solid color-mix(in srgb, currentcolor 28%, transparent); font-size: 0.82rem; line-height: 1.6; }
+.relearn-reveal { justify-self: start; min-height: 2.75rem; padding: 0.6rem 1.1rem; border: 1px solid currentcolor; background: transparent; color: inherit; font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
+.relearn-reveal:hover, .relearn-reveal:focus-visible { background: color-mix(in srgb, currentcolor 14%, transparent); }
+.relearn-reveal:focus-visible { outline: 3px solid currentcolor; outline-offset: 3px; }
+
+/* State is carried by the message text as well as the rule below, so the
+   verdict never depends on colour alone. */
+.relearn[data-relearn-state="missed"] .relearn-status { text-decoration: underline; text-decoration-style: wavy; text-underline-offset: 0.28em; }
+.relearn[data-relearn-state="correct"] .relearn-status, .relearn[data-relearn-state="revealed"] .relearn-status { text-decoration: underline; text-underline-offset: 0.28em; }
+
+/* The answer, once found. Outline rather than background so it reads on every
+   era, including the dark ones. */
+.is-relearn-found { position: relative; outline: 3px solid currentcolor; outline-offset: 2px; animation: relearn-found-pulse 900ms ease-out 2; }
+
+@keyframes relearn-found-pulse {
+  0%, 100% { outline-color: currentcolor; }
+  50% { outline-color: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-relearn-found { animation: none; }
+}
+
 /* Interactive era-specific DOS / Command Prompt. */
 .command-shortcut { position: absolute; z-index: 1; top: 1rem; right: 1rem; display: grid; gap: 0.2rem; justify-items: center; width: 5.2rem; padding: 0.35rem; border: 0; background: transparent; color: inherit; font-size: 0.62rem; line-height: 1.15; text-align: center; text-shadow: 1px 1px 2px #000; }
 .command-shortcut img { width: 2.35rem; height: 2.35rem; object-fit: contain; image-rendering: auto; }

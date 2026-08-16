@@ -1,0 +1,65 @@
+---
+import type { WindowsRelease } from "../data/windows";
+import {
+  countRelearnMoves,
+  countRelearnPlaces,
+  getPreviousRelearnStep,
+  getRelearnStep,
+  movedThisRelease,
+  relearnTask,
+} from "../data/windows-relearn";
+import { windowsReleases } from "../data/windows";
+
+interface Props {
+  release: WindowsRelease;
+}
+
+const { release } = Astro.props;
+const step = getRelearnStep(release.id);
+const previousStep = getPreviousRelearnStep(release.id);
+// By id, not by deriving a slug: "vista" and "winxp" do not share a pattern,
+// and a silent undefined here would drop the comparison sentence entirely.
+const previousRelease = previousStep
+  ? windowsReleases.find((item) => item.id === previousStep.id)
+  : undefined;
+const moved = movedThisRelease(release.id);
+const moves = countRelearnMoves();
+const places = countRelearnPlaces();
+---
+
+<section class="relearn" data-relearn aria-labelledby="relearn-heading">
+  <div class="relearn-head">
+    <p class="eyebrow">The relearning test · place {step.placeIndex} of {places}</p>
+    <h2 id="relearn-heading">{relearnTask}</h2>
+    <p class="relearn-lede" data-relearn-lede>
+      The one thing everybody has done on every one of these systems. In forty
+      years Microsoft moved it {moves} times.
+    </p>
+  </div>
+
+  {/* Rendered as a plain statement, because that is what it is with no
+      JavaScript: a true sentence about where the control lives. The script
+      hides it, turns the desktop above into the question, and shows it again
+      as the answer. Nothing here is a spoiler until the visitor asks. */}
+  <p class="relearn-answer" data-relearn-answer>
+    In {release.name} you start a program from <b>{step.place}</b>. {step.detail}
+  </p>
+
+  <p class="relearn-ask" data-relearn-ask hidden>
+    Click or tap where you would do it on the {release.name} desktop above —
+    or tab to it and press Enter.
+  </p>
+
+  <p class="relearn-status" data-relearn-status role="status" aria-live="polite"></p>
+
+  <button class="relearn-reveal" type="button" data-relearn-reveal hidden>
+    Show me where
+  </button>
+
+  {moved && previousStep && previousRelease && (
+    <p class="relearn-moved" data-relearn-moved hidden>
+      It moved for this release. In {previousRelease.name} the answer was
+      {" "}{previousStep.place}.
+    </p>
+  )}
+</section>

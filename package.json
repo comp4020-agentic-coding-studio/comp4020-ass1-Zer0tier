@@ -18,6 +18,7 @@
     "@playwright/test": "^1.62.1",
     "@types/jsdom": "^27.0.0",
     "@types/node": "^24.0.0",
+    "axe-core": "^4.13.0",
     "jsdom": "^29.1.1",
     "linkinator": "^8.0.3",
     "oxlint": "^1.75.0",
