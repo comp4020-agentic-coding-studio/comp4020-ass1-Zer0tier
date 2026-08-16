@@ -1,24 +1,23 @@
-# Insight: smooth animation and era-specific themes transformed the homepage
+# Insight: the interaction has to perform the explanation
 
 My breakthrough was realising that a collection of interactive pages was not
-yet an interactive explainer. Before commit `9aa6e9b`, I had asked the agent to
-build a Windows archive. It produced a polished editorial homepage with a large
-introduction and twelve release cards. Each card linked to a themed recreation,
-but the visitor's role was still passive: scroll past a catalogue, choose a
-version, and read about it. The page said that Windows evolved, but its
-interaction did not demonstrate that evolution.
+yet an interactive explainer. Before commit `9aa6e9b` I had asked the agent for
+a Windows archive, and it built exactly that: a polished editorial homepage
+with twelve release cards, each linking to a themed recreation. The visitor's
+role was still passive — scroll a catalogue, pick a version, read about it. The
+page *said* Windows kept changing. Its interaction did not.
 
 ## Before
 
 ![Before: twelve-card release archive.](assets/assignment-1-before.png)
 
-I stopped directing the agent mainly through visual requests and changed the
-interaction contract. I specified one mechanic: scrolling or pressing an arrow
-key must move through Windows history one release at a time. I encoded that
-decision in `timeline-entry.test.ts`. The test required one central window,
-forward and backward navigation, an updating version label, and a link that
-always opens the release currently shown. It also explicitly rejected the old
-`.release-grid`, preventing the discarded design from quietly returning.
+So I stopped directing through visual requests and changed the interaction
+contract instead. I specified one mechanic: scrolling or pressing an arrow must
+move through Windows history one release at a time. Then I encoded it in
+`timeline-entry.test.ts` — one central window, forward and backward navigation,
+an updating version label, and a link that always opens the release on screen.
+The test also rejected the old `.release-grid` outright, so the design I had
+discarded could not quietly return.
 
 ## After `9aa6e9b`
 
@@ -26,13 +25,13 @@ always opens the release currently shown. It also explicitly rejected the old
 
 ![After animation.](assets/assignment-1-after-animation.gif)
 
-After that change, the agent replaced the long card page with a single
-full-screen Windows-style window. As the visitor moves from Windows 1.0 to
-Windows 11, the layout, colour, typography, and system preview transform with
-the selected era. This worked because the visitor's action now maps directly to
-the idea: moving through the interface means moving through time.
+The agent replaced the card page with a single full-screen Windows window that
+changes era as you move through it. It worked because the visitor's action now
+maps onto the idea: moving through the interface *is* moving through time.
 
-The process taught me that directing an agent is more reliable when I define
-the behaviour to remove, the mechanic that should replace it, and the checks
-that decide whether the output is acceptable. The breakthrough was not a
-better-looking homepage; it was making the interaction perform the explanation.
+What it changed about me is smaller and more uncomfortable. I used to accept
+work once it looked right. Twice here I deleted work that looked right and ran
+— the dynasties prototype, then four finished features — because a measurement
+said they were not carrying the argument. I want to be the developer who builds
+the thing that decides whether the work is good, and then trusts it over my own
+eye.
