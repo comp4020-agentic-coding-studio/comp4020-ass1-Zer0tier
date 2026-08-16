@@ -6,13 +6,13 @@ import { describe, expect, it } from "vitest";
 function bsodPage(page = "index.html") {
   const html = readFileSync(resolve("dist", page), "utf8");
   const dom = new JSDOM(html, { runScripts: "outside-only", url: "https://example.test/" });
-  dom.window.eval(readFileSync(resolve("src/bsod-easter-egg.js"), "utf8"));
+  dom.window.eval(readFileSync(resolve("legacy/bsod-easter-egg.js"), "utf8"));
   return dom;
 }
 
 describe("DO NOT CLICK BSOD easter egg", () => {
   it("ships the hidden fixed trigger and BSOD on the home and release pages", () => {
-    const source = readFileSync(resolve("src/components/BsodEasterEgg.astro"), "utf8");
+    const source = readFileSync(resolve("legacy/components/BsodEasterEgg.astro"), "utf8");
     expect(source).toContain("background: #0000AA");
     expect(source).toContain("position: fixed");
     expect(source).toContain('font-family: "Lucida Console", "Courier New", monospace');

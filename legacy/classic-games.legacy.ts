@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
 
-const gameSource = readFileSync(resolve("src/classic-games.js"), "utf8");
+const gameSource = readFileSync(resolve("legacy/classic-games.js"), "utf8");
 
 function gamePage(version: string) {
   const html = readFileSync(resolve("dist", version, "index.html"), "utf8");

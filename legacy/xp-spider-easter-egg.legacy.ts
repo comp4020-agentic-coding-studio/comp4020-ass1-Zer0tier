@@ -8,7 +8,7 @@ const versions = ["windows-1", "windows-2", "windows-3", "windows-95", "windows-
 function xpPage() {
   const html = readFileSync(resolve("dist/windows-xp/index.html"), "utf8");
   const dom = new JSDOM(html, { runScripts: "outside-only" });
-  dom.window.eval(readFileSync(resolve("src/xp-spider-easter-egg.js"), "utf8"));
+  dom.window.eval(readFileSync(resolve("legacy/xp-spider-easter-egg.js"), "utf8"));
   return dom;
 }
 

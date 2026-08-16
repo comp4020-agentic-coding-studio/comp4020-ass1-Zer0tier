@@ -298,6 +298,33 @@ than something a reader has to reconstruct.
   selector ahead of every context that overrides it, and prefer a class over a
   bare descendant (`.card .zh`, not `.card h3 span`).
 
+### "Supports the claim" is a measurement, not an opinion
+
+I wrote the rule below — every visible addition must support the single claim —
+and then shipped a release page where it wasn't true, because I was checking it
+one component at a time as I added each one. Each felt defensible on its own.
+
+Measure the whole page instead. Sum the rendered height of each top-level
+section at 390px and work out what share argues the thesis. On `/windows-xp/`
+that was **28%**: the desktop recreation, the adoption figure and the four
+"what this interface changed" cards. The rest was era atmosphere, a quiz and a
+playable Minesweeper. A number I could not argue with is what actually moved me
+to cut, after months of "but each part is good".
+
+```js
+document.querySelectorAll("main > section, main > nav").forEach((el) =>
+  console.log(Math.round(el.getBoundingClientRect().height), el.className));
+```
+
+Two things that fell out of doing it:
+
+- A **new mechanic** costs more than a new section. The quiz, the games and the
+  easter eggs each taught the visitor a separate interaction that said nothing
+  about relearning — which is the opposite of the point.
+- When you delete a feature, delete its **responsive** rules too. The block
+  comments in `global.css` cover the main rules, but the phone media query at
+  the bottom had five more that `grep` found and reading wouldn't have.
+
 ### Assignment 1 acceptance gate
 
 - The core interaction is `change-version`: wheel, A/D or arrow keys, touch

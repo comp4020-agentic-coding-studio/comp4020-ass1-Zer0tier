@@ -36,17 +36,28 @@ test("the timeline has visible keyboard focus and a phone-friendly instruction",
   await expect(page.locator("[data-core-instructions]")).toBeVisible();
   await expect(page.locator("[data-core-instructions]")).toContainText("swipe");
 
-  const instructionBox = await page.locator("[data-core-instructions]").boundingBox();
-  const easterEggBox = await page.locator("[data-bsod-trigger]").boundingBox();
-  expect(instructionBox).not.toBeNull();
-  expect(easterEggBox).not.toBeNull();
-  const overlaps = instructionBox && easterEggBox
-    ? instructionBox.x < easterEggBox.x + easterEggBox.width
-      && instructionBox.x + instructionBox.width > easterEggBox.x
-      && instructionBox.y < easterEggBox.y + easterEggBox.height
-      && instructionBox.y + instructionBox.height > easterEggBox.y
-    : true;
-  expect(overlaps).toBe(false);
+  // This used to measure the instruction against the "DO NOT CLICK" button
+  // specifically, because that button was what covered it on a phone. The
+  // button is gone, but the contract it was standing in for is not: the one
+  // line telling a visitor how to work the page must not be sitting under
+  // anything. Hit-testing its own centre says that about every future overlay,
+  // not just the one that caused the bug.
+  const instruction = page.locator("[data-core-instructions]");
+  expect(await instruction.boundingBox()).not.toBeNull();
+  const covering = await instruction.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    const stack = document.elementsFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+    const self = stack.indexOf(element);
+    if (self === -1) return ["<instruction is not hit-testable at its own centre>"];
+    return stack
+      .slice(0, self)
+      // Ancestors are above it in the stack by definition, and .timeline-enter-nav
+      // is the deliberate transparent full-viewport overlay that makes "click to
+      // enter" work anywhere on the page. Anything else on top is a bug.
+      .filter((node) => !node.contains(element) && !node.closest(".timeline-enter-nav"))
+      .map((node) => `${node.tagName.toLowerCase()}.${String(node.className).split(" ")[0]}`);
+  });
+  expect(covering, "something other than the enter overlay is covering the core instruction").toEqual([]);
 });
 
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {

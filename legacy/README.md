@@ -31,6 +31,25 @@ structural test could not, because that test asked `overlaps()` to validate what
 `overlaps()` had produced. The rule that came out of it is in `CLAUDE.md`, and
 it is the reason the Windows work has fixture tests as well as structural ones.
 
+## Cut for scope
+
+These four worked, were tested, and shipped for a while. I cut them because the
+brief asks for one idea and nothing else, and because `CLAUDE.md` already said
+every visible addition has to support the claim that each redesign made a larger
+public relearn the same machine. None of these did.
+
+| file | what it was | why it went |
+| --- | --- | --- |
+| `components/ReleaseQuiz.astro` `release-quiz.js` `data/windows-quiz.ts` | a random multiple-choice question per release | tests trivia recall, not relearning |
+| `components/ClassicGame.astro` `classic-games.js` | playable Reversi, Minesweeper, Purble Place | a toy; a second mechanic with nothing to say |
+| `components/XPSpiderEasterEgg.astro` `xp-spider-easter-egg.js` `styles/xp-spider.css` | a Spider Solitaire deal hidden on the XP page | same |
+| `components/BsodEasterEgg.astro` `bsod-easter-egg.js` | a "DO NOT CLICK" button on **all thirteen pages** that faked a fatal exception | a prank, and it had already collided with the core instruction on a phone once |
+
+Their spec suites are here too, retired to `*.legacy.ts`: `release-quiz`,
+`classic-games`, `xp-spider-easter-egg`, `bsod-easter-egg`. They passed when
+they were removed. Nothing about them was broken — that is the point of the
+moment in PROCESS.md.
+
 ## The first Windows attempt
 
 `desktop-evolution.js` is an earlier, discarded take on the Windows idea: five

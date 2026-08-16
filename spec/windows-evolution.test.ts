@@ -177,8 +177,13 @@ describe("Windows Desktop Evolution", () => {
     }
   });
 
-  it("uses only English text in the Windows XP Easter egg", () => {
-    const easterEgg = releasePages.get("windows-xp")?.doc.querySelector("[data-xp-spider-easter-egg]");
-    expect(easterEgg?.textContent).not.toMatch(/\p{Script=Han}/u);
+  // Replaces an assertion about the XP Spider Solitaire Easter egg, which was
+  // cut for scope. The point it was really making — no leftover Chinese text
+  // from the abandoned dynasties prototype — is worth keeping, so it now runs
+  // across every release page instead of one component.
+  it("carries no leftover Chinese text from the abandoned prototype", () => {
+    for (const [version, { doc }] of releasePages) {
+      expect(doc.body.textContent, version).not.toMatch(/\p{Script=Han}/u);
+    }
   });
 });

@@ -28,7 +28,7 @@ describe("release quiz", () => {
   it("reveals the explanation after the user answers", () => {
     const html = readFileSync(resolve("dist/windows-xp/index.html"), "utf8");
     const dom = new JSDOM(html, { runScripts: "outside-only" });
-    const source = readFileSync(resolve("src/release-quiz.js"), "utf8");
+    const source = readFileSync(resolve("legacy/release-quiz.js"), "utf8");
     dom.window.eval(source);
 
     const doc = dom.window.document;

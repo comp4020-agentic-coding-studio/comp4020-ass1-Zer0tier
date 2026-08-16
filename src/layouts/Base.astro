@@ -1,5 +1,4 @@
 ---
-import BsodEasterEgg from "../components/BsodEasterEgg.astro";
 import "../styles/global.css";
 
 interface Props {
@@ -24,6 +23,5 @@ const { title, description, bodyClass = "", bodyStyle } = Astro.props;
   <body class={bodyClass} style={bodyStyle}>
     <a class="skip-link" href="#main">Skip to content</a>
     <slot />
-    <BsodEasterEgg />
   </body>
 </html>
