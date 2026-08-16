@@ -1,83 +1,65 @@
 # Process overview
 
-<!-- TEMPLATE: this file is a shape to fill in, not a form. Replace everything
-     in it with your own overview, and delete this comment — `pnpm
-     check:evidence` will remind you if it's still here. -->
-
-A reading-guide to how the work came together --- a map to your process, not an
-essay about it. Markers read this file and follow its citations; they don't
-trawl the repo for evidence you didn't point at, so if a moment mattered, cite
-it.
-
-This file is the shape; the course site's
-[assessment page](https://comp.anu.edu.au/courses/comp4020-agentic-coding-studio/topics/assessment/#what-you-submit)
-is the requirement, and each brief adds its own word count and moment count.
-
 ## What I built
 
-One paragraph: the thing, and the idea behind it.
+Windows Desktop Evolution is an interactive argument about the hidden cost of
+familiar interfaces: every redesign asked a larger public to relearn the same
+machine. The visitor changes Windows versions with the timeline, keyboard,
+wheel, or touch. The interface preview and a sourced reach milestone change
+together, turning 40 years of redesign into something the visitor operates
+rather than a catalogue they only read. The release pages deepen that same
+idea through client-side recreations; the homepage remains the core mechanic.
 
 ## The moments that mattered
 
-Three or four for an assignment; fewer is fine for a weekly prototype. Keep the
-list short so each moment has room to do all four jobs:
+### 1. A green test briefly proved the wrong rule
 
-1. **what happened** --- the problem, or the thing the agent got wrong
-2. **what you did instead of the obvious thing** --- the call you made, and why
-   it beat the obvious one
-3. **how you knew it was right** --- the check you ran, the viewport you looked
-   at, what you read before accepting the diff
-4. **the citation** --- a commit or commit range, a `CLAUDE.md` change, a check
-   that went from red to green, a prompt paired with the commit it produced
+I started by translating the brief into tests before building a UI. In the
+first, later-discarded dynasty concept, a layout test reused the implementation's
+own overlap predicate, so reversing its interval convention left the test green.
+Instead of retrying the calculation, I added a literal boundary fixture and a
+rule to `CLAUDE.md`: conventions need an expected answer derived outside the
+implementation. I then committed the interaction contract red on purpose,
+clearly separating an unbuilt specification from a regression. The literal
+fixture failed on the injected error and passed after restoration
+([`06c8141...ef309a0`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/compare/06c8141...ef309a0)).
 
-Jobs 2 and 3 are the ones the repo can't tell a reader on its own, so they're
-where the marks are. The strongest moments are the ones where a correction
-landed in the **harness** rather than in another prompt --- a rule added to
-`CLAUDE.md`, a check wired up, an attempt thrown away: re-prompting until it
-passes is the routine case, and changing what the agent works against is the
-skilled one.
+### 2. I kept the discarded answer visible
 
-Cite each moment as a link whose text is the commit hash or range and whose
-target is this repo's commit or compare URL, so a reader clicks straight to the
-evidence:
+The dynasty prototype worked, but it was not the argument I wanted to own. I
+changed direction to Windows interface literacy rather than polishing the first
+answer. The obvious move was to overwrite it; instead, I moved its implementation
+and tests into `legacy/`, then replaced its contract with release-specific
+checks. This makes the discarded judgement inspectable and prevents old tests
+from manufacturing confidence in a different product. I accepted the pivot
+only when the build emitted twelve static routes and every recreation exposed
+keyboard-reachable system controls
+([`58bb221`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/58bb221)).
 
-- one commit: [`a1b2c3d`](https://github.com/YOUR-ORG/YOUR-REPO/commit/a1b2c3d)
-- a range:
-  [`a1b2c3d...e4f5a6b`](https://github.com/YOUR-ORG/YOUR-REPO/compare/a1b2c3d...e4f5a6b)
+### 3. “Looks right” became an asset contract
 
-To pair a prompt with the commit it produced, quote the prompt (curated, not a
-full transcript) next to the citation:
+> make sure all of the Interactive system recreation to be exactaly the same as
+> the real ones. do not fake them. use the original real ones.
 
-> the prompt, verbatim
+The early recreations used recognisable CSS approximations. Retrying the styling
+would still leave authenticity subjective, so I changed the acceptance rule:
+locally hosted extracted icons and cursor files, explicit provenance, and tests
+that reject inline fake SVG pointers and missing asset paths. The source notice,
+`data-system-assets="original-extracted"`, filesystem assertions, and binary
+cursor checks made “real” inspectable rather than rhetorical
+([`6baff07`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/6baff07),
+[`d9602a0`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/d9602a0)).
 
-Screenshots are welcome where one carries the verification better than a
-sentence does. Commit the file to this repo and link it with a **relative**
-path, which is what makes it render on GitHub: `![alt text](docs/before.png)`.
-Images don't count towards the word count and don't replace the citation.
+### 4. I tested the marker's behaviour, not a simulated layout
 
-### A worked moment, for shape
-
-Delete this section along with the rest of the boilerplate --- it's here to show
-the four jobs in one paragraph, not to be imitated in content.
-
-> The date formatter kept coming back with `toLocaleDateString()` and no locale
-> argument, so the same build rendered differently on my machine and in CI. I'd
-> already re-prompted it twice, which fixed the line but not the habit, so the
-> third time I put the rule in `CLAUDE.md` instead
-> ([`3f9ac21`](https://github.com/YOUR-ORG/YOUR-REPO/commit/3f9ac21)) and added
-> a spec test that fails on a bare `toLocaleDateString`. That's what told me it
-> had actually taken: the test went red against the old code and green against
-> the new, and the next two features it wrote passed it without prompting
-> ([`3f9ac21...b7e0d14`](https://github.com/YOUR-ORG/YOUR-REPO/compare/3f9ac21...b7e0d14)).
-
-## Before you ship
-
-`pnpm check:evidence` verifies your citations resolve to real commits, that the
-current reflection entry is in `reflections/`, and that your `CLAUDE.md` is
-there --- before a marker ever opens the file. It checks that your map is
-traceable, not that it is good: the marker judges whether your small,
-deliberately chosen set of moments shows real judgement and reflection. A green
-check is not a substitute for that curation.
-
-Images are deliberately not checked, because whether one renders is visible the
-moment you look. Open this file on GitHub and look at it before you ship.
+All 162 jsdom tests were green, but they could not answer the rubric's resize
+question. I added Playwright cases for 1920×1080, 390×844, keyboard focus,
+resize mid-transition, no JavaScript, and failed media. The first real run went
+red: resizing immediately after selecting Windows 11 left an animation lock, so
+Arrow Left was dropped. After settling transitions on resize, all four browser
+cases passed. A screenshot then exposed the BSOD button covering phone
+instructions, which became a geometry assertion. Finally, the links check found
+twelve false 404s because CI ignored the Pages base path; a pinned, Pages-shaped
+link harness now scans fourteen links cleanly. Those corrections and the new
+`CLAUDE.md` acceptance gate are in
+[`296b6db`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/296b6db).
