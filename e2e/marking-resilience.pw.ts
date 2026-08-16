@@ -209,6 +209,67 @@ test("the relearning test and the reach figure use each era's panel colours", as
   }
 });
 
+// 01-04 open the long version in the same era window. The dialog is styled
+// only by the twelve shared panel rules, so this also checks it did not miss
+// one — the failure would be a modal in some other era's colours.
+test("each of the four system notes opens its long version and gives focus back", async ({ page }) => {
+  for (const [version, viewport] of [["windows-95", desktop], ["windows-8", phone]] as const) {
+    await page.setViewportSize(viewport);
+    await page.goto(`./${version}/`);
+
+    const dialog = page.locator("[data-detail-dialog]");
+    await expect(dialog).toBeHidden();
+
+    const triggers = page.locator("[data-detail-open]");
+    await expect(triggers).toHaveCount(4);
+
+    const seen: string[] = [];
+    for (let index = 0; index < 4; index += 1) {
+      const trigger = triggers.nth(index);
+      const heading = (await trigger.textContent())!.trim();
+      await expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
+
+      await trigger.click();
+      await expect(dialog).toBeVisible();
+      await expect(page.locator("[data-detail-dialog-title]"), `${version}: card ${index + 1}`).toHaveText(heading);
+      await expect(page.locator("[data-detail-dialog-number]")).toHaveText(["01", "02", "03", "04"][index]);
+      await expect(page.locator("[data-detail-dialog-source]")).toHaveAttribute("href", /^https:\/\//);
+
+      const long = (await page.locator("[data-detail-dialog-long]").textContent())!.trim();
+      const short = (await page.locator("[data-detail-dialog-short]").textContent())!.trim();
+      expect(long.length, `${version}: card ${index + 1} is not longer than the card`).toBeGreaterThan(short.length);
+      seen.push(long);
+
+      await page.keyboard.press("Escape");
+      await expect(dialog).toBeHidden();
+      await expect(trigger, `${version}: focus did not return to card ${index + 1}`).toBeFocused();
+    }
+
+    // Four different notes, not the same one refilled — the failure mode if
+    // the triggers all carried the same data.
+    expect(new Set(seen).size, `${version}: the four cards do not open four different notes`).toBe(4);
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  }
+});
+
+test("the system-note window wears the same era panel as the section it opens from", async ({ page }) => {
+  for (const version of ["windows-1", "windows-3", "windows-xp", "windows-8", "windows-10", "windows-11"]) {
+    await page.goto(`./${version}/`);
+    const reference = await page.locator(".release-details").evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { background: style.backgroundColor, borderColor: style.borderTopColor, borderStyle: style.borderTopStyle };
+    });
+
+    await page.locator("[data-detail-open]").first().click();
+    const windowPaint = await page.locator(".detail-dialog-window").evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { background: style.backgroundColor, borderColor: style.borderTopColor, borderStyle: style.borderTopStyle };
+    });
+
+    expect(windowPaint, `${version}: the note window is not in this era's colours`).toEqual(reference);
+  }
+});
+
 test("static navigation still explains the selected release without JavaScript", async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: phone });
   const page = await context.newPage();

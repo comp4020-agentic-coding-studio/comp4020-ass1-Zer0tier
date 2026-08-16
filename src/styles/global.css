@@ -801,7 +801,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win1 .version-nav { border: 2px solid #000; background: #fff; backdrop-filter: none; }
 .page-win1 .version-nav a { border-right: 1px solid #000; }
 .page-win1 .version-nav a[aria-current="page"] { border-bottom-color: #000; background: #000; color: #fff; }
-.page-win1 .version-hero, .page-win1 .demo-heading-row, .page-win1 .release-details, .page-win1 .relearn, .page-win1 .release-adoption, .page-win1 .release-pagination { margin-top: 1rem; padding: 1.25rem; border: 2px solid #000; background: #fff; }
+.page-win1 .version-hero, .page-win1 .demo-heading-row, .page-win1 .release-details, .page-win1 .detail-dialog-window, .page-win1 .relearn, .page-win1 .release-adoption, .page-win1 .release-pagination { margin-top: 1rem; padding: 1.25rem; border: 2px solid #000; background: #fff; }
 .page-win1 .version-hero h1, .page-win1 .demo-heading-row h2, .page-win1 .section-heading h2 { font-family: "Courier New", monospace; font-weight: 700; letter-spacing: -0.08em; }
 .page-win1 .version-number { color: #078a8e; text-shadow: 2px 2px #000; }
 .page-win1 .detail-grid { border-color: #000; }
@@ -822,7 +822,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win2 .wordmark, .page-win2 .site-header > p, .page-win2 .site-footer, .page-win2 .site-footer a { color: #fff; }
 .page-win2 .version-nav { border: 2px solid #031d2d; background: #c5eaf2; backdrop-filter: none; }
 .page-win2 .version-nav a[aria-current="page"] { border-color: #031d2d; background: #063f67; color: #fff; }
-.page-win2 .version-hero, .page-win2 .demo-heading-row, .page-win2 .release-details, .page-win2 .relearn, .page-win2 .release-adoption, .page-win2 .release-pagination { margin-top: 1rem; padding: 1.35rem; border: 3px double #031d2d; background: #e7fbff; }
+.page-win2 .version-hero, .page-win2 .demo-heading-row, .page-win2 .release-details, .page-win2 .detail-dialog-window, .page-win2 .relearn, .page-win2 .release-adoption, .page-win2 .release-pagination { margin-top: 1rem; padding: 1.35rem; border: 3px double #031d2d; background: #e7fbff; }
 .page-win2 .version-hero h1, .page-win2 h2 { font-family: "Courier New", monospace; letter-spacing: -0.06em; }
 
 .page-win3 {
@@ -840,7 +840,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win3 .version-nav { border: 3px outset #eee; background: #c0c0c0; backdrop-filter: none; }
 .page-win3 .version-nav a { border-right: 1px solid #777; }
 .page-win3 .version-nav a[aria-current="page"] { border: 0; border-bottom: 2px solid #000080; background: #000080; color: #fff; }
-.page-win3 .version-hero, .page-win3 .demo-heading-row, .page-win3 .release-details, .page-win3 .relearn, .page-win3 .release-adoption, .page-win3 .release-pagination { margin-top: 0.7rem; padding: 1.4rem; border: 3px outset #eee; background: #c0c0c0; }
+.page-win3 .version-hero, .page-win3 .demo-heading-row, .page-win3 .release-details, .page-win3 .detail-dialog-window, .page-win3 .relearn, .page-win3 .release-adoption, .page-win3 .release-pagination { margin-top: 0.7rem; padding: 1.4rem; border: 3px outset #eee; background: #c0c0c0; }
 .page-win3 .version-number { color: #000080; }
 .page-win3 .detail-grid article { border: 2px inset #eee; background: #fff; }
 
@@ -857,7 +857,7 @@ h1, h2, h3 { line-height: 1.05; }
 }
 .page-win95 .site-header, .page-win95 .site-footer, .page-win95 .version-nav { border: 3px outset #eee; background: #c0c0c0; backdrop-filter: none; }
 .page-win95 .version-nav a[aria-current="page"] { border: 0; border-bottom: 2px solid #000080; background: #000080; color: #fff; }
-.page-win95 .version-hero, .page-win95 .demo-heading-row, .page-win95 .release-details, .page-win95 .relearn, .page-win95 .release-adoption, .page-win95 .release-pagination { margin-top: 0.7rem; padding: 1.3rem; border: 3px outset #eee; background: #c0c0c0; }
+.page-win95 .version-hero, .page-win95 .demo-heading-row, .page-win95 .release-details, .page-win95 .detail-dialog-window, .page-win95 .relearn, .page-win95 .release-adoption, .page-win95 .release-pagination { margin-top: 0.7rem; padding: 1.3rem; border: 3px outset #eee; background: #c0c0c0; }
 .page-win95 .version-hero h1, .page-win95 h2 { font-family: Arial, sans-serif; }
 .page-win95 .detail-grid article { border: 2px inset #eee; background: #fff; }
 
@@ -876,7 +876,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win98 .site-header, .page-win98 .site-footer, .page-win98 .version-nav { border: 2px outset #fff; background: #d4d0c8; backdrop-filter: none; }
 .page-win98 .version-nav a { color: #0000a0; text-decoration: underline; }
 .page-win98 .version-nav a[aria-current="page"] { background: #000080; color: #fff; }
-.page-win98 .version-hero, .page-win98 .demo-heading-row, .page-win98 .release-details, .page-win98 .relearn, .page-win98 .release-adoption, .page-win98 .release-pagination { margin-top: 0.8rem; padding: 1.4rem; border: 2px outset #fff; background: #fff; }
+.page-win98 .version-hero, .page-win98 .demo-heading-row, .page-win98 .release-details, .page-win98 .detail-dialog-window, .page-win98 .relearn, .page-win98 .release-adoption, .page-win98 .release-pagination { margin-top: 0.8rem; padding: 1.4rem; border: 2px outset #fff; background: #fff; }
 .page-win98 .version-hero h1 { color: #000080; text-shadow: 2px 2px #d4d0c8; }
 .page-win98 .detail-grid article { background: #fffff2; }
 
@@ -893,7 +893,7 @@ h1, h2, h3 { line-height: 1.05; }
 }
 .page-win2000 .site-header, .page-win2000 .site-footer, .page-win2000 .version-nav { border: 2px outset #fff; background: #d4d0c8; backdrop-filter: none; }
 .page-win2000 .version-nav a[aria-current="page"] { background: linear-gradient(90deg, #0a246a, #a6caf0); color: #fff; }
-.page-win2000 .version-hero, .page-win2000 .demo-heading-row, .page-win2000 .release-details, .page-win2000 .relearn, .page-win2000 .release-adoption, .page-win2000 .release-pagination { margin-top: 0.8rem; padding: 1.4rem; border: 2px outset #fff; background: #e8eef2; }
+.page-win2000 .version-hero, .page-win2000 .demo-heading-row, .page-win2000 .release-details, .page-win2000 .detail-dialog-window, .page-win2000 .relearn, .page-win2000 .release-adoption, .page-win2000 .release-pagination { margin-top: 0.8rem; padding: 1.4rem; border: 2px outset #fff; background: #e8eef2; }
 .page-win2000 .detail-grid article { border: 2px inset #fff; background: #fff; }
 
 .page-winxp {
@@ -912,7 +912,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-winxp .version-nav { border: 2px solid #1b58be; border-radius: 8px; background: #eaf3ff; backdrop-filter: none; }
 .page-winxp .version-nav a { border-radius: 6px; }
 .page-winxp .version-nav a[aria-current="page"] { border-color: #174a9f; background: linear-gradient(#438bf0, #1b58be); color: #fff; }
-.page-winxp .version-hero, .page-winxp .demo-heading-row, .page-winxp .release-details, .page-winxp .relearn, .page-winxp .release-adoption, .page-winxp .release-pagination { margin-top: 1rem; padding: 1.5rem; border: 2px solid #2b68c8; border-radius: 12px; background: rgb(245 251 255 / 92%); box-shadow: 0 8px 20px rgb(17 67 134 / 22%); }
+.page-winxp .version-hero, .page-winxp .demo-heading-row, .page-winxp .release-details, .page-winxp .detail-dialog-window, .page-winxp .relearn, .page-winxp .release-adoption, .page-winxp .release-pagination { margin-top: 1rem; padding: 1.5rem; border: 2px solid #2b68c8; border-radius: 12px; background: rgb(245 251 255 / 92%); box-shadow: 0 8px 20px rgb(17 67 134 / 22%); }
 .page-winxp .version-number { color: #3f8f2f; text-shadow: 1px 2px #fff; }
 .page-winxp .detail-grid article { border-color: #a5c5eb; background: #fff; }
 
@@ -931,7 +931,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-vista .wordmark, .page-vista .site-header > p, .page-vista .site-footer a { color: #fff; }
 .page-vista .version-nav a { color: #cfe9f7; }
 .page-vista .version-nav a[aria-current="page"] { border-color: #8de2ff; background: rgb(157 224 250 / 22%); color: #fff; }
-.page-vista .version-hero, .page-vista .demo-heading-row, .page-vista .release-details, .page-vista .relearn, .page-vista .release-adoption, .page-vista .release-pagination { margin-top: 1rem; padding: 1.5rem; border: 1px solid rgb(222 246 255 / 55%); border-radius: 10px; background: rgb(15 44 69 / 62%); box-shadow: 0 18px 35px rgb(0 0 0 / 28%); backdrop-filter: blur(18px); }
+.page-vista .version-hero, .page-vista .demo-heading-row, .page-vista .release-details, .page-vista .detail-dialog-window, .page-vista .relearn, .page-vista .release-adoption, .page-vista .release-pagination { margin-top: 1rem; padding: 1.5rem; border: 1px solid rgb(222 246 255 / 55%); border-radius: 10px; background: rgb(15 44 69 / 62%); box-shadow: 0 18px 35px rgb(0 0 0 / 28%); backdrop-filter: blur(18px); }
 .page-vista .version-headline, .page-vista .version-summary, .page-vista .demo-heading-row > p, .page-vista .detail-grid p { color: #d6e8f4; }
 .page-vista .version-number { color: rgb(177 231 251 / 45%); }
 
@@ -948,7 +948,7 @@ h1, h2, h3 { line-height: 1.05; }
 }
 .page-win7 .site-header, .page-win7 .site-footer, .page-win7 .version-nav { border-color: rgb(255 255 255 / 75%); background: rgb(234 248 255 / 72%); backdrop-filter: blur(14px); }
 .page-win7 .version-nav a[aria-current="page"] { border-color: #1877b8; background: linear-gradient(rgb(255 255 255 / 65%), rgb(100 177 217 / 35%)); color: #064d7e; }
-.page-win7 .version-hero, .page-win7 .demo-heading-row, .page-win7 .release-details, .page-win7 .relearn, .page-win7 .release-adoption, .page-win7 .release-pagination { margin-top: 1rem; padding: 1.5rem; border: 1px solid rgb(255 255 255 / 82%); border-radius: 9px; background: rgb(238 249 255 / 82%); box-shadow: 0 14px 32px rgb(11 55 88 / 24%); backdrop-filter: blur(14px); }
+.page-win7 .version-hero, .page-win7 .demo-heading-row, .page-win7 .release-details, .page-win7 .detail-dialog-window, .page-win7 .relearn, .page-win7 .release-adoption, .page-win7 .release-pagination { margin-top: 1rem; padding: 1.5rem; border: 1px solid rgb(255 255 255 / 82%); border-radius: 9px; background: rgb(238 249 255 / 82%); box-shadow: 0 14px 32px rgb(11 55 88 / 24%); backdrop-filter: blur(14px); }
 
 .page-win8 {
   --paper: #5c2d91;
@@ -966,7 +966,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win8 .version-nav { border: 0; background: #5c2d91; backdrop-filter: none; }
 .page-win8 .version-nav a { color: #e8dff0; }
 .page-win8 .version-nav a[aria-current="page"] { border-color: #fff; background: #0074d0; color: #fff; }
-.page-win8 .version-hero, .page-win8 .demo-heading-row, .page-win8 .release-details, .page-win8 .relearn, .page-win8 .release-adoption, .page-win8 .release-pagination { margin-top: 0; padding: 1.7rem; border: 0; border-radius: 0; background: #5c2d91; }
+.page-win8 .version-hero, .page-win8 .demo-heading-row, .page-win8 .release-details, .page-win8 .detail-dialog-window, .page-win8 .relearn, .page-win8 .release-adoption, .page-win8 .release-pagination { margin-top: 0; padding: 1.7rem; border: 0; border-radius: 0; background: #5c2d91; }
 .page-win8 .version-headline, .page-win8 .version-summary, .page-win8 .demo-heading-row > p, .page-win8 .detail-grid p { color: #fff; }
 .page-win8 .version-number { color: rgb(255 255 255 / 32%); }
 .page-win8 .detail-grid article { border-color: rgb(255 255 255 / 58%); background: #0074d0; }
@@ -987,7 +987,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win10 .wordmark, .page-win10 .site-header > p, .page-win10 .site-footer a { color: #fff; }
 .page-win10 .version-nav a { color: #bdd6e8; }
 .page-win10 .version-nav a[aria-current="page"] { border-color: #48b9f5; background: #086aa6; color: #fff; }
-.page-win10 .version-hero, .page-win10 .demo-heading-row, .page-win10 .release-details, .page-win10 .relearn, .page-win10 .release-adoption, .page-win10 .release-pagination { margin-top: 1px; padding: 1.5rem; border: 1px solid #35536a; border-radius: 0; background: rgb(17 37 53 / 92%); }
+.page-win10 .version-hero, .page-win10 .demo-heading-row, .page-win10 .release-details, .page-win10 .detail-dialog-window, .page-win10 .relearn, .page-win10 .release-adoption, .page-win10 .release-pagination { margin-top: 1px; padding: 1.5rem; border: 1px solid #35536a; border-radius: 0; background: rgb(17 37 53 / 92%); }
 .page-win10 .version-headline, .page-win10 .version-summary, .page-win10 .demo-heading-row > p, .page-win10 .detail-grid p { color: #d2e4f0; }
 .page-win10 .version-number { color: rgb(71 183 243 / 40%); }
 .page-win10 .detail-grid article { background: #172f43; }
@@ -1007,7 +1007,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win11 .version-nav { border-radius: 0 0 12px 12px; }
 .page-win11 .version-nav a { border-radius: 6px; }
 .page-win11 .version-nav a[aria-current="page"] { border-color: #0a70c2; background: rgb(255 255 255 / 78%); box-shadow: 0 3px 10px rgb(34 76 112 / 14%); }
-.page-win11 .version-hero, .page-win11 .demo-heading-row, .page-win11 .release-details, .page-win11 .relearn, .page-win11 .release-adoption, .page-win11 .release-pagination { margin-top: 1rem; padding: 1.6rem; border: 1px solid rgb(255 255 255 / 82%); border-radius: 16px; background: rgb(245 249 252 / 72%); box-shadow: 0 16px 38px rgb(47 72 98 / 13%); backdrop-filter: blur(24px); }
+.page-win11 .version-hero, .page-win11 .demo-heading-row, .page-win11 .release-details, .page-win11 .detail-dialog-window, .page-win11 .relearn, .page-win11 .release-adoption, .page-win11 .release-pagination { margin-top: 1rem; padding: 1.6rem; border: 1px solid rgb(255 255 255 / 82%); border-radius: 16px; background: rgb(245 249 252 / 72%); box-shadow: 0 16px 38px rgb(47 72 98 / 13%); backdrop-filter: blur(24px); }
 .page-win11 .version-number { color: rgb(9 112 193 / 25%); }
 .page-win11 .detail-grid article { border-color: #d4e0e9; border-radius: 8px; background: rgb(255 255 255 / 68%); }
 
@@ -1114,7 +1114,7 @@ h1, h2, h3 { line-height: 1.05; }
 /* Release notes and navigation */
 .release-details { padding-block: clamp(5rem, 10vw, 9rem); }
 .detail-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
-.detail-grid article { min-height: 16rem; padding: 1.2rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.detail-grid article { position: relative; min-height: 16rem; padding: 1.2rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .detail-grid article > span { color: #a2a9b1; font-size: 0.7rem; }
 .detail-grid h3 { margin-top: 4rem; color: var(--accent); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
 .detail-grid p { margin: 0; color: #4f5b68; font-size: 0.94rem; }
@@ -1334,6 +1334,30 @@ h1, h2, h3 { line-height: 1.05; }
   .app-pagination { flex-direction: column; }
   .next-app { text-align: left; }
 }
+
+/* 01-04 open. The trigger is the card's own heading so it carries one
+   accessible name, and ::after stretches the hit area over the whole cell —
+   safe because nothing else in a cell is interactive. */
+.detail-open { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.detail-open::after { position: absolute; inset: 0; content: ""; }
+.detail-open:hover { text-decoration: underline; text-underline-offset: 0.18em; }
+.detail-open:focus-visible { outline: 3px solid currentcolor; outline-offset: 3px; }
+.detail-more { display: block; margin-top: 0.9rem; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.detail-grid article:hover .detail-more, .detail-grid article:focus-within .detail-more { text-decoration: underline; text-underline-offset: 0.2em; }
+
+/* The window takes each era's panel treatment from the twelve shared rules
+   above, so it matches the section it opened from without a palette of its
+   own. Only the dialog chrome is set here. */
+.detail-dialog { width: min(42rem, calc(100% - 2rem)); padding: 0; border: 0; background: none; color: inherit; }
+.detail-dialog::backdrop { background: rgb(2 10 18 / 68%); backdrop-filter: blur(3px); }
+.detail-dialog-window { margin: 0; box-shadow: 0 28px 90px rgb(0 0 0 / 55%); }
+.detail-dialog-window > header { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; margin-bottom: 1.2rem; padding-bottom: 0.8rem; border-bottom: 1px solid color-mix(in srgb, currentcolor 30%, transparent); }
+.detail-dialog-window > header b { font-size: 0.8rem; letter-spacing: 0.08em; }
+.detail-dialog-window > header button { min-width: 2.25rem; min-height: 2.25rem; padding: 0; border: 1px solid currentcolor; background: none; color: inherit; font: inherit; font-size: 1rem; line-height: 1; cursor: pointer; }
+.detail-dialog-window > header button:focus-visible { outline: 3px solid currentcolor; outline-offset: 2px; }
+.detail-dialog-short { margin: 0 0 1rem; font-size: clamp(1.1rem, 2.4vw, 1.5rem); font-weight: 650; line-height: 1.3; letter-spacing: -0.02em; }
+.detail-dialog-long { max-width: 58ch; margin: 0; font-size: 0.95rem; line-height: 1.7; }
+.detail-dialog-source { display: inline-block; margin-top: 1.2rem; color: inherit; font-size: 0.74rem; font-weight: 800; text-underline-offset: 0.2em; }
 
 /* The relearning test. Themed entirely through currentcolor and the era
    tokens, so it inherits each release's palette without a per-era override. */

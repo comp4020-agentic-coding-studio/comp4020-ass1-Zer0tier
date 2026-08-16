@@ -10,11 +10,13 @@ import StartupSound from "../components/StartupSound.astro";
 import { getStartupSound } from "../data/windows-audio";
 import { getWindowsHistory } from "../data/windows-history";
 import { getWindowsMemoryScene } from "../data/windows-memories";
+import { detailFacets, getDetailNote } from "../data/windows-detail";
 import { windowsReleases, type WindowsRelease } from "../data/windows";
 import interactions from "../system-interactions.js?raw";
 import startupSoundInteractions from "../startup-sound.js?raw";
 import memoryCapsuleInteractions from "../memory-capsule.js?raw";
 import relearnInteractions from "../relearn-challenge.js?raw";
+import detailInteractions from "../detail-notes.js?raw";
 import "../styles/global.css";
 
 export function getStaticPaths() {
@@ -35,6 +37,7 @@ const startupSound = getStartupSound(release.id);
 const memoryScene = getWindowsMemoryScene(release.id);
 const releaseHref = (slug: string) => `${base}${slug}/`;
 const cursorHref = `${base}media/cursors/${release.slug}.cur`;
+const detailDialogId = `detail-dialog-${release.id}`;
 ---
 
 <Base title={`${release.name} — Windows Desktop Evolution`} description={`${release.summary} Explore a period-accurate interactive recreation of the ${release.name} desktop.`} bodyClass={`version-page page-${release.id}`} bodyStyle={`--system-cursor: url("${cursorHref}")`}>
@@ -70,11 +73,44 @@ const cursorHref = `${base}media/cursors/${release.slug}.cur`;
     <section id="details" class="release-details" aria-labelledby="details-heading">
       <div class="section-heading"><p class="eyebrow">System notes</p><h2 id="details-heading">What this interface changed</h2></div>
       <div class="detail-grid">
-        <article><span>01</span><h3>Signature interface</h3><p>{release.signature}</p></article>
-        <article><span>02</span><h3>The shift</h3><p>{release.changed}</p></article>
-        <article><span>03</span><h3>The trade-off</h3><p>{release.tradeoff}</p></article>
-        <article><span>04</span><h3>What remained</h3><p>{release.legacy}</p></article>
+        {detailFacets.map(({ facet, number, heading }) => (
+          <article>
+            <span>{number}</span>
+            {/* The control is the card's own heading, so it has one clear
+                accessible name; .detail-open::after stretches the hit area
+                over the card. */}
+            <h3><button
+              class="detail-open"
+              type="button"
+              data-detail-open
+              data-detail-number={number}
+              data-detail-heading={heading}
+              data-detail-short={release[facet]}
+              data-detail-long={getDetailNote(release.id, facet).long}
+              data-detail-source-label={getDetailNote(release.id, facet).source.label}
+              data-detail-source-url={getDetailNote(release.id, facet).source.url}
+              aria-haspopup="dialog"
+              aria-controls={detailDialogId}
+            >{heading}</button></h3>
+            <p>{release[facet]}</p>
+            <b class="detail-more" aria-hidden="true">The long version &rarr;</b>
+          </article>
+        ))}
       </div>
+
+      <dialog class="detail-dialog" id={detailDialogId} data-detail-dialog aria-labelledby={`${detailDialogId}-title`}>
+        <div class="detail-dialog-window">
+          <header>
+            <span><b data-detail-dialog-number></b> <span id={`${detailDialogId}-title`} data-detail-dialog-title>System note</span></span>
+            <button type="button" data-detail-close aria-label="Close">×</button>
+          </header>
+          <div class="detail-dialog-content">
+            <p class="detail-dialog-short" data-detail-dialog-short></p>
+            <p class="detail-dialog-long" data-detail-dialog-long></p>
+            <a class="detail-dialog-source" data-detail-dialog-source href="#" target="_blank" rel="noreferrer">Reference</a>
+          </div>
+        </div>
+      </dialog>
     </section>
 
     <ReleaseStory releaseName={release.name} story={history.story} />
@@ -92,4 +128,5 @@ const cursorHref = `${base}media/cursors/${release.slug}.cur`;
   <script is:inline set:html={startupSoundInteractions} />
   <script is:inline set:html={memoryCapsuleInteractions} />
   <script is:inline set:html={relearnInteractions} />
+  <script is:inline set:html={detailInteractions} />
 </Base>
