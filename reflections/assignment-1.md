@@ -29,9 +29,10 @@ The agent replaced the card page with a single full-screen Windows window that
 changes era as you move through it. It worked because the visitor's action now
 maps onto the idea: moving through the interface *is* moving through time.
 
-What it changed about me is smaller and more uncomfortable. I used to accept
-work once it looked right. Twice here I deleted work that looked right and ran
-— the dynasties prototype, then four finished features — because a measurement
-said they were not carrying the argument. I want to be the developer who builds
-the thing that decides whether the work is good, and then trusts it over my own
-eye.
+This changed my idea of what a useful interaction is. I had been counting them
+— a quiz, playable games, two easter eggs — as if more things to click meant
+more explaining. They did not. An interaction earns its place only when doing
+it teaches the thing the page is about, which is why I deleted four finished,
+passing features and kept the one that asks you to find where Start moved. I
+want to be the developer who asks what an interaction teaches before asking
+whether it works.
