@@ -89,3 +89,28 @@ test("the release switcher fills the desktop with twelve equal edge-to-edge cell
   expect(Math.abs(cells[0].left - trackBox!.x)).toBeLessThanOrEqual(1);
   expect(Math.abs(cells.at(-1)!.right - (trackBox!.x + trackBox!.width))).toBeLessThanOrEqual(1);
 });
+
+test("requested command shortcuts stay on the left without covering desktop icons on a phone", async ({ page }) => {
+  await page.setViewportSize(phone);
+
+  for (const version of ["windows-95", "windows-98", "windows-2000", "windows-7", "windows-10", "windows-11"]) {
+    await page.goto(`./${version}/`);
+    const desktopBox = await page.locator("[data-desktop]").boundingBox();
+    const commandBox = await page.locator("[data-command-open]").boundingBox();
+    const shortcutBoxes = await page.locator(".desktop-shortcuts > button").evaluateAll((items) => items.map((item) => {
+      const box = item.getBoundingClientRect();
+      return { x: box.x, y: box.y, width: box.width, height: box.height };
+    }));
+
+    expect(desktopBox, version).not.toBeNull();
+    expect(commandBox, version).not.toBeNull();
+    expect(commandBox!.x + commandBox!.width / 2, version).toBeLessThan(desktopBox!.x + desktopBox!.width / 2);
+    for (const shortcut of shortcutBoxes) {
+      const overlaps = commandBox!.x < shortcut.x + shortcut.width
+        && commandBox!.x + commandBox!.width > shortcut.x
+        && commandBox!.y < shortcut.y + shortcut.height
+        && commandBox!.y + commandBox!.height > shortcut.y;
+      expect(overlaps, `${version}: command shortcut overlaps a desktop icon`).toBe(false);
+    }
+  }
+});

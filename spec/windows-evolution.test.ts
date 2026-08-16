@@ -49,7 +49,7 @@ describe("Windows Desktop Evolution", () => {
     }
   });
 
-  it("builds a four-application background scene with four accessible time-capsule memories for every release", () => {
+  it("separates four application windows from four readable, accessible period reviews on every release", () => {
     for (const version of versions) {
       const { doc } = releasePages.get(version)!;
       const scene = doc.querySelector("[data-memory-scene]");
@@ -57,6 +57,8 @@ describe("Windows Desktop Evolution", () => {
       const appIcons = [...doc.querySelectorAll(".memory-app-icon")];
       const appDescriptions = [...doc.querySelectorAll(".memory-app-copy > p")];
       const bubbles = [...doc.querySelectorAll<HTMLButtonElement>("[data-memory-bubble]")];
+      const reviews = doc.querySelector("[data-memory-reviews]");
+      const desktop = doc.querySelector(".memory-desktop");
 
       expect(scene, version).not.toBeNull();
       expect(applications, version).toHaveLength(4);
@@ -69,8 +71,11 @@ describe("Windows Desktop Evolution", () => {
       }
       expect(appDescriptions, version).toHaveLength(4);
       expect(appDescriptions.every((description) => (description.textContent?.trim().length || 0) > 35), version).toBe(true);
+      expect(reviews, version).not.toBeNull();
       expect(bubbles, version).toHaveLength(4);
       expect(bubbles.every((bubble) => bubble.type === "button" && bubble.getAttribute("aria-haspopup") === "dialog"), version).toBe(true);
+      expect(bubbles.every((bubble) => reviews?.contains(bubble) && !desktop?.contains(bubble)), version).toBe(true);
+      expect(bubbles.every((bubble) => (bubble.querySelector(".memory-bubble-quote")?.textContent?.trim().length || 0) > 35), version).toBe(true);
       expect(doc.querySelector("[data-memory-dialog]"), version).not.toBeNull();
       expect(scene?.textContent, version).toContain("Typography");
       expect(scene?.textContent, version).toContain("UI styling");

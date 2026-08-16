@@ -19,7 +19,7 @@ const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
       <p class="eyebrow">Desktop time capsule</p>
       <h2 id={`memory-heading-${release.id}`}>The apps everyone knew</h2>
     </div>
-    <p>Four popular programs that made this era feel familiar. See what each one did, then select a drifting memory to hear a period-style voice.</p>
+    <p>Four popular programs that made this era feel familiar, with original icons and a short explanation of what each one did.</p>
   </header>
 
   <div class="memory-desktop" aria-label={`A nostalgic ${release.name} software scene`}>
@@ -52,26 +52,6 @@ const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
       ))}
     </div>
 
-    <div class="memory-bubbles" aria-label="Time capsule memories">
-      {scene.memories.map((memory, index) => (
-        <button
-          class="memory-bubble"
-          type="button"
-          data-memory-bubble
-          data-memory-handle={memory.handle}
-          data-memory-quote={memory.quote}
-          data-memory-context={memory.context}
-          data-memory-index={index + 1}
-          aria-haspopup="dialog"
-          aria-controls={dialogId}
-          aria-label={`Open memory ${index + 1}: ${memory.context}`}
-        >
-          <span aria-hidden="true">“</span>
-          <small>{String(index + 1).padStart(2, "0")}</small>
-        </button>
-      ))}
-    </div>
-
     <div class="memory-desktop-label" aria-hidden="true"><span></span>Popular on {release.name}</div>
   </div>
 
@@ -89,7 +69,38 @@ const appSlug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-")
     </article>
   </div>
 
-  <p class="memory-disclaimer">Time-capsule messages are fictional composites written to reflect common experiences of the period.</p>
+  <section class="memory-reviews" aria-labelledby={`memory-reviews-heading-${release.id}`} data-memory-reviews>
+    <header class="memory-reviews-heading">
+      <div>
+        <p class="eyebrow">User reviews, then</p>
+        <h3 id={`memory-reviews-heading-${release.id}`}>What people said back then</h3>
+      </div>
+      <p>Four period-style reactions to {release.name} and the software around it. Select a review to open it in an era-matched window.</p>
+    </header>
+
+    <div class="memory-bubbles" aria-label={`Period-style reviews of ${release.name}`}>
+      {scene.memories.map((memory, index) => (
+        <button
+          class="memory-bubble"
+          type="button"
+          data-memory-bubble
+          data-memory-handle={memory.handle}
+          data-memory-quote={memory.quote}
+          data-memory-context={memory.context}
+          data-memory-index={index + 1}
+          aria-haspopup="dialog"
+          aria-controls={dialogId}
+          aria-label={`Open full review from ${memory.handle}`}
+        >
+          <span class="memory-bubble-quote">“{memory.quote}”</span>
+          <span class="memory-bubble-context">{memory.context}</span>
+          <small>{memory.handle}</small>
+        </button>
+      ))}
+    </div>
+
+    <p class="memory-disclaimer">These reviews are fictional composites written to reflect common experiences of the period.</p>
+  </section>
 
   <dialog class="memory-dialog" id={dialogId} data-memory-dialog aria-labelledby={`${dialogId}-title`}>
     <div class="memory-dialog-window">
