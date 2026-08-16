@@ -90,6 +90,34 @@ test("the release switcher fills the desktop with twelve equal edge-to-edge cell
   expect(Math.abs(cells.at(-1)!.right - (trackBox!.x + trackBox!.width))).toBeLessThanOrEqual(1);
 });
 
+test("Windows 3.1 and 95 active cells have an uninterrupted navy fill", async ({ page }) => {
+  for (const version of ["windows-3", "windows-95"]) {
+    await page.goto(`./${version}/`);
+    const active = page.locator('[data-version-nav] a[aria-current="page"]');
+    const cell = active.locator("..");
+    const [activeBox, cellBox, paint] = await Promise.all([
+      active.boundingBox(),
+      cell.boundingBox(),
+      active.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          background: style.backgroundColor,
+          borderBottom: style.borderBottomColor,
+          borderRightWidth: style.borderRightWidth,
+        };
+      }),
+    ]);
+
+    expect(activeBox, `${version}: active cell is missing`).not.toBeNull();
+    expect(cellBox, `${version}: timeline cell is missing`).not.toBeNull();
+    expect(Math.abs(activeBox!.x - cellBox!.x), `${version}: blank left edge`).toBeLessThanOrEqual(0.5);
+    expect(Math.abs(activeBox!.width - cellBox!.width), `${version}: blank right edge`).toBeLessThanOrEqual(0.5);
+    expect(paint.background, `${version}: active fill`).toBe("rgb(0, 0, 128)");
+    expect(paint.borderBottom, `${version}: bottom edge should match fill`).toBe(paint.background);
+    expect(paint.borderRightWidth, `${version}: bright inset strip should be removed`).toBe("0px");
+  }
+});
+
 test("requested command shortcuts stay left and yield to overlapping windows on a phone", async ({ page }) => {
   await page.setViewportSize(phone);
 
