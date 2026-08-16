@@ -25,3 +25,25 @@ mise.local.toml
 
 # Astro generates this: type stubs and build info, all reproducible.
 .astro/
+
+# Skill packs that other agent tools unpack into the repo root: 74MB of the
+# same third-party skills copied seventeen times over. They are a tool cache,
+# not authored harness — this project's harness is CLAUDE.md — and committing
+# them would bury the work a marker is here to read.
+.agents/
+.augment/
+.codebuddy/
+.codewhale/
+.continue/
+.cursor/
+.factory/
+.gemini/
+.kilocode/
+.kiro/
+.opencode/
+.qoder/
+.roo/
+.trae/
+.warp/
+.windsurf/
+.github/prompts/
