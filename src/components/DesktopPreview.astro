@@ -12,13 +12,14 @@ const { release, base } = Astro.props;
 const classic = ["win95", "win98", "win2000"].includes(release.id);
 const aero = ["vista", "win7"].includes(release.id);
 const systemAssetStyle = getWindowsSystemAssetStyle(release.id, base);
+const headingId = `demo-heading-${release.id}`;
 ---
 
-<section class:list={["system-demo", `system-${release.id}`]} aria-labelledby="demo-heading">
+<section class:list={["system-demo", `system-${release.id}`]} aria-labelledby={headingId}>
   <div class="demo-heading-row">
     <div>
       <p class="eyebrow">Interactive system recreation</p>
-      <h2 id="demo-heading">The {release.name} desktop</h2>
+      <h2 id={headingId}>The {release.name} desktop</h2>
     </div>
     <p>Open Start, launch the period-correct command prompt, and use the window controls.</p>
   </div>

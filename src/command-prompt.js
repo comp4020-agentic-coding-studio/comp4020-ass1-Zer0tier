@@ -2,6 +2,8 @@
   "use strict";
 
   document.querySelectorAll("[data-command-shell]").forEach(function (shell) {
+    if (shell.dataset.commandEnhanced === "true") return;
+    shell.dataset.commandEnhanced = "true";
     var desktop = shell.closest("[data-desktop]");
     var openButton = shell.querySelector("[data-command-open]");
     var externalOpenButtons = Array.from(desktop.querySelectorAll("[data-command-external-open]"));

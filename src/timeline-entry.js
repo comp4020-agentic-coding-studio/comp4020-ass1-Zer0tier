@@ -185,7 +185,7 @@
     status.textContent = current.dataset.name + " · " + current.dataset.year;
     counter.textContent = String(index + 1).padStart(2, "0");
     enter.href = current.dataset.href;
-    enter.setAttribute("aria-label", "Enter the " + current.dataset.name + " page");
+    enter.setAttribute("aria-label", "Enter the " + current.dataset.name + " section");
     windowElement.setAttribute("aria-label", current.dataset.name + ", " + current.dataset.year);
     selector.style.setProperty("--timeline-offset", (index * 100) + "%");
     steps.forEach(function (step, stepIndex) {

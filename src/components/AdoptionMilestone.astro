@@ -13,6 +13,7 @@ const milestone = getWindowsAdoptionMilestone(release.id);
 const scale = getWindowsAdoptionScale(milestone.valueMillions);
 const share = getMarketShare(release.id);
 const shareScale = share.measured && share.percent !== undefined ? share.percent / 100 : 0;
+const headingId = `adoption-heading-${release.id}`;
 ---
 
 <section
@@ -21,11 +22,11 @@ const shareScale = share.measured && share.percent !== undefined ? share.percent
   data-adoption-value={milestone.valueMillions}
   data-adoption-display={milestone.display}
   style={`--adoption-scale:${scale}; --market-scale:${shareScale}`}
-  aria-labelledby="adoption-heading"
+  aria-labelledby={headingId}
 >
   <div class="release-adoption-heading">
     <p class="eyebrow">Published adoption milestone</p>
-    <h2 id="adoption-heading">Reach and share</h2>
+    <h2 id={headingId}>Reach and share</h2>
   </div>
 
   <div class="adoption-body">

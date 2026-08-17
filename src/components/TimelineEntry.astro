@@ -5,9 +5,10 @@ import { getWindowsAdoptionMilestone, getWindowsAdoptionScale } from "../data/wi
 interface Props {
   releases: WindowsRelease[];
   base: string;
+  explainerHref: string;
 }
 
-const { releases, base } = Astro.props;
+const { releases, base, explainerHref } = Astro.props;
 const titles: Record<string, string> = {
   win1: "MS-DOS Executive",
   win2: "Control Panel",
@@ -24,6 +25,7 @@ const titles: Record<string, string> = {
 };
 const timelineReleases = releases.map((release) => ({ release, adoption: getWindowsAdoptionMilestone(release.id) }));
 const firstAdoption = timelineReleases[0].adoption;
+const releaseHref = (slug: string) => `${explainerHref}#${slug}`;
 ---
 
 <main id="main" class="timeline-entry" data-timeline-entry data-core-interaction="change-version">
@@ -33,7 +35,7 @@ const firstAdoption = timelineReleases[0].adoption;
       <span class="timeline-selector-highlight" data-timeline-highlight aria-hidden="true"></span>
       {timelineReleases.map(({ release }, index) => (
         <a
-          href={`${base}${release.slug}/`}
+          href={releaseHref(release.slug)}
           data-timeline-step
           data-step-index={index}
           data-active={index === 0 ? "true" : "false"}
@@ -62,7 +64,7 @@ const firstAdoption = timelineReleases[0].adoption;
           data-name={release.name}
           data-year={release.year}
           data-title={titles[release.id]}
-          data-href={`${base}${release.slug}/`}
+          data-href={releaseHref(release.slug)}
           data-reach-value={adoption.valueMillions}
           data-reach-display={adoption.display}
           data-reach-period={adoption.period}
@@ -109,6 +111,6 @@ const firstAdoption = timelineReleases[0].adoption;
   </div>
 
   <nav class="timeline-enter-nav" aria-label="Enter the selected Windows release">
-    <a href={`${base}${releases[0].slug}/`} data-timeline-enter aria-label={`Enter the ${releases[0].name} page`}><span class="sr-only">Enter selected Windows release</span></a>
+    <a href={releaseHref(releases[0].slug)} data-timeline-enter aria-label={`Enter the ${releases[0].name} section`}><span class="sr-only">Enter selected Windows release</span></a>
   </nav>
 </main>

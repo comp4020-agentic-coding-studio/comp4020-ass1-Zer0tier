@@ -8,11 +8,12 @@ interface Props {
 }
 
 const { releaseName, contributors, base } = Astro.props;
+const headingId = `contributors-heading-${releaseName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 ---
 
-<section class="contributors" aria-labelledby="contributors-heading">
+<section class="contributors" aria-labelledby={headingId}>
   <div class="section-heading">
-    <div><p class="eyebrow">People behind the release</p><h2 id="contributors-heading">Influential contributors</h2></div>
+    <div><p class="eyebrow">People behind the release</p><h2 id={headingId}>Influential contributors</h2></div>
     <p>Selected people whose product, engineering, creative, or executive work shaped {releaseName}.</p>
   </div>
   <div class="contributor-grid">

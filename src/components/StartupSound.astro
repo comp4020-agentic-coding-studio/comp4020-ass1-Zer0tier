@@ -15,9 +15,9 @@ const src = sound.src ? `${base}${sound.src}` : undefined;
   <span class="sound-glyph" aria-hidden="true">{src ? "◖))" : "◖×"}</span>
   <div>
     <strong>{sound.label}</strong>
-    <p data-sound-status data-state={src ? "loading" : "silent"}>{sound.note}</p>
+    <p data-sound-status data-state={src ? "ready" : "silent"} aria-live="polite">{sound.note}</p>
     <a href={sound.sourceUrl} target="_blank" rel="noreferrer">Sound history<span class="visually-hidden"> for {releaseName}</span></a>
   </div>
   {src && <button type="button" data-sound-play>Play sound</button>}
-  {src && <audio src={src} preload="auto" autoplay data-startup-audio />}
+  {src && <audio src={src} preload="none" data-startup-audio />}
 </aside>

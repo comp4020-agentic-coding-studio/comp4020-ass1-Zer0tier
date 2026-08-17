@@ -6,9 +6,10 @@ import timelineInteractions from "../timeline-entry.js?raw";
 import "../styles/global.css";
 
 const base = import.meta.env.BASE_URL;
+const explainerHref = `${base}windows/`;
 ---
 
-<Base title="Windows Desktop Evolution" description="Scroll through the evolution of Microsoft Windows, then click to enter the selected release." bodyClass="home-page">
-  <TimelineEntry releases={windowsReleases} base={base} />
+<Base title="Windows Desktop Evolution" description="Scroll through the evolution of Microsoft Windows, then enter the selected release in the complete explainer." bodyClass="home-page">
+  <TimelineEntry releases={windowsReleases} base={base} explainerHref={explainerHref} />
   <script is:inline set:html={timelineInteractions} />
 </Base>

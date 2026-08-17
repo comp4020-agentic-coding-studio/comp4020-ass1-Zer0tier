@@ -25,12 +25,13 @@ const previousRelease = previousStep
 const moved = movedThisRelease(release.id);
 const moves = countRelearnMoves();
 const places = countRelearnPlaces();
+const headingId = `relearn-heading-${release.id}`;
 ---
 
-<section class="relearn" data-relearn aria-labelledby="relearn-heading">
+<section class="relearn" data-relearn aria-labelledby={headingId}>
   <div class="relearn-head">
     <p class="eyebrow">The relearning test · place {step.placeIndex} of {places}</p>
-    <h2 id="relearn-heading">{relearnTask}</h2>
+    <h2 id={headingId}>{relearnTask}</h2>
     <p class="relearn-lede" data-relearn-lede>
       The one thing everybody has done on every one of these systems. In forty
       years Microsoft moved it {moves} times.

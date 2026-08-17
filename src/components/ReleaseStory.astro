@@ -7,12 +7,13 @@ interface Props {
 }
 
 const { releaseName, story } = Astro.props;
+const headingId = `story-heading-${releaseName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 ---
 
-<section class="release-story" aria-labelledby="story-heading">
+<section class="release-story" aria-labelledby={headingId}>
   <p class="eyebrow">Field story · {releaseName}</p>
   <div class="story-layout">
-    <h2 id="story-heading">{story.title}</h2>
+    <h2 id={headingId}>{story.title}</h2>
     <div>
       <p>{story.story}</p>
       <a href={story.sourceUrl} target="_blank" rel="noreferrer">Read the record: {story.sourceLabel}<span aria-hidden="true"> ↗</span></a>

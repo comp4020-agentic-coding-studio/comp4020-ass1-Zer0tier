@@ -783,10 +783,6 @@ h1, h2, h3 { line-height: 1.05; }
 }
 
 /* Full-page historical themes */
-.version-page, .version-page a, .version-page button, .version-page input {
-  cursor: var(--system-cursor), default;
-}
-
 .version-page .site-header,
 .version-page .version-nav,
 .version-page .version-hero,
@@ -1646,6 +1642,21 @@ h1, h2, h3 { line-height: 1.05; }
   .command-window { top: 8%; left: 4%; width: 92%; height: 72%; min-width: 0; }
   .command-menu { display: none; }
 }
+
+/* Long-form explainer: each existing release page becomes one themed chapter.
+   The chapter owns its variables and background, so the original era styling
+   remains intact while the document itself scrolls normally. */
+.explainer-page { overflow-x: hidden; background: #111827; }
+.windows-explainer { display: block; }
+.explainer-version { position: relative; min-height: 100svh; overflow-x: clip; padding-bottom: clamp(2.5rem, 6vw, 6rem); background-attachment: local; color: var(--ink); isolation: isolate; }
+.explainer-version:focus { outline: 0; }
+.explainer-version + .explainer-version { border-top: 0.45rem solid rgb(17 24 39 / 82%); }
+.explainer-version .version-content { padding-bottom: clamp(2rem, 5vw, 5rem); }
+.explainer-version .version-hero h2 { margin-bottom: 0.65rem; font-size: clamp(3rem, 7vw, 7rem); letter-spacing: -0.075em; }
+.explainer-version.page-win98 .version-hero h2 { color: #000080; text-shadow: 2px 2px #d4d0c8; }
+.explainer-version .site-footer { animation: none; }
+.explainer-version .version-nav { top: 0; }
+.explainer-version .startup-sound { width: min(calc(100% - (2 * var(--pad))), calc(var(--shell) - (2 * var(--pad)))); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }

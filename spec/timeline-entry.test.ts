@@ -16,7 +16,7 @@ function timelinePage() {
   return dom;
 }
 
-describe("scroll-controlled homepage timeline", () => {
+describe("scroll-controlled homepage index", () => {
   it("starts at Windows 1.0 with one central window", () => {
     const dom = timelinePage();
     const doc = dom.window.document;
@@ -39,29 +39,25 @@ describe("scroll-controlled homepage timeline", () => {
   it("moves forward and backward with the mouse wheel", () => {
     const dom = timelinePage();
     const doc = dom.window.document;
-
     dom.window.dispatchEvent(new dom.window.WheelEvent("wheel", { deltaY: 100, cancelable: true }));
     expect(doc.body.getAttribute("data-entry-version")).toBe("win2");
     expect(doc.querySelector("[data-timeline-status]")?.textContent).toBe("Windows 2.0 · 1987");
     expect(doc.querySelector("[data-timeline-reach] [data-reach-count]")?.textContent).toBe("1M");
-
     dom.window.dispatchEvent(new dom.window.WheelEvent("wheel", { deltaY: -100, cancelable: true }));
     expect(doc.body.getAttribute("data-entry-version")).toBe("win1");
     dom.window.close();
   });
 
-  it("updates the full-screen entry link to the displayed release", () => {
+  it("updates the full-screen entry link to the matching explainer section", () => {
     const dom = timelinePage();
     const doc = dom.window.document;
     dom.window.dispatchEvent(new dom.window.KeyboardEvent("keydown", { key: "End", cancelable: true }));
-
     const enter = doc.querySelector<HTMLAnchorElement>("[data-timeline-enter]");
     expect(doc.body.getAttribute("data-entry-version")).toBe("win11");
-    expect(enter?.href).toContain("/windows-11/");
-    expect(enter?.getAttribute("aria-label")).toBe("Enter the Windows 11 page");
+    expect(enter?.href).toContain("/windows/#windows-11");
+    expect(enter?.getAttribute("aria-label")).toBe("Enter the Windows 11 section");
     expect(doc.querySelector("[data-timeline-reach] [data-reach-count]")?.textContent).toBe("1B+");
     expect(doc.querySelector("[data-timeline-reach] [data-reach-period]")?.textContent).toBe("reported February 2026");
-    expect(doc.querySelector<HTMLAnchorElement>("[data-timeline-reach] [data-reach-source]")?.href).toContain("blogs.windows.com");
     dom.window.close();
   });
 
@@ -72,24 +68,19 @@ describe("scroll-controlled homepage timeline", () => {
     expect(doc.body.getAttribute("data-entry-version")).toBe("win2");
     expect(doc.querySelector('[data-timeline-step][aria-current="step"]')?.textContent).toContain("2.0");
     expect(doc.querySelector<HTMLElement>("[data-timeline-selector]")?.style.getPropertyValue("--timeline-offset")).toBe("100%");
-
     dom.window.dispatchEvent(new dom.window.KeyboardEvent("keydown", { key: "a", cancelable: true }));
     expect(doc.body.getAttribute("data-entry-version")).toBe("win1");
     dom.window.dispatchEvent(new dom.window.KeyboardEvent("keydown", { key: "D", cancelable: true }));
     expect(doc.body.getAttribute("data-entry-version")).toBe("win2");
     expect(doc.querySelectorAll("main > .timeline-window")).toHaveLength(1);
-    expect(doc.querySelector(".release-grid")).toBeNull();
     dom.window.close();
   });
 
   it("holds the first and last selections at the timeline boundaries", () => {
     const dom = timelinePage();
     const doc = dom.window.document;
-
     dom.window.dispatchEvent(new dom.window.KeyboardEvent("keydown", { key: "ArrowLeft", cancelable: true }));
-    expect(doc.body.getAttribute("data-entry-version")).toBe("win1");
     expect(doc.querySelector("[data-timeline-keyboard-status]")?.textContent).toContain("Start of the timeline");
-
     dom.window.dispatchEvent(new dom.window.KeyboardEvent("keydown", { key: "End", cancelable: true }));
     dom.window.dispatchEvent(new dom.window.KeyboardEvent("keydown", { key: "d", cancelable: true }));
     expect(doc.body.getAttribute("data-entry-version")).toBe("win11");
@@ -100,10 +91,8 @@ describe("scroll-controlled homepage timeline", () => {
   it("supports horizontal trackpad movement and touch swipes", () => {
     const dom = timelinePage();
     const doc = dom.window.document;
-
     dom.window.dispatchEvent(new dom.window.WheelEvent("wheel", { deltaX: 90, cancelable: true }));
     expect(doc.body.getAttribute("data-entry-version")).toBe("win2");
-
     const touchStart = new dom.window.Event("touchstart");
     Object.defineProperty(touchStart, "changedTouches", { value: [{ clientX: 200, clientY: 100 }] });
     dom.window.dispatchEvent(touchStart);

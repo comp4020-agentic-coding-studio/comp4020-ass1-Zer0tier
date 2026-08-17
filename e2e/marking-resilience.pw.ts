@@ -36,12 +36,6 @@ test("the timeline has visible keyboard focus and a phone-friendly instruction",
   await expect(page.locator("[data-core-instructions]")).toBeVisible();
   await expect(page.locator("[data-core-instructions]")).toContainText("swipe");
 
-  // This used to measure the instruction against the "DO NOT CLICK" button
-  // specifically, because that button was what covered it on a phone. The
-  // button is gone, but the contract it was standing in for is not: the one
-  // line telling a visitor how to work the page must not be sitting under
-  // anything. Hit-testing its own centre says that about every future overlay,
-  // not just the one that caused the bug.
   const instruction = page.locator("[data-core-instructions]");
   expect(await instruction.boundingBox()).not.toBeNull();
   const covering = await instruction.evaluate((element) => {
@@ -51,13 +45,46 @@ test("the timeline has visible keyboard focus and a phone-friendly instruction",
     if (self === -1) return ["<instruction is not hit-testable at its own centre>"];
     return stack
       .slice(0, self)
-      // Ancestors are above it in the stack by definition, and .timeline-enter-nav
-      // is the deliberate transparent full-viewport overlay that makes "click to
-      // enter" work anywhere on the page. Anything else on top is a bug.
       .filter((node) => !node.contains(element) && !node.closest(".timeline-enter-nav"))
       .map((node) => `${node.tagName.toLowerCase()}.${String(node.className).split(" ")[0]}`);
   });
   expect(covering, "something other than the enter overlay is covering the core instruction").toEqual([]);
+});
+
+test("the explainer keeps all twelve themed releases in one vertical document", async ({ page }) => {
+  await page.setViewportSize(phone);
+  await page.goto("./windows/");
+
+  const sections = page.locator("[data-version-section]");
+  await expect(sections).toHaveCount(12);
+  await expect(sections.first()).toHaveAttribute("id", "windows-1");
+  await expect(sections.last()).toHaveAttribute("id", "windows-11");
+  expect((await sections.last().boundingBox())!.y).toBeGreaterThan((await sections.first().boundingBox())!.y);
+
+  await page.locator('#windows-xp [data-version-nav] a[href$="#windows-xp"]').click();
+  await expect(page).toHaveURL(/\/windows\/#windows-xp$/);
+  await expect(page.locator("#windows-xp")).toBeInViewport();
+  await expect(page.locator("#windows-xp [data-desktop]")).toBeVisible();
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+
+  await page.goto("./windows/#windows-xp");
+  await expect(page.locator("#windows-xp")).toBeInViewport();
+});
+
+test("startup sounds wait for input and every long-page player can take over", async ({ page }) => {
+  await page.goto("./windows/");
+
+  const first = page.locator("#windows-3 [data-startup-sound]");
+  const second = page.locator("#windows-95 [data-startup-sound]");
+  await expect(page.locator('[data-sound-status][data-state="loading"], [data-sound-status][data-state="playing"]')).toHaveCount(0);
+
+  await first.locator("[data-sound-play]").click();
+  await expect(first.locator("[data-sound-status]")).toHaveAttribute("data-state", "playing");
+
+  await second.locator("[data-sound-play]").click();
+  await expect(first.locator("[data-sound-status]")).toHaveAttribute("data-state", "stopped");
+  await expect(second.locator("[data-sound-status]")).toHaveAttribute("data-state", "playing");
+  await expect(second.locator("[data-sound-play]")).toBeEnabled();
 });
 
 // This exists because the first version of the relearning test was silently
@@ -495,9 +522,9 @@ test("static navigation still explains the selected release without JavaScript",
   await page.goto("./");
   await page.locator("[data-timeline-step]").nth(6).click();
 
-  await expect(page).toHaveURL(/\/windows-xp\/$/);
-  await expect(page.getByRole("heading", { level: 1, name: "Windows XP" })).toBeVisible();
-  await expect(page.locator("[data-desktop]")).toBeVisible();
+  await expect(page).toHaveURL(/\/windows\/#windows-xp$/);
+  await expect(page.locator("#windows-xp").getByRole("heading", { level: 2, name: "Windows XP", exact: true })).toBeVisible();
+  await expect(page.locator("#windows-xp [data-desktop]")).toBeVisible();
   await context.close();
 });
 

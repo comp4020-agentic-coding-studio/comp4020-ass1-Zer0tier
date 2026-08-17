@@ -2,6 +2,8 @@
   "use strict";
 
   document.querySelectorAll("[data-adoption-milestone]").forEach(function (section) {
+    if (section.dataset.adoptionEnhanced === "true") return;
+    section.dataset.adoptionEnhanced = "true";
     var count = section.querySelector("[data-adoption-count]");
     var targetValue = Number(section.dataset.adoptionValue);
     var finalDisplay = section.dataset.adoptionDisplay;

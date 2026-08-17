@@ -6,6 +6,8 @@ import { describe, expect, it } from "vitest";
 const versions = ["windows-1", "windows-2", "windows-3", "windows-95", "windows-98", "windows-2000", "windows-xp", "windows-vista", "windows-7", "windows-8", "windows-10", "windows-11"];
 const homeHtml = readFileSync(resolve("dist/index.html"), "utf8");
 const home = new JSDOM(homeHtml).window.document;
+const explainerHtml = readFileSync(resolve("dist", "windows", "index.html"), "utf8");
+const explainer = new JSDOM(explainerHtml).window.document;
 const globalStyles = readFileSync(resolve("src/styles/global.css"), "utf8");
 const releasePages = new Map(versions.map((version) => {
   const html = readFileSync(resolve("dist", version, "index.html"), "utf8");
@@ -17,12 +19,12 @@ describe("Windows Desktop Evolution", () => {
     for (const version of versions) expect(existsSync(resolve("dist", version, "index.html")), version).toBe(true);
   });
 
-  it("places all twelve releases in the scroll-controlled homepage timeline", () => {
+  it("keeps the homepage as the original scroll-controlled index", () => {
     const scenes = [...home.querySelectorAll<HTMLElement>("[data-timeline-scene]")];
     expect(scenes).toHaveLength(versions.length);
-    expect(scenes.every((scene, index) => scene.getAttribute("data-href")?.endsWith(`/${versions[index]}/`))).toBe(true);
-    expect(home.querySelector("[data-timeline-enter]")?.getAttribute("href")?.endsWith("/windows-1/")).toBe(true);
-    expect(home.querySelector(".timeline-window")).not.toBeNull();
+    expect(scenes.every((scene, index) => scene.getAttribute("data-href")?.endsWith(`/windows/#${versions[index]}`))).toBe(true);
+    expect(home.querySelector("[data-timeline-enter]")?.getAttribute("href")?.endsWith("/windows/#windows-1")).toBe(true);
+    expect(home.querySelectorAll(".timeline-window")).toHaveLength(1);
     expect(home.querySelector(".timeline-system-preview")).not.toBeNull();
   });
 
@@ -35,6 +37,22 @@ describe("Windows Desktop Evolution", () => {
       expect(theme?.[1], id).toContain("--selector-accent");
       expect(theme?.[1], id).toContain("--selector-font");
     }
+  });
+
+  it("places every complete themed release in one top-to-bottom explainer", () => {
+    const sections = [...explainer.querySelectorAll<HTMLElement>("[data-version-section]")];
+    expect(sections).toHaveLength(versions.length);
+    expect(sections.map((section) => section.id)).toEqual(versions);
+    for (const [index, section] of sections.entries()) {
+      expect(section.classList.contains(`page-${["win1", "win2", "win3", "win95", "win98", "win2000", "winxp", "vista", "win7", "win8", "win10", "win11"][index]}`)).toBe(true);
+      expect(section.querySelector(".desktop"), versions[index]).not.toBeNull();
+      expect(section.querySelector(".release-details"), versions[index]).not.toBeNull();
+      expect(section.querySelector("[data-history-book]"), versions[index]).not.toBeNull();
+      expect(section.querySelector("[data-memory-scene]"), versions[index]).not.toBeNull();
+      expect(section.querySelector("[data-adoption-milestone]"), versions[index]).not.toBeNull();
+    }
+    const ids = [...explainer.querySelectorAll<HTMLElement>("[id]")].map((element) => element.id);
+    expect(new Set(ids).size).toBe(ids.length);
   });
 
   it("renders a period-specific system recreation on every release page", () => {
@@ -88,16 +106,16 @@ describe("Windows Desktop Evolution", () => {
     }
   });
 
-  it("gives every release page its own full-page theme and system cursor", () => {
+  it("gives every release page its own full-page theme without replacing the browser cursor", () => {
     const themeIds = ["win1", "win2", "win3", "win95", "win98", "win2000", "winxp", "vista", "win7", "win8", "win10", "win11"];
     for (const [index, version] of versions.entries()) {
       const { html, doc } = releasePages.get(version)!;
       expect(doc.body.classList.contains(`page-${themeIds[index]}`), version).toBe(true);
       expect(html, version).toContain(`.page-${themeIds[index]}`);
-      expect(doc.body.getAttribute("style"), version).toContain(`--system-cursor: url("/comp4020-ass1-Zer0tier/media/cursors/${version}.cur")`);
+      expect(doc.body.getAttribute("style") ?? "", version).not.toContain("--system-cursor");
       expect(html, version).not.toContain("data:image/svg+xml");
-      expect(existsSync(resolve("public", "media", "cursors", `${version}.cur`)), version).toBe(true);
     }
+    expect(explainerHtml).not.toContain("--system-cursor");
   });
 
   it("packages modern Windows pointers as a single normal-size cursor frame", () => {
