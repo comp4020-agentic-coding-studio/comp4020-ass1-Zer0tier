@@ -1,34 +1,47 @@
-# Breakthrough: turning the thesis into a rendered-height gate
+# Breakthrough: turning the thesis into a measurable rule
 
-Before this breakthrough, I directed the agent component by component. A quiz,
-games, easter eggs, historical notes, and desktop recreations each looked
-relevant when reviewed alone. The prototype was interactive, but the interaction
-was drifting into a Windows museum. Measuring the Windows XP page at the phone
-width exposed the problem: only **28%** of its substantive rendered height
-actually explained the claim that redesign makes people relearn familiar
-actions.
+## Before
 
-![The earlier, feature-heavy release page.](assets/assignment-1-before.png)
+I directed the agent component by component. The quiz, games, easter eggs,
+history, and desktop recreations each seemed relevant when viewed alone.
+Together, however, they made the prototype feel like a Windows museum. The
+lesson was unclear.
 
-The specific change was a harness rule, not a request for “more content.” I
-added an acceptance gate to `CLAUDE.md` and Playwright: at 390×844, the test
-finds the ten substantive sections in every release, measures their real browser
-heights, requires each to contain substantial version-specific relearning
-evidence, and rejects any chapter below 90%. I deleted four completed mechanics,
-then reframed the desktop, Start challenge, adoption data, history, applications,
-reviews, system notes, story, and contributors around one learned habit. All
-twelve chapters now measure 100%.
+A phone-width measurement exposed the problem: only **28%** of the substantive
+rendered height supported the claim that redesign
+makes people relearn familiar actions.
+
+![Before: the feature-heavy release page.](assets/assignment-1-before.png)
+
+## The change
+
+The breakthrough was a harness rule, not a request for “more educational
+content.” I added an acceptance gate to `CLAUDE.md` and Playwright. At
+390×844, the test:
+
+- finds the ten substantive sections in every release;
+- measures their actual browser height;
+- requires version-specific relearning evidence in each section; and
+- rejects any chapter below 90% coverage.
+
+I then deleted four finished mechanics. I reframed the desktop, Start challenge,
+adoption data, history, applications, reviews, system notes, story, and
+contributors around one learned habit: where to start a program.
+
+## After
+
+All twelve chapters now measure 100%. The homepage remains a focused index, and
+the releases form one top-to-bottom explainer. W/S moves between chapters, while
+sound plays only after a deliberate click.
 
 ![After: the desktop changing across the focused Windows explainer.](assets/assignment-1-after-animation.gif)
 
-That gate worked because it changed what the agent had to satisfy. “Make it more
-educational” invites another section; a rendered ratio makes dilution fail. It
-also guided later decisions: the homepage stayed an index, the releases became
-one top-to-bottom explainer, W/S moves between chapters, and sound waits for a
-deliberate click. Browser checks now cover the interaction, resize, layout,
-contrast, and competing audio players.
+## Why it worked
 
-This changed the developer I want to be. I no longer equate more mechanics with
-more engagement. I want to state the lesson, measure whether the visitor
-encounters it, delete attractive work that weakens it, and preserve every
-important correction as a constraint the next version must pass.
+“Make it more educational” could have produced another unrelated section. The
+rendered-height gate made dilution fail. It gave the agent a clear standard and
+gave me evidence for what to keep or remove.
+
+This changed how I want to work. More mechanics do not guarantee engagement. I
+want to state the lesson, measure whether visitors encounter it, remove work
+that weakens it, and preserve each important correction as a test.

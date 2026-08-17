@@ -2,72 +2,80 @@
 
 ## What I built
 
-Windows Desktop Evolution argues that interface progress has a human cost:
-every redesign asks a larger public to relearn the same machine. The homepage
-remains a compact index. Changing its selected release updates one desktop,
-date, reach figure, source, and destination together. Entering it opens twelve
-complete, era-themed chapters in one vertical explainer from Windows 1.0 to
-Windows 11. Each chapter asks the visitor to find where programs start.
+Windows Desktop Evolution makes one argument: interface progress carries a
+learning cost. The homepage is a compact index. Changing its selected release
+updates one desktop, date, reach figure, source, and destination. Entering the
+index opens twelve era-themed chapters in one vertical explainer, from Windows
+1.0 to Windows 11. Every chapter asks the visitor to repeat one familiar task:
+start a program.
 
 ## The moments that mattered
 
-### 1. I measured the thesis, then deleted working features
+### 1. I measured the thesis and deleted finished work
 
-I first made a Chinese-dynasties wiki, then moved it to `legacy/` when I could
-not name one explanatory interaction. The replacement accepted a single data
-model for twelve Windows releases
+**Before:** I built a Chinese-dynasties wiki, but could not name one interaction
+that explained its argument. I moved it to `legacy/` and replaced it with a
+single data model that generated twelve Windows releases
 ([`58bb221`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/58bb221)).
 
-Scope drift returned as a quiz, games, and easter eggs. Polishing them was the
-obvious response because they worked. Instead, I measured every top-level
-section at 390px: only **28%** of the rendered page supported the relearning
-claim. I removed four finished mechanics and wrote the rule into `CLAUDE.md`
+The new prototype also drifted. A quiz, games, and easter eggs all worked, yet
+they weakened the central idea.
+
+**Change:** Instead of polishing those features, I measured every top-level
+section at the 390px phone width. Only **28%** of the rendered page supported
+the relearning claim. I removed four completed mechanics and added the rule to
+`CLAUDE.md`
 ([`72147c8`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/72147c8)).
 
-The final correction made that judgement executable. Every chapter now frames
-all ten substantive sections around the same learned habit. Playwright sums
-their rendered heights at 390×844, requires substantial version-specific
-evidence in each, and fails below 90%. The measured result is 100% in all twelve
-chapters
+**Proof:** Playwright now measures the ten substantive sections in every
+chapter at 390×844. Each section must contain version-specific relearning
+evidence, and each chapter must reach 90% coverage. All twelve currently measure
+100%
 ([`58fc0b7`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/58fc0b7)).
 
-### 2. I changed the interaction contract, not the visual treatment
+### 2. I changed the interaction contract
 
-Twelve polished cards let visitors select and read, but did not make change
-felt. I replaced them with one stateful desktop: wheel, arrows or A/D, swipe,
-and the rail must change the interface and its evidence together. Tests named
-that contract before I accepted the animation
+**Before:** Twelve polished cards allowed selection, but visitors only opened a
+version and read about it. The interface described change without making change
+felt.
+
+**Change:** I replaced the catalogue with one stateful desktop. Wheel, arrow or
+A/D keys, swipe, and the release rail must update the interface and its evidence
+together. I defined this state transition in tests before accepting the
+animation
 ([`9aa6e9b`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/9aa6e9b)).
 
-Later, I kept that homepage unchanged as the index and joined the full releases
-into one chronological document with direct hash routes
+I later kept that homepage unchanged as the index and joined the detailed
+releases into one chronological document
 ([`f0a1c11`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/f0a1c11)).
-The latest keyboard route adds W/S previous/next movement only there, advertises
-it in each chapter header, updates the hash, and ignores form fields
+On that long page only, W and S move to the previous or next chapter, update the
+URL hash, and ignore form inputs
 ([`4a9ec33`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/4a9ec33)).
 
-### 3. I stopped accepting DOM-shaped evidence
+### 3. I replaced DOM checks with browser evidence
 
-The relearning answer was dead on nine releases because Start buttons stopped
-event propagation. jsdom saw valid markup and listeners. A browser test instead
-clicks the real answer, requires the result, and then proves the Start menu
-still opens
+**Failure:** The relearning answer did nothing on nine releases because Start
+buttons stopped event propagation. jsdom still reported valid markup and
+listeners.
+
+**Correction:** A Playwright test now clicks the real answer, checks the result,
+and confirms that the Start menu still opens
 ([`8429cd5`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/8429cd5)).
 
-I extended that harness to the failures visible only after rendering: empty
-layout columns, overlapping adoption figures, wide meters, phone overflow, and
-contrast. The final test measures box geometry at both marking viewports and
-runs axe across all twelve standalone releases at both sizes. That correction
-also removed “about” from measured share, restricted displayed portraits and
-profile links to Wikipedia/Wikimedia, and fixed Joe Belfiore's crop
+I expanded that browser harness to measure empty columns, adoption-bar overlap,
+phone overflow, and accessibility at both marking viewports. Axe also checks all
+twelve standalone releases at both sizes. These checks guided the tighter
+section layouts, smaller adoption figures, Wikipedia/Wikimedia portrait rule,
+and corrected Joe Belfiore crop
 ([`4a9ec33`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/4a9ec33)).
 
 ### 4. A loading bug became a slow-connection rule
 
-Ten WAV files originally preloaded and one attempted autoplay. The first player
-worked; later controls could remain at “Loading”. Retrying could not fix shared
-media state. I removed autoplay, set `preload="none"`, kept loading cancellable,
-and made one controller stop the previous sound. The browser test starts
-Windows 3.1, switches to 95, and requires both state transitions. The same
-commit restores the normal browser cursor
+**Failure:** Ten WAV files preloaded at once and one attempted autoplay. The
+first player worked, while later controls could remain stuck at “Loading”.
+
+**Correction:** Audio now uses `preload="none"`, never autoplays, and stays
+cancellable while loading. Starting a new sound stops the previous one. The
+browser test plays Windows 3.1, switches to Windows 95, and requires both state
+changes. The same change restores the normal browser cursor
 ([`f0a1c11`](https://github.com/comp4020-agentic-coding-studio/comp4020-ass1-Zer0tier/commit/f0a1c11)).
