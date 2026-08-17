@@ -452,7 +452,20 @@ failure this rule exists for.
   instruction visible at both marking viewports.
 - Every visible addition must support the single claim that each Windows
   redesign made a larger public relearn the same machine. Do not add a new
-  mechanic merely as decoration.
+  mechanic merely as decoration. At 390×844, at least **90%** of each
+  chapter's substantive rendered height must carry `data-relearning-content`
+  and contain at least 80 characters of version-specific
+  `data-relearning-evidence`. The browser test defines the ten-section
+  denominator; navigation and decorative gaps never count as content.
+- The long `/windows/` explainer alone uses W for the previous chapter and S
+  for the next. Show that instruction inside every chapter header, update the
+  hash with the move, and never intercept keys typed into form controls.
+- Rendered layout is a contract: Start a program and Reach and share must fill
+  their panels without vacant columns; adoption figures must not overlap bars,
+  and both bars stay slim and long at 1920×1080 and 390×844.
+- Every displayed contributor portrait and profile link must come from
+  Wikipedia/Wikimedia. Run axe across all twelve release pages at both marking
+  viewports; serious or critical WCAG A/AA findings block shipping.
 - Before shipping, run `pnpm check`, `pnpm check:browser`, `pnpm
   check:evidence`, and `pnpm check:links`. The browser suite is the authority for
   1920×1080, 390×844, keyboard focus, desktop-to-phone resize, no-JavaScript
