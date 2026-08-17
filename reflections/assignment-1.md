@@ -19,7 +19,7 @@ then reframed the desktop, Start challenge, adoption data, history, applications
 reviews, system notes, story, and contributors around one learned habit. All
 twelve chapters now measure 100%.
 
-![The focused, continuous Windows explainer.](assets/assignment-1-after.png)
+![After: the desktop changing across the focused Windows explainer.](assets/assignment-1-after-animation.gif)
 
 That gate worked because it changed what the agent had to satisfy. “Make it more
 educational” invites another section; a rendered ratio makes dilution fail. It
