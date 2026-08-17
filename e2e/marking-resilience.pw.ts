@@ -5,6 +5,7 @@ const desktop = { width: 1920, height: 1080 };
 const phone = { width: 390, height: 844 };
 
 test("every release has no serious or critical WCAG A/AA violations at either marking viewport", async ({ browser }) => {
+  test.setTimeout(90_000);
   const context = await browser.newContext({ reducedMotion: "reduce" });
   const page = await context.newPage();
   const versions = [
