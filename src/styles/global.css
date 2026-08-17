@@ -298,6 +298,18 @@ h1, h2, h3 { line-height: 1.05; }
 .demo-heading-row { display: flex; justify-content: space-between; gap: 2rem; align-items: end; margin-bottom: 1.1rem; }
 .demo-heading-row h2 { margin: 0; font-size: clamp(1.8rem, 4vw, 3.4rem); letter-spacing: -0.05em; }
 .demo-heading-row > p { max-width: 23rem; margin: 0; color: var(--muted); font-size: 0.85rem; }
+
+/* A visible, measurable thesis thread through every substantive chapter.
+   Each block says how that section changes the same baseline task rather than
+   introducing another mechanic. */
+.relearning-evidence { display: grid; gap: 0.35rem; padding: 0.9rem 1rem; border: 1px solid color-mix(in srgb, currentcolor 32%, transparent); background: color-mix(in srgb, currentcolor 7%, transparent); color: inherit; }
+.relearning-evidence > b { font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.relearning-evidence > p { max-width: 76ch; margin: 0; color: inherit; font-size: 0.78rem; line-height: 1.6; }
+.version-hero > .relearning-evidence { grid-column: 1 / -1; }
+.system-demo > .relearning-evidence, .memory-scene > .relearning-evidence, .release-details > .relearning-evidence { margin-bottom: 1.2rem; }
+.startup-sound > .relearning-evidence { grid-column: 1 / -1; }
+.release-adoption .relearning-evidence { grid-column: 1 / -1; }
+.release-story > .relearning-evidence, .contributors > .relearning-evidence { margin-top: 1.2rem; }
 .desktop { position: relative; min-height: clamp(32rem, 56vw, 47rem); overflow: hidden; border: 1px solid rgb(14 25 42 / 22%); border-radius: 10px; box-shadow: 0 28px 70px rgb(25 35 50 / 20%); isolation: isolate; }
 .desktop button { min-width: 0; }
 .desktop [data-window] { transition: inset 180ms ease, width 180ms ease, height 180ms ease; }
@@ -1522,6 +1534,14 @@ h1, h2, h3 { line-height: 1.05; }
 .relearn p { margin: 0; }
 .relearn-answer, .relearn-ask { max-width: 52ch; font-size: 0.92rem; line-height: 1.65; }
 .relearn-answer b { font-weight: 750; }
+.relearn-trace { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid color-mix(in srgb, currentcolor 34%, transparent); border-left: 1px solid color-mix(in srgb, currentcolor 34%, transparent); }
+.relearn-trace article { min-width: 0; padding: 1rem; border-right: 1px solid color-mix(in srgb, currentcolor 34%, transparent); border-bottom: 1px solid color-mix(in srgb, currentcolor 34%, transparent); }
+.relearn-trace span { display: block; margin-bottom: 0.6rem; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.relearn-trace b { display: block; margin-bottom: 0.45rem; font-size: 0.92rem; }
+.relearn-trace p { font-size: 0.76rem; line-height: 1.55; }
+@media (width < 42rem) {
+  .relearn-trace { grid-template-columns: 1fr; }
+}
 .relearn-status { min-height: 1.4rem; font-size: 0.88rem; font-weight: 650; line-height: 1.5; }
 .relearn-moved { max-width: 52ch; padding-top: 0.8rem; border-top: 1px solid color-mix(in srgb, currentcolor 28%, transparent); font-size: 0.82rem; line-height: 1.6; }
 .relearn-reveal { justify-self: start; min-height: 2.75rem; padding: 0.6rem 1.1rem; border: 1px solid currentcolor; background: transparent; color: inherit; font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; }

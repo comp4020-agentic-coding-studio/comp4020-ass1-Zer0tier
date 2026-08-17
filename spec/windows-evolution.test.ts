@@ -55,6 +55,22 @@ describe("Windows Desktop Evolution", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
+  it("frames every substantive section as evidence of what users had to relearn", () => {
+    for (const version of versions) {
+      const chapter = explainer.querySelector<HTMLElement>(`#${version}`)!;
+      const sections = [...chapter.querySelectorAll<HTMLElement>(
+        ":scope > .startup-sound, :scope > .version-content > section",
+      )];
+
+      expect(sections, version).toHaveLength(10);
+      expect(sections.every((section) => section.hasAttribute("data-relearning-content")), version).toBe(true);
+      expect(sections.every((section) => {
+        const evidence = section.querySelector<HTMLElement>("[data-relearning-evidence]");
+        return (evidence?.textContent?.trim().length ?? 0) >= 80;
+      }), version).toBe(true);
+    }
+  });
+
   it("renders a period-specific system recreation on every release page", () => {
     for (const version of versions) {
       const { doc } = releasePages.get(version)!;

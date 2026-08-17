@@ -5,6 +5,7 @@ import DesktopPreview from "./DesktopPreview.astro";
 import HistoryBook from "./HistoryBook.astro";
 import MemoryScene from "./MemoryScene.astro";
 import RelearnChallenge from "./RelearnChallenge.astro";
+import RelearningEvidence from "./RelearningEvidence.astro";
 import ReleaseStory from "./ReleaseStory.astro";
 import StartupSound from "./StartupSound.astro";
 import { getStartupSound } from "../data/windows-audio";
@@ -51,13 +52,14 @@ const detailDialogId = `detail-dialog-${release.id}`;
     </ol>
   </nav>
 
-  <StartupSound releaseName={release.name} sound={startupSound} base={base} />
+  <StartupSound release={release} sound={startupSound} base={base} />
 
   <div class="shell version-content">
-    <section class="version-hero" aria-labelledby={versionTitleId}>
+    <section class="version-hero" data-relearning-content aria-labelledby={versionTitleId}>
       <div class="version-number" aria-hidden="true">{release.shortName}</div>
       <div><p class="eyebrow">{release.year} · {release.era}</p><h2 id={versionTitleId}>{release.name}</h2><p class="version-headline">{release.headline}</p></div>
       <p class="version-summary">{release.summary}</p>
+      <RelearningEvidence release={release} context="overview" />
     </section>
 
     <DesktopPreview release={release} base={base} />
@@ -66,8 +68,9 @@ const detailDialogId = `detail-dialog-${release.id}`;
     <HistoryBook release={release} />
     <MemoryScene release={release} scene={memoryScene} base={base} />
 
-    <section id={`details-${release.id}`} class="release-details" aria-labelledby={detailsHeadingId}>
+    <section id={`details-${release.id}`} class="release-details" data-relearning-content aria-labelledby={detailsHeadingId}>
       <div class="section-heading"><p class="eyebrow">System notes</p><h2 id={detailsHeadingId}>What this interface changed</h2></div>
+      <RelearningEvidence release={release} context="details" />
       <div class="detail-grid">
         {detailFacets.map(({ facet, number, heading }) => (
           <article>
@@ -106,8 +109,8 @@ const detailDialogId = `detail-dialog-${release.id}`;
       </dialog>
     </section>
 
-    <ReleaseStory releaseName={release.name} story={history.story} />
-    <Contributors releaseName={release.name} contributors={history.contributors} base={base} />
+    <ReleaseStory release={release} story={history.story} />
+    <Contributors release={release} contributors={history.contributors} base={base} />
 
     <nav class="release-pagination" aria-label={`Adjacent sections from ${release.name}`}>
       {previous ? <a class="previous-release" href={sectionHref(previous.slug)}><span>← Previous</span><b>{previous.name}</b></a> : <a class="previous-release" href={base}><span>Return to</span><b>Index</b></a>}

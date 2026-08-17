@@ -3,7 +3,13 @@ import { resolve } from "node:path";
 import { JSDOM } from "jsdom";
 import { beforeAll, describe, expect, it } from "vitest";
 import { windowsReleases } from "../src/data/windows";
-import { countRelearnMoves, countRelearnPlaces, relearnSteps } from "../src/data/windows-relearn";
+import {
+  countRelearnMoves,
+  countRelearnPlaces,
+  getNextRelearnMove,
+  getRelearnRun,
+  relearnSteps,
+} from "../src/data/windows-relearn";
 
 const pages = new Map<string, Document>();
 
@@ -76,6 +82,13 @@ describe("the relearning test", () => {
     expect(index("vista")).toBe(index("win7"));
     expect(index("win7")).not.toBe(index("win8"));
     expect(index("win10")).not.toBe(index("win11"));
+  });
+
+  it("explains how long a learned place survives and where it moves next", () => {
+    expect(getRelearnRun("win95").map((step) => step.id)).toEqual(["win95", "win98", "win2000"]);
+    expect(getNextRelearnMove("win95")?.id).toBe("winxp");
+    expect(getRelearnRun("win8").map((step) => step.id)).toEqual(["win8"]);
+    expect(getNextRelearnMove("win11")).toBeUndefined();
   });
 
   it("renders the headline count that the data derives", () => {

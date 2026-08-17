@@ -3,7 +3,9 @@ import type { WindowsRelease } from "../data/windows";
 import {
   countRelearnMoves,
   countRelearnPlaces,
+  getNextRelearnMove,
   getPreviousRelearnStep,
+  getRelearnRun,
   getRelearnStep,
   movedThisRelease,
   relearnTask,
@@ -25,10 +27,15 @@ const previousRelease = previousStep
 const moved = movedThisRelease(release.id);
 const moves = countRelearnMoves();
 const places = countRelearnPlaces();
+const run = getRelearnRun(release.id);
+const nextMove = getNextRelearnMove(release.id);
+const nextMoveRelease = nextMove
+  ? windowsReleases.find((item) => item.id === nextMove.id)
+  : undefined;
 const headingId = `relearn-heading-${release.id}`;
 ---
 
-<section class="relearn" data-relearn aria-labelledby={headingId}>
+<section class="relearn" data-relearn data-relearning-content aria-labelledby={headingId}>
   <div class="relearn-head">
     <p class="eyebrow">The relearning test · place {step.placeIndex} of {places}</p>
     <h2 id={headingId}>{relearnTask}</h2>
@@ -45,6 +52,24 @@ const headingId = `relearn-heading-${release.id}`;
   <p class="relearn-answer" data-relearn-answer>
     In {release.name} you start a program from <b>{step.place}</b>. {step.detail}
   </p>
+
+  <div class="relearn-trace" data-relearn-explanation data-relearning-evidence>
+    <article>
+      <span>Expectation brought in</span>
+      <b>{previousStep ? previousStep.place : "No earlier Windows rule"}</b>
+      <p>{previousStep ? (moved ? "That learned location failed in this release." : "That learned location still worked.") : "Windows 1.0 established the first rule."}</p>
+    </article>
+    <article>
+      <span>Rule learned here</span>
+      <b>{step.place}</b>
+      <p>{step.detail}</p>
+    </article>
+    <article>
+      <span>How long it held</span>
+      <b>{run.length} release{run.length === 1 ? "" : "s"}</b>
+      <p>{nextMove && nextMoveRelease ? `${nextMoveRelease.name} moved the task to ${nextMove.place}.` : "This is the final location in the timeline."}</p>
+    </article>
+  </div>
 
   <p class="relearn-ask" data-relearn-ask hidden>
     Click or tap where you would do it on the {release.name} desktop above —

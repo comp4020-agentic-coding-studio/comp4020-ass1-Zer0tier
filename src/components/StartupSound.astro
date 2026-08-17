@@ -1,17 +1,20 @@
 ---
 import type { StartupSound } from "../data/windows-audio";
+import type { WindowsRelease } from "../data/windows";
+import RelearningEvidence from "./RelearningEvidence.astro";
 
 interface Props {
-  releaseName: string;
+  release: WindowsRelease;
   sound: StartupSound;
   base: string;
 }
 
-const { releaseName, sound, base } = Astro.props;
+const { release, sound, base } = Astro.props;
+const releaseName = release.name;
 const src = sound.src ? `${base}${sound.src}` : undefined;
 ---
 
-<aside class="startup-sound" data-startup-sound data-silent={src ? undefined : "true"} aria-label={`${releaseName} startup sound`}>
+<aside class="startup-sound" data-startup-sound data-silent={src ? undefined : "true"} data-relearning-content aria-label={`${releaseName} startup sound`}>
   <span class="sound-glyph" aria-hidden="true">{src ? "◖))" : "◖×"}</span>
   <div>
     <strong>{sound.label}</strong>
@@ -20,4 +23,5 @@ const src = sound.src ? `${base}${sound.src}` : undefined;
   </div>
   {src && <button type="button" data-sound-play>Play sound</button>}
   {src && <audio src={src} preload="none" data-startup-audio />}
+  <RelearningEvidence release={release} context="sound" />
 </aside>

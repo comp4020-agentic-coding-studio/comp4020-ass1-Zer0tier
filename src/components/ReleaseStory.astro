@@ -1,16 +1,19 @@
 ---
 import type { ReleaseStory } from "../data/windows-history";
+import type { WindowsRelease } from "../data/windows";
+import RelearningEvidence from "./RelearningEvidence.astro";
 
 interface Props {
-  releaseName: string;
+  release: WindowsRelease;
   story: ReleaseStory;
 }
 
-const { releaseName, story } = Astro.props;
+const { release, story } = Astro.props;
+const releaseName = release.name;
 const headingId = `story-heading-${releaseName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 ---
 
-<section class="release-story" aria-labelledby={headingId}>
+<section class="release-story" data-relearning-content aria-labelledby={headingId}>
   <p class="eyebrow">Field story · {releaseName}</p>
   <div class="story-layout">
     <h2 id={headingId}>{story.title}</h2>
@@ -19,4 +22,5 @@ const headingId = `story-heading-${releaseName.toLowerCase().replace(/[^a-z0-9]+
       <a href={story.sourceUrl} target="_blank" rel="noreferrer">Read the record: {story.sourceLabel}<span aria-hidden="true"> ↗</span></a>
     </div>
   </div>
+  <RelearningEvidence release={release} context="story" />
 </section>

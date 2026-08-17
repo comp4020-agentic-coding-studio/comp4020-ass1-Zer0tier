@@ -1,6 +1,7 @@
 ---
 import type { WindowsRelease } from "../data/windows";
 import { getHistoryBook } from "../data/windows-history-book";
+import RelearningEvidence from "./RelearningEvidence.astro";
 
 interface Props {
   release: WindowsRelease;
@@ -14,7 +15,7 @@ const spreads = Math.ceil(book.pages.length / 2);
 {/* All six pages are rendered, in order, as ordinary prose. With no script
     that is exactly what a visitor gets: a readable history, no controls, no
     empty book. history-book.js folds it into spreads and turns the leaves. */}
-<section class="history" data-history-book aria-labelledby={`history-heading-${release.id}`}>
+<section class="history" data-history-book data-relearning-content aria-labelledby={`history-heading-${release.id}`}>
   <div class="history-heading">
     <p class="eyebrow">History · {book.pages.length} pages</p>
     <h2 id={`history-heading-${release.id}`}>How {release.name} happened</h2>
@@ -22,6 +23,8 @@ const spreads = Math.ceil(book.pages.length / 2);
       Six pages on the making of this release, and what it cost.
     </p>
   </div>
+
+  <RelearningEvidence release={release} context="history" />
 
   <div class="book" data-book data-book-spreads={spreads}>
     <div class="book-spine" aria-hidden="true"></div>

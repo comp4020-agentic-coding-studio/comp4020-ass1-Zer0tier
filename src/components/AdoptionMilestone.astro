@@ -3,6 +3,7 @@ import type { WindowsRelease } from "../data/windows";
 import { getWindowsAdoptionMilestone, getWindowsAdoptionScale } from "../data/windows-adoption";
 import { getMarketShare } from "../data/windows-market-share";
 import adoptionInteractions from "../adoption-milestone.js?raw";
+import RelearningEvidence from "./RelearningEvidence.astro";
 
 interface Props {
   release: WindowsRelease;
@@ -19,6 +20,7 @@ const headingId = `adoption-heading-${release.id}`;
 <section
   class="release-adoption"
   data-adoption-milestone
+  data-relearning-content
   data-adoption-value={milestone.valueMillions}
   data-adoption-display={milestone.display}
   style={`--adoption-scale:${scale}; --market-scale:${shareScale}`}
@@ -30,6 +32,7 @@ const headingId = `adoption-heading-${release.id}`;
   </div>
 
   <div class="adoption-body">
+    <RelearningEvidence release={release} context="adoption" />
     {/* Two rows through one grid rather than two nested ones, so the bars land
         in the same column and stay parallel without anything having to agree
         on a width. The scales differ and say so: copies shipped span 500K to

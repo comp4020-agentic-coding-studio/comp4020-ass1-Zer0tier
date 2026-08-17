@@ -110,6 +110,26 @@ export function getPreviousRelearnStep(id: string) {
   return index > 0 ? relearnSteps[index - 1] : undefined;
 }
 
+/** The next release that puts the task somewhere different. */
+export function getNextRelearnMove(id: string) {
+  const index = relearnSteps.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error(`no relearn step for release ${id}`);
+  const currentPlace = relearnSteps[index].placeIndex;
+  return relearnSteps.slice(index + 1).find((item) => item.placeIndex !== currentPlace);
+}
+
+/** Releases in the consecutive run that share this release's learned place. */
+export function getRelearnRun(id: string) {
+  const index = relearnSteps.findIndex((item) => item.id === id);
+  if (index < 0) throw new Error(`no relearn step for release ${id}`);
+  const currentPlace = relearnSteps[index].placeIndex;
+  let start = index;
+  let end = index;
+  while (start > 0 && relearnSteps[start - 1].placeIndex === currentPlace) start -= 1;
+  while (end < relearnSteps.length - 1 && relearnSteps[end + 1].placeIndex === currentPlace) end += 1;
+  return relearnSteps.slice(start, end + 1);
+}
+
 /** Distinct places across all twelve releases. */
 export function countRelearnPlaces() {
   return new Set(relearnSteps.map((step) => step.placeIndex)).size;

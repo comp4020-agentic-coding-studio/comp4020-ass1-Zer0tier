@@ -16,10 +16,12 @@
     var status = section.querySelector("[data-relearn-status]");
     var reveal = section.querySelector("[data-relearn-reveal]");
     var moved = section.querySelector("[data-relearn-moved]");
+    var explanation = section.querySelector("[data-relearn-explanation]");
     var settled = false;
     var misses = 0;
 
     answer.hidden = true;
+    if (explanation) explanation.hidden = true;
     ask.hidden = false;
     reveal.hidden = false;
     section.dataset.relearnState = "asking";
@@ -29,6 +31,7 @@
       section.dataset.relearnState = outcome;
       status.textContent = message;
       answer.hidden = false;
+      if (explanation) explanation.hidden = false;
       if (moved) moved.hidden = false;
       reveal.hidden = true;
       ask.hidden = true;

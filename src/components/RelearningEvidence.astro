@@ -1,0 +1,39 @@
+---
+import type { WindowsRelease } from "../data/windows";
+import { getPreviousRelearnStep, getRelearnStep, movedThisRelease } from "../data/windows-relearn";
+
+type Context = "overview" | "sound" | "demo" | "adoption" | "history" | "memory" | "details" | "story" | "contributors";
+
+interface Props {
+  release: WindowsRelease;
+  context: Context;
+}
+
+const { release, context } = Astro.props;
+const step = getRelearnStep(release.id);
+const previous = getPreviousRelearnStep(release.id);
+const moved = movedThisRelease(release.id);
+
+const copy: Record<Context, string> = {
+  overview: `${release.name} made “start a program” mean finding ${step.place}. ${step.detail}`,
+  sound: `A startup cue could announce a new era, but it could not teach the changed habit. After boot, users still had to recognise ${step.place} before they could begin their work.`,
+  demo: `Use the recreation as a test, not a picture: ignore what the desktop is called and find ${step.place}. That repeated task makes the changed spatial rule visible.`,
+  adoption: `These figures are the scale of the training cost. Every copy or active device represented another person, household, or workplace expected to recognise ${step.place}.`,
+  history: `Read the history as the cause of a changed habit: the product decisions below explain why Microsoft kept, relabelled, or moved the route to ${step.place}.`,
+  memory: `Familiar applications softened the transition because the work remained recognisable even when its entrance moved. In this release, users reached those programs through ${step.place}.`,
+  details: `Each system note names a cue users had to notice again—layout, navigation, visuals, or workflow—around the same baseline task of reaching ${step.place}.`,
+  story: `This episode matters because product strategy became muscle memory. Its decisions helped make ${step.place} the expected route into software for this release.`,
+  contributors: `Interface decisions become public habits at scale. The people below helped preserve or change the cues that led users toward ${step.place}.`,
+};
+
+const comparison = previous
+  ? moved
+    ? `The previous release taught ${previous.place}; that expectation no longer worked here.`
+    : `The previous release taught the same place, so this habit survived the redesign.`
+  : "There was no earlier Windows habit to preserve; this release established the baseline.";
+---
+
+<div class:list={["relearning-evidence", `relearning-evidence-${context}`]} data-relearning-evidence>
+  <b>Relearning lens</b>
+  <p>{copy[context]} {comparison}</p>
+</div>

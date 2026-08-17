@@ -3,6 +3,7 @@ import type { WindowsRelease } from "../data/windows";
 import { appSlug } from "../data/windows-memories";
 import { getAppStory } from "../data/windows-apps";
 import type { WindowsMemoryScene } from "../data/windows-memories";
+import RelearningEvidence from "./RelearningEvidence.astro";
 
 interface Props {
   release: WindowsRelease;
@@ -16,7 +17,7 @@ const appDialogId = `app-dialog-${release.id}`;
 
 ---
 
-<section class:list={["memory-scene", `memory-scene-${release.id}`]} aria-labelledby={`memory-heading-${release.id}`} data-memory-scene>
+<section class:list={["memory-scene", `memory-scene-${release.id}`]} aria-labelledby={`memory-heading-${release.id}`} data-memory-scene data-relearning-content>
   <header class="memory-scene-heading">
     <div>
       <p class="eyebrow">Desktop time capsule</p>
@@ -24,6 +25,8 @@ const appDialogId = `app-dialog-${release.id}`;
     </div>
     <p>Four popular programs that made this era feel familiar. Open any of them for how it reached this many people, and what it left behind for the next redesign to keep or break.</p>
   </header>
+
+  <RelearningEvidence release={release} context="memory" />
 
   <div class="memory-desktop" aria-label={`A nostalgic ${release.name} software scene`}>
     <div class="memory-app-stack" aria-label="Defining software applications">

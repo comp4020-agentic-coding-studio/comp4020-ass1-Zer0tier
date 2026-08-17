@@ -1,5 +1,6 @@
 ---
 import CommandPrompt from "./CommandPrompt.astro";
+import RelearningEvidence from "./RelearningEvidence.astro";
 import type { WindowsRelease } from "../data/windows";
 import { getWindowsSystemAssetStyle } from "../data/windows-system-assets";
 
@@ -15,7 +16,7 @@ const systemAssetStyle = getWindowsSystemAssetStyle(release.id, base);
 const headingId = `demo-heading-${release.id}`;
 ---
 
-<section class:list={["system-demo", `system-${release.id}`]} aria-labelledby={headingId}>
+<section class:list={["system-demo", `system-${release.id}`]} data-relearning-content aria-labelledby={headingId}>
   <div class="demo-heading-row">
     <div>
       <p class="eyebrow">Interactive system recreation</p>
@@ -23,6 +24,8 @@ const headingId = `demo-heading-${release.id}`;
     </div>
     <p>Open Start, launch the period-correct command prompt, and use the window controls.</p>
   </div>
+
+  <RelearningEvidence release={release} context="demo" />
 
   <div class:list={["desktop", `desktop-${release.id}`]} data-desktop data-system-assets="original-extracted" style={systemAssetStyle}>
     {(release.id === "win1" || release.id === "win2") && (

@@ -1,21 +1,25 @@
 ---
 import type { Contributor } from "../data/windows-history";
+import type { WindowsRelease } from "../data/windows";
+import RelearningEvidence from "./RelearningEvidence.astro";
 
 interface Props {
-  releaseName: string;
+  release: WindowsRelease;
   contributors: Contributor[];
   base: string;
 }
 
-const { releaseName, contributors, base } = Astro.props;
+const { release, contributors, base } = Astro.props;
+const releaseName = release.name;
 const headingId = `contributors-heading-${releaseName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 ---
 
-<section class="contributors" aria-labelledby={headingId}>
+<section class="contributors" data-relearning-content aria-labelledby={headingId}>
   <div class="section-heading">
     <div><p class="eyebrow">People behind the release</p><h2 id={headingId}>Influential contributors</h2></div>
     <p>Selected people whose product, engineering, creative, or executive work shaped {releaseName}.</p>
   </div>
+  <RelearningEvidence release={release} context="contributors" />
   <div class="contributor-grid">
     {contributors.map((contributor) => (
       <article class="contributor-card">

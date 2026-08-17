@@ -71,6 +71,48 @@ test("the explainer keeps all twelve themed releases in one vertical document", 
   await expect(page.locator("#windows-xp")).toBeInViewport();
 });
 
+// "More relearning content" is an acceptance rule rather than a visual
+// impression. At the phone marking viewport, add the rendered heights of the
+// ten substantive sections in each chapter. A section counts only when its
+// framing explicitly connects the material to the habit users had to relearn.
+// Navigation and decorative gaps are deliberately outside the denominator.
+test("relearning evidence carries at least ninety percent of every release chapter", async ({ page }) => {
+  await page.setViewportSize(phone);
+  await page.goto("./windows/");
+
+  const coverage = await page.locator("[data-version-section]").evaluateAll((chapters) =>
+    chapters.map((chapter) => {
+      const sections = [...chapter.querySelectorAll<HTMLElement>(
+        ":scope > .startup-sound, :scope > .version-content > section",
+      )];
+      const totalHeight = sections.reduce((sum, section) => sum + section.getBoundingClientRect().height, 0);
+      const relearningSections = sections.filter((section) => {
+        const evidence = section.querySelector<HTMLElement>("[data-relearning-evidence]");
+        return section.hasAttribute("data-relearning-content")
+          && (evidence?.textContent?.trim().length ?? 0) >= 80;
+      });
+      const relearningHeight = relearningSections.reduce(
+        (sum, section) => sum + section.getBoundingClientRect().height,
+        0,
+      );
+
+      return {
+        chapter: chapter.id,
+        sectionCount: sections.length,
+        relearningSectionCount: relearningSections.length,
+        ratio: totalHeight === 0 ? 0 : relearningHeight / totalHeight,
+      };
+    }),
+  );
+
+  expect(coverage).toHaveLength(12);
+  for (const chapter of coverage) {
+    expect(chapter.sectionCount, `${chapter.chapter}: substantive section count drifted`).toBe(10);
+    expect(chapter.relearningSectionCount, `${chapter.chapter}: a section lacks a relearning lens`).toBe(10);
+    expect(chapter.ratio, `${chapter.chapter}: only ${(chapter.ratio * 100).toFixed(1)}% is relearning content`).toBeGreaterThanOrEqual(0.9);
+  }
+});
+
 test("startup sounds wait for input and every long-page player can take over", async ({ page }) => {
   await page.goto("./windows/");
 
