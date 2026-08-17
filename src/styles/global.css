@@ -308,7 +308,7 @@ h1, h2, h3 { line-height: 1.05; }
 .version-hero > .relearning-evidence { grid-column: 1 / -1; }
 .system-demo > .relearning-evidence, .memory-scene > .relearning-evidence, .release-details > .relearning-evidence { margin-bottom: 1.2rem; }
 .startup-sound > .relearning-evidence { grid-column: 1 / -1; }
-.release-adoption .relearning-evidence { grid-column: 1 / -1; }
+.release-adoption .relearning-evidence { grid-area: lens; }
 .release-story > .relearning-evidence, .contributors > .relearning-evidence { margin-top: 1.2rem; }
 .desktop { position: relative; min-height: clamp(32rem, 56vw, 47rem); overflow: hidden; border: 1px solid rgb(14 25 42 / 22%); border-radius: 10px; box-shadow: 0 28px 70px rgb(25 35 50 / 20%); isolation: isolate; }
 .desktop button { min-width: 0; }
@@ -340,7 +340,7 @@ h1, h2, h3 { line-height: 1.05; }
 .analogue-clock b, .gadget-clock b { height: 22%; transform: rotate(-45deg); }
 .early-controls { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; padding: 1.5rem; }
 .early-controls button { min-height: 4rem; border: 2px solid #000; border-radius: 0; background: #fff; box-shadow: 3px 3px #000; font: inherit; }
-.win1-iconbar { position: absolute; right: 28%; bottom: 0; left: 0; display: flex; gap: 1rem; align-items: center; height: 28%; padding: 1rem; background: #078a8e; }
+.win1-iconbar { position: absolute; right: 28%; bottom: 0; left: 0; display: flex; gap: 1rem; align-items: center; height: 28%; padding: 1rem; background: #006f73; }
 .win1-iconbar button { display: grid; justify-items: center; gap: 0.25rem; border: 0; background: transparent; color: #fff; font: inherit; }
 .mini-icon { display: block; width: 2.6rem; height: 2.2rem; border: 2px solid #000; background: #fff; box-shadow: 3px 3px #000; }
 
@@ -454,7 +454,7 @@ h1, h2, h3 { line-height: 1.05; }
 .xp-start { align-self: stretch; height: auto; padding: 0.25rem 1.25rem 0.25rem 0.65rem; border: 0; border-radius: 0 18px 18px 0; background: linear-gradient(#6fcd58, #398f2d 42%, #2b7a22); color: #fff; font-size: 1rem; font-style: italic; text-shadow: 1px 1px #1d6119; }
 .xp-start .windows-flag { grid-template-columns: repeat(2, 0.55rem); grid-template-rows: repeat(2, 0.5rem); padding: 2px; border-radius: 50%; background: #fff; }
 .xp-task { flex: 1 1 13rem; width: 13rem; min-width: 3rem; max-width: 13rem; height: 2.1rem; margin-left: 0.5rem; overflow: hidden; border: 1px solid #1246a1; border-radius: 3px; background: #2c6bd1; color: #fff; text-align: left; text-overflow: ellipsis; white-space: nowrap; }
-.xp-taskbar time { border-left: 1px solid #0f4ca8; background: #0b95df; }
+.xp-taskbar time { border-left: 1px solid #0f4ca8; background: #075d9c; }
 .xp-start-panel { position: absolute; z-index: 59; bottom: 2.8rem; left: 0; width: min(31rem, 68%); overflow: hidden; border: 2px solid #1c58bd; border-radius: 8px 8px 0 0; background: #fff; box-shadow: 6px -4px 20px rgb(0 48 108 / 38%); }
 .xp-start-panel > header { display: flex; gap: 0.7rem; align-items: center; padding: 0.6rem; background: linear-gradient(#2f82ef, #1f5fcb); color: #fff; font-size: 1rem; }
 .user-avatar { display: block; width: 2.6rem; height: 2.6rem; border: 2px solid #fff; border-radius: 5px; background: radial-gradient(circle at 50% 32%, #f0c7a1 0 18%, transparent 19%), radial-gradient(circle at 50% 95%, #4d6a91 0 48%, #e9c49d 49%); }
@@ -847,6 +847,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win2 .version-nav a[aria-current="page"] { border-color: #031d2d; background: #063f67; color: #fff; }
 .page-win2 .version-hero, .page-win2 .demo-heading-row, .page-win2 .release-details, .page-win2 .history, .page-win2 .detail-dialog-window, .page-win2 .relearn, .page-win2 .release-adoption, .page-win2 .release-pagination { margin-top: 1rem; padding: 1.35rem; border: 3px double #031d2d; background: #e7fbff; }
 .page-win2 .version-hero h1, .page-win2 h2 { font-family: "Courier New", monospace; letter-spacing: -0.06em; }
+.page-win2 .version-number { color: #006a82; }
 
 .page-win3 {
   --paper: #c0c0c0;
@@ -865,6 +866,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win3 .version-nav a[aria-current="page"] { border: 0; border-bottom: 2px solid #000080; background: #000080; color: #fff; }
 .page-win3 .version-hero, .page-win3 .demo-heading-row, .page-win3 .release-details, .page-win3 .history, .page-win3 .detail-dialog-window, .page-win3 .relearn, .page-win3 .release-adoption, .page-win3 .release-pagination { margin-top: 0.7rem; padding: 1.4rem; border: 3px outset #eee; background: #c0c0c0; }
 .page-win3 .version-number { color: #000080; }
+.page-win3 .version-headline { color: #333; }
 .page-win3 .detail-grid article { border: 2px inset #eee; background: #fff; }
 
 .page-win95 {
@@ -882,6 +884,9 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win95 .version-nav a[aria-current="page"] { border: 0; border-bottom: 2px solid #000080; background: #000080; color: #fff; }
 .page-win95 .version-hero, .page-win95 .demo-heading-row, .page-win95 .release-details, .page-win95 .history, .page-win95 .detail-dialog-window, .page-win95 .relearn, .page-win95 .release-adoption, .page-win95 .release-pagination { margin-top: 0.7rem; padding: 1.3rem; border: 3px outset #eee; background: #c0c0c0; }
 .page-win95 .version-hero h1, .page-win95 h2 { font-family: Arial, sans-serif; }
+.page-win95 .version-number { color: #000080; }
+.page-win95 .version-headline { color: #333; }
+.page-win95 .relearning-evidence { background: #c0c0c0; }
 .page-win95 .detail-grid article { border: 2px inset #eee; background: #fff; }
 
 .page-win98 {
@@ -901,6 +906,7 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win98 .version-nav a[aria-current="page"] { background: #000080; color: #fff; }
 .page-win98 .version-hero, .page-win98 .demo-heading-row, .page-win98 .release-details, .page-win98 .history, .page-win98 .detail-dialog-window, .page-win98 .relearn, .page-win98 .release-adoption, .page-win98 .release-pagination { margin-top: 0.8rem; padding: 1.4rem; border: 2px outset #fff; background: #fff; }
 .page-win98 .version-hero h1 { color: #000080; text-shadow: 2px 2px #d4d0c8; }
+.page-win98 .version-number { color: #000080; }
 .page-win98 .detail-grid article { background: #fffff2; }
 
 .page-win2000 {
@@ -917,6 +923,8 @@ h1, h2, h3 { line-height: 1.05; }
 .page-win2000 .site-header, .page-win2000 .site-footer, .page-win2000 .version-nav { border: 2px outset #fff; background: #d4d0c8; backdrop-filter: none; }
 .page-win2000 .version-nav a[aria-current="page"] { background: linear-gradient(90deg, #0a246a, #a6caf0); color: #fff; }
 .page-win2000 .version-hero, .page-win2000 .demo-heading-row, .page-win2000 .release-details, .page-win2000 .history, .page-win2000 .detail-dialog-window, .page-win2000 .relearn, .page-win2000 .release-adoption, .page-win2000 .release-pagination { margin-top: 0.8rem; padding: 1.4rem; border: 2px outset #fff; background: #e8eef2; }
+.page-win2000 .version-number { color: #174a78; }
+.page-win2000 .relearning-evidence { background: #e8eef2; color: #17252e; }
 .page-win2000 .detail-grid article { border: 2px inset #fff; background: #fff; }
 
 .page-winxp {
@@ -1098,6 +1106,10 @@ h1, h2, h3 { line-height: 1.05; }
    against the wrong surface. */
 .memory-reviews-heading > p { max-width: 31rem; margin: 0; color: inherit; }
 .memory-reviews-heading .eyebrow { color: inherit; }
+.page-win2 .memory-reviews { background: #c5eaf2; }
+.page-vista .memory-reviews { background: #102b46; }
+.page-win10 .memory-reviews { background: #172f43; }
+.page-win8 .memory-reviews { background: #44206d; }
 .memory-bubbles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 1.6rem); }
 .memory-review-card { display: grid; grid-template-rows: 1fr auto; gap: 1rem; min-width: 0; }
 .memory-bubble { position: relative; display: grid; gap: 0.75rem; align-content: start; width: 100%; min-height: 12rem; padding: clamp(1.1rem, 3vw, 1.6rem); border: 2px solid rgb(255 255 255 / 72%); border-radius: clamp(1rem, 2vw, 1.5rem); background: var(--memory-bubble); box-shadow: 0 8px 28px rgb(0 0 0 / 20%), inset 0 0 0 4px rgb(255 255 255 / 22%); color: var(--memory-bubble-ink); text-align: left; animation: memory-drift 6s ease-in-out infinite alternate; }
@@ -1134,6 +1146,7 @@ h1, h2, h3 { line-height: 1.05; }
 .memory-scene-win2 { --memory-bg: linear-gradient(135deg, #0b7088, #06324f); --memory-surface: #fff; --memory-title: repeating-linear-gradient(#fff 0 2px, #000 2px 4px); --memory-title-ink: #000; --memory-border: 3px double #031d2d; --memory-shadow: 7px 7px 0 rgb(0 0 0 / 35%); --memory-bubble: #c5eaf2; --memory-bubble-ink: #06324f; }
 .memory-scene-win3 { --memory-bg: #3d6985; }
 .memory-scene-win95 { --memory-bg: #008080; }
+.memory-scene-win95 .memory-scene-heading { color: #fff; }
 .memory-scene-win98 { --memory-bg: linear-gradient(#6cb7e6, #d9effc); }
 .memory-scene-win2000 { --memory-bg: linear-gradient(135deg, #587c95, #9fb6c5); --memory-title: linear-gradient(90deg, #0a246a, #a6caf0); }
 .memory-scene-winxp { --memory-bg: linear-gradient(164deg, #68bdf5 0 45%, #65ab37 46% 65%, #2e7a22 66%); --memory-surface: #f4f0e6; --memory-title: linear-gradient(#3f8df4 0 8%, #1761d1 22% 78%, #0c48ad); --memory-border: 3px solid #1857be; --memory-radius: 8px 8px 0 0; --memory-shadow: 7px 9px 22px rgb(0 48 108 / 35%); --memory-bubble: linear-gradient(#75d35d, #3c902e); --memory-bubble-ink: #fff; }
@@ -1193,10 +1206,13 @@ h1, h2, h3 { line-height: 1.05; }
 .page-winxp .startup-sound button { border-radius: 8px; background: linear-gradient(#4c93ef, #1d5ac1); }
 .page-vista .startup-sound, .page-win10 .startup-sound { border-color: rgb(222 246 255 / 45%); background: rgb(15 39 59 / 78%); color: #fff; backdrop-filter: blur(18px); }
 .page-vista .startup-sound p, .page-vista .startup-sound a, .page-win10 .startup-sound p, .page-win10 .startup-sound a { color: #d6e8f4; }
+.page-vista .startup-sound button { border-color: #8de2ff; background: #07517b; }
+.page-win10 .startup-sound button { border-color: #6bc7f8; background: #075a88; }
 .page-win7 .startup-sound { border-color: rgb(255 255 255 / 82%); border-radius: 9px; background: rgb(238 249 255 / 86%); backdrop-filter: blur(14px); }
 .page-win8 .startup-sound { border: 0; border-radius: 0; background: #0074d0; color: #fff; box-shadow: none; }
 .page-win8 .startup-sound p, .page-win8 .startup-sound a { color: #fff; }
 .page-win8 .startup-sound .sound-glyph, .page-win8 .startup-sound button { border: 2px solid #fff; border-radius: 0; background: #fff; color: #5c2d91; }
+.page-win8 .relearning-evidence { background: #44206d; }
 .page-win11 .startup-sound { border-color: rgb(255 255 255 / 82%); border-radius: 14px; background: rgb(245 249 252 / 78%); backdrop-filter: blur(24px); }
 
 .release-story,
@@ -1212,6 +1228,7 @@ h1, h2, h3 { line-height: 1.05; }
 .contributor-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
 .contributor-card { display: grid; grid-template-columns: minmax(7rem, 0.42fr) minmax(0, 1fr); min-height: 17rem; overflow: hidden; border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 45%, #fff); }
 .contributor-card img { width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: saturate(0.88) contrast(1.04); }
+.contributor-card[data-contributor="Joe Belfiore"] img { object-position: 73% top; }
 .contributor-card > div { display: flex; flex-direction: column; align-items: start; padding: clamp(1rem, 2.5vw, 1.6rem); }
 .contributor-card h3 { margin: 0 0 0.7rem; font-size: clamp(1.35rem, 2.3vw, 2rem); letter-spacing: -0.035em; }
 .contributor-card p { margin: 0 0 1.2rem; color: var(--muted); line-height: 1.55; }
@@ -1332,8 +1349,9 @@ h1, h2, h3 { line-height: 1.05; }
 }
 
 /* Release-page adoption milestone. */
-.release-adoption { display: grid; grid-template-columns: minmax(10rem, 0.5fr) minmax(20rem, 1.5fr); gap: clamp(1.2rem, 3vw, 3rem); align-items: center; margin-block: clamp(3rem, 7vw, 6rem); padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 65%, #fff); }
-.release-adoption-heading h2 { max-width: 12ch; margin: 0; font-size: clamp(2rem, 4vw, 4rem); letter-spacing: -0.06em; }
+.release-adoption { display: grid; grid-template-columns: minmax(18rem, 0.6fr) minmax(24rem, 1.4fr); grid-template-areas: "lens lens" "heading figures" "sources sources"; gap: clamp(1.2rem, 3vw, 3rem); align-items: center; margin-block: clamp(3rem, 7vw, 6rem); padding: clamp(1.5rem, 4vw, 3rem); border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 65%, #fff); }
+.release-adoption-heading { grid-area: heading; }
+.release-adoption-heading h2 { max-width: none; margin: 0; font-size: clamp(2rem, 3.6vw, 3.5rem); letter-spacing: -0.06em; }
 
 /* Sized to fit its own column now that a second figure shares the row; at
    8vw "670M" ran straight through the share figure beside it. */
@@ -1355,20 +1373,20 @@ h1, h2, h3 { line-height: 1.05; }
    sideways. That is the shaking, and it was worst at K -> M because the string
    gains a character. A flexible track with a fixed minimum cannot be resized
    by its contents at all. */
-.adoption-figures { display: grid; grid-template-columns: minmax(8rem, auto) minmax(5.5rem, 0.5fr) minmax(9rem, 1fr); gap: 0.9rem clamp(0.9rem, 2vw, 2rem); align-items: center; }
+.adoption-figures { grid-area: figures; display: grid; grid-template-columns: minmax(7rem, 0.7fr) minmax(4.5rem, 0.35fr) minmax(12rem, 1.7fr); gap: 0.9rem clamp(0.9rem, 2vw, 1.5rem); align-items: center; }
 .adoption-label { margin: 0; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.1em; line-height: 1.3; text-transform: uppercase; }
 
 /* tabular-nums keeps every digit the same width, so the number does not
    jitter between frames even before the track stops resizing. */
-.adoption-value { font-size: clamp(1.6rem, 3.4vw, 3rem); font-variant-numeric: tabular-nums; line-height: 0.9; letter-spacing: -0.04em; white-space: nowrap; }
-.adoption-value-share { font-size: clamp(1.4rem, 2.9vw, 2.5rem); }
+.adoption-value { font-size: clamp(1.35rem, 2.6vw, 2.25rem); font-variant-numeric: tabular-nums; line-height: 0.9; letter-spacing: -0.04em; white-space: nowrap; }
+.adoption-value-share { font-size: clamp(1.2rem, 2.25vw, 1.9rem); }
 
 /* display: contents so the figures and the sources become grid items of the
    section itself. Wrapped in a box, the sources sat inside the centred column
    and pushed the two data rows above the middle; as a row of their own they
    sit under both columns and the figures centre against the heading. */
 .adoption-body { display: contents; }
-.adoption-sources { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; margin: 0; font-size: 0.72rem; font-weight: 750; letter-spacing: 0.03em; }
+.adoption-sources { grid-area: sources; display: flex; flex-wrap: wrap; gap: 0.4rem 1.6rem; margin: 0; font-size: 0.72rem; font-weight: 750; letter-spacing: 0.03em; }
 .adoption-sources a { text-underline-offset: 0.22em; }
 .adoption-track { display: grid; gap: 0.35rem; min-width: 0; }
 .adoption-caption { margin: 0; color: var(--muted); font-size: 0.64rem; line-height: 1.4; }
@@ -1380,7 +1398,7 @@ h1, h2, h3 { line-height: 1.05; }
 .release-adoption-detail { display: grid; gap: 0.8rem; }
 .release-adoption-detail p { margin: 0; color: var(--muted); font-size: 0.78rem; line-height: 1.6; }
 .release-adoption-detail a { justify-self: start; font-size: 0.64rem; font-weight: 750; letter-spacing: 0.04em; text-underline-offset: 0.22em; }
-.release-adoption-meter { height: clamp(1.1rem, 2vw, 1.6rem); overflow: hidden; border: 1px solid currentcolor; background: color-mix(in srgb, currentcolor 8%, transparent); }
+.release-adoption-meter { height: clamp(0.55rem, 0.9vw, 0.8rem); overflow: hidden; border: 1px solid currentcolor; background: color-mix(in srgb, currentcolor 8%, transparent); }
 .release-adoption-meter span { display: block; width: 100%; height: 100%; background: currentcolor; transform: scaleX(0); transform-origin: left; transition: transform 900ms cubic-bezier(0.2, 0.75, 0.25, 1); }
 .release-adoption.is-visible [data-adoption-meter] { transform: scaleX(var(--adoption-scale)); }
 .release-adoption.is-visible [data-market-meter] { transform: scaleX(var(--market-scale)); transition-delay: 120ms; }
@@ -1524,7 +1542,9 @@ h1, h2, h3 { line-height: 1.05; }
 
 /* The relearning test. Themed entirely through currentcolor and the era
    tokens, so it inherits each release's palette without a per-era override. */
-.relearn { display: grid; gap: 1.1rem; margin-block: clamp(3rem, 7vw, 6rem); padding: clamp(1.2rem, 3vw, 2rem); border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 65%, #fff); }
+.relearn { display: grid; grid-template-columns: minmax(14rem, 0.72fr) minmax(18rem, 1.28fr); grid-template-areas: "head body"; gap: clamp(1.5rem, 4vw, 4rem); align-items: start; margin-block: clamp(3rem, 7vw, 6rem); padding: clamp(1.2rem, 3vw, 2rem); border: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 65%, #fff); }
+.relearn-head { grid-area: head; }
+.relearn-body { grid-area: body; display: grid; gap: 0.85rem; min-width: 0; align-content: start; }
 .relearn-head h2 { margin: 0; font-size: clamp(1.8rem, 4vw, 3.2rem); letter-spacing: -0.05em; }
 
 /* No opacity on any text in here. Dimming type with opacity is what broke
@@ -1532,18 +1552,16 @@ h1, h2, h3 { line-height: 1.05; }
    backgrounds, so hierarchy is carried by size and weight only. */
 .relearn-lede { max-width: 44ch; margin: 0.6rem 0 0; font-size: 0.86rem; line-height: 1.6; }
 .relearn p { margin: 0; }
-.relearn-answer, .relearn-ask { max-width: 52ch; font-size: 0.92rem; line-height: 1.65; }
+.relearn-answer, .relearn-ask { max-width: none; font-size: 0.92rem; line-height: 1.65; }
 .relearn-answer b { font-weight: 750; }
 .relearn-trace { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid color-mix(in srgb, currentcolor 34%, transparent); border-left: 1px solid color-mix(in srgb, currentcolor 34%, transparent); }
 .relearn-trace article { min-width: 0; padding: 1rem; border-right: 1px solid color-mix(in srgb, currentcolor 34%, transparent); border-bottom: 1px solid color-mix(in srgb, currentcolor 34%, transparent); }
 .relearn-trace span { display: block; margin-bottom: 0.6rem; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .relearn-trace b { display: block; margin-bottom: 0.45rem; font-size: 0.92rem; }
 .relearn-trace p { font-size: 0.76rem; line-height: 1.55; }
-@media (width < 42rem) {
-  .relearn-trace { grid-template-columns: 1fr; }
-}
 .relearn-status { min-height: 1.4rem; font-size: 0.88rem; font-weight: 650; line-height: 1.5; }
-.relearn-moved { max-width: 52ch; padding-top: 0.8rem; border-top: 1px solid color-mix(in srgb, currentcolor 28%, transparent); font-size: 0.82rem; line-height: 1.6; }
+.relearn-status:empty { display: none; }
+.relearn-moved { max-width: none; padding-top: 0.8rem; border-top: 1px solid color-mix(in srgb, currentcolor 28%, transparent); font-size: 0.82rem; line-height: 1.6; }
 .relearn-reveal { justify-self: start; min-height: 2.75rem; padding: 0.6rem 1.1rem; border: 1px solid currentcolor; background: transparent; color: inherit; font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
 .relearn-reveal:hover, .relearn-reveal:focus-visible { background: color-mix(in srgb, currentcolor 14%, transparent); }
 .relearn-reveal:focus-visible { outline: 3px solid currentcolor; outline-offset: 3px; }
@@ -1572,9 +1590,18 @@ h1, h2, h3 { line-height: 1.05; }
   .is-relearn-found { animation: none; }
 }
 
+@media (width < 64rem) {
+  .relearn { grid-template-columns: 1fr; grid-template-areas: "head" "body"; }
+}
+
+@media (width < 42rem) {
+  .relearn-trace { grid-template-columns: 1fr; }
+}
+
 /* Interactive era-specific DOS / Command Prompt. */
 .command-shortcut { position: absolute; z-index: 1; top: 1rem; right: 1rem; display: grid; gap: 0.2rem; justify-items: center; width: 5.2rem; padding: 0.35rem; border: 0; background: transparent; color: inherit; font-size: 0.62rem; line-height: 1.15; text-align: center; text-shadow: 1px 1px 2px #000; }
 .command-shortcut img { width: 2.35rem; height: 2.35rem; object-fit: contain; image-rendering: auto; }
+.desktop-win95 .command-shortcut > span, .desktop-win98 .command-shortcut > span, .desktop-win2000 .command-shortcut > span { padding: 0.12rem 0.25rem; background: #000; color: #fff; }
 .command-shortcut:hover, .command-shortcut:focus-visible { background: rgb(255 255 255 / 24%); }
 .desktop-win95 .command-shortcut, .desktop-win98 .command-shortcut, .desktop-win2000 .command-shortcut, .desktop-win7 .command-shortcut, .desktop-win10 .command-shortcut, .desktop-win11 .command-shortcut { inset: auto auto 3.8rem 0.7rem; }
 .command-task-launcher { flex: 0 0 auto; display: grid; place-items: center; padding: 0.2rem; }
@@ -1621,7 +1648,7 @@ h1, h2, h3 { line-height: 1.05; }
    unconditional rule below it — which is exactly what happened here, and what
    turned a 6px overflow at 768px into a 360px one at 390px. */
 @media (width < 64rem) {
-  .release-adoption { grid-template-columns: 1fr; gap: 1.3rem; }
+  .release-adoption { grid-template-columns: 1fr; grid-template-areas: "lens" "heading" "figures" "sources"; gap: 1.3rem; }
 }
 
 @media (width < 42rem) {
@@ -1668,6 +1695,10 @@ h1, h2, h3 { line-height: 1.05; }
    remains intact while the document itself scrolls normally. */
 .explainer-page { overflow-x: hidden; background: #111827; }
 .windows-explainer { display: block; }
+.explainer-version .chapter-key-hint { display: flex; gap: 0.45rem; align-items: center; color: inherit; font-size: 0.66rem; letter-spacing: 0; text-transform: uppercase; }
+.chapter-key-hint span { display: inline-flex; gap: 0.3rem; align-items: center; white-space: nowrap; }
+.chapter-key-hint kbd { display: inline-grid; width: 1.35rem; height: 1.35rem; place-items: center; border: 1px solid currentcolor; border-radius: 0.2rem; color: inherit; font: inherit; font-weight: 850; }
+.explainer-version .site-header > p:last-child { white-space: nowrap; }
 .explainer-version { position: relative; min-height: 100svh; overflow-x: clip; padding-bottom: clamp(2.5rem, 6vw, 6rem); background-attachment: local; color: var(--ink); isolation: isolate; }
 .explainer-version:focus { outline: 0; }
 .explainer-version + .explainer-version { border-top: 0.45rem solid rgb(17 24 39 / 82%); }

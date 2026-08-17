@@ -8,13 +8,14 @@ import memoryCapsuleInteractions from "../memory-capsule.js?raw";
 import relearnInteractions from "../relearn-challenge.js?raw";
 import detailInteractions from "../detail-notes.js?raw";
 import historyBookInteractions from "../history-book.js?raw";
+import chapterShortcuts from "../chapter-shortcuts.js?raw";
 import "../styles/global.css";
 
 const base = import.meta.env.BASE_URL;
 ---
 
 <Base title="Windows 1.0 to Windows 11 — Complete Desktop Evolution" description="A single long-form explainer tracing every major Windows desktop from Windows 1.0 to Windows 11." bodyClass="explainer-page">
-  <main id="main" class="windows-explainer">
+  <main id="main" class="windows-explainer" data-chapter-shortcuts>
     <h1 class="sr-only">Windows Desktop Evolution from Windows 1.0 to Windows 11</h1>
     {windowsReleases.map((release) => <WindowsVersionSection release={release} base={base} />)}
   </main>
@@ -24,4 +25,5 @@ const base = import.meta.env.BASE_URL;
   <script is:inline set:html={relearnInteractions} />
   <script is:inline set:html={detailInteractions} />
   <script is:inline set:html={historyBookInteractions} />
+  <script is:inline set:html={chapterShortcuts} />
 </Base>

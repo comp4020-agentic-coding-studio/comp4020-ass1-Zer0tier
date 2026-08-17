@@ -45,7 +45,7 @@ const headingId = `demo-heading-${release.id}`;
         </article>
         <article class="early-window early-tool" data-window>
           <header class="early-titlebar"><button class="system-box" type="button" aria-label="Window menu"></button><strong>{release.id === "win1" ? "Clock" : "Control Panel"}</strong></header>
-          {release.id === "win1" ? <div class="analogue-clock" aria-label="Clock showing ten past ten"><i></i><b></b></div> : <div class="early-controls"><button type="button">Color</button><button type="button">Desktop</button><button type="button">Mouse</button><button type="button">Keyboard</button></div>}
+          {release.id === "win1" ? <div class="analogue-clock" role="img" aria-label="Clock showing ten past ten"><i></i><b></b></div> : <div class="early-controls"><button type="button">Color</button><button type="button">Desktop</button><button type="button">Mouse</button><button type="button">Keyboard</button></div>}
         </article>
         {release.id === "win1" && <div class="win1-iconbar" aria-label="Minimised applications"><button type="button"><span class="mini-icon write-icon"></span>Write</button><button type="button"><span class="mini-icon paint-icon"></span>Paint</button><button type="button" data-command-external-open aria-label="Open MS-DOS Prompt"><span class="mini-icon terminal-icon"></span>MS-DOS</button></div>}
       </>

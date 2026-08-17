@@ -42,6 +42,7 @@ const detailDialogId = `detail-dialog-${release.id}`;
 >
   <header class="site-header shell">
     <a class="wordmark" href={base} aria-label="Windows Desktop Evolution home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>Windows<br /><b>Desktop Evolution</b></span></a>
+    <p class="chapter-key-hint" aria-label="Keyboard navigation: W previous, S next"><span><kbd>W</kbd> previous</span><span><kbd>S</kbd> next</span></p>
     <p>{String(currentIndex + 1).padStart(2, "0")} / {String(windowsReleases.length).padStart(2, "0")}</p>
   </header>
 

@@ -55,6 +55,17 @@ describe("Windows Desktop Evolution", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
+  it("advertises W and S chapter controls only on the long explainer", () => {
+    const shortcuts = explainer.querySelector("[data-chapter-shortcuts]");
+    expect(shortcuts?.textContent).toContain("W");
+    expect(shortcuts?.textContent).toContain("Previous");
+    expect(shortcuts?.textContent).toContain("S");
+    expect(shortcuts?.textContent).toContain("Next");
+    for (const version of versions) {
+      expect(releasePages.get(version)?.doc.querySelector("[data-chapter-shortcuts]"), version).toBeNull();
+    }
+  });
+
   it("frames every substantive section as evidence of what users had to relearn", () => {
     for (const version of versions) {
       const chapter = explainer.querySelector<HTMLElement>(`#${version}`)!;
@@ -179,6 +190,12 @@ describe("Windows Desktop Evolution", () => {
     }
   });
 
+  it("gives the Windows 1.0 clock a valid labelled image role", () => {
+    const clock = releasePages.get("windows-1")!.doc.querySelector(".analogue-clock");
+    expect(clock?.getAttribute("role")).toBe("img");
+    expect(clock?.getAttribute("aria-label")).toContain("Clock showing");
+  });
+
   it("adds a period-labelled interactive command prompt to every desktop recreation", () => {
     for (const version of versions) {
       const { doc } = releasePages.get(version)!;
@@ -220,6 +237,8 @@ describe("Windows Desktop Evolution", () => {
       expect(contributors.length, version).toBeGreaterThanOrEqual(2);
       expect(contributors.every((card) => card.querySelector("img")?.getAttribute("alt")?.startsWith("Portrait of ")), version).toBe(true);
       expect(contributors.every((card) => card.querySelector("h3")?.textContent?.trim()), version).toBe(true);
+      expect(contributors.every((card) => card.querySelector("a")?.getAttribute("href")?.startsWith("https://en.wikipedia.org/wiki/")), version).toBe(true);
+      expect(contributors.every((card) => card.querySelector("small")?.textContent?.includes("Wikipedia / Wikimedia Commons")), version).toBe(true);
     }
   });
 

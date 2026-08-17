@@ -45,47 +45,49 @@ const headingId = `relearn-heading-${release.id}`;
     </p>
   </div>
 
-  {/* Rendered as a plain statement, because that is what it is with no
-      JavaScript: a true sentence about where the control lives. The script
-      hides it, turns the desktop above into the question, and shows it again
-      as the answer. Nothing here is a spoiler until the visitor asks. */}
-  <p class="relearn-answer" data-relearn-answer>
-    In {release.name} you start a program from <b>{step.place}</b>. {step.detail}
-  </p>
-
-  <div class="relearn-trace" data-relearn-explanation data-relearning-evidence>
-    <article>
-      <span>Expectation brought in</span>
-      <b>{previousStep ? previousStep.place : "No earlier Windows rule"}</b>
-      <p>{previousStep ? (moved ? "That learned location failed in this release." : "That learned location still worked.") : "Windows 1.0 established the first rule."}</p>
-    </article>
-    <article>
-      <span>Rule learned here</span>
-      <b>{step.place}</b>
-      <p>{step.detail}</p>
-    </article>
-    <article>
-      <span>How long it held</span>
-      <b>{run.length} release{run.length === 1 ? "" : "s"}</b>
-      <p>{nextMove && nextMoveRelease ? `${nextMoveRelease.name} moved the task to ${nextMove.place}.` : "This is the final location in the timeline."}</p>
-    </article>
-  </div>
-
-  <p class="relearn-ask" data-relearn-ask hidden>
-    Click or tap where you would do it on the {release.name} desktop above —
-    or tab to it and press Enter.
-  </p>
-
-  <p class="relearn-status" data-relearn-status role="status" aria-live="polite"></p>
-
-  <button class="relearn-reveal" type="button" data-relearn-reveal hidden>
-    Show me where
-  </button>
-
-  {moved && previousStep && previousRelease && (
-    <p class="relearn-moved" data-relearn-moved hidden>
-      It moved for this release. In {previousRelease.name} the answer was
-      {" "}{previousStep.place}.
+  <div class="relearn-body">
+    {/* Rendered as a plain statement, because that is what it is with no
+        JavaScript: a true sentence about where the control lives. The script
+        hides it, turns the desktop above into the question, and shows it again
+        as the answer. Nothing here is a spoiler until the visitor asks. */}
+    <p class="relearn-answer" data-relearn-answer>
+      In {release.name} you start a program from <b>{step.place}</b>. {step.detail}
     </p>
-  )}
+
+    <div class="relearn-trace" data-relearn-explanation data-relearning-evidence>
+      <article>
+        <span>Expectation brought in</span>
+        <b>{previousStep ? previousStep.place : "No earlier Windows rule"}</b>
+        <p>{previousStep ? (moved ? "That learned location failed in this release." : "That learned location still worked.") : "Windows 1.0 established the first rule."}</p>
+      </article>
+      <article>
+        <span>Rule learned here</span>
+        <b>{step.place}</b>
+        <p>{step.detail}</p>
+      </article>
+      <article>
+        <span>How long it held</span>
+        <b>{run.length} release{run.length === 1 ? "" : "s"}</b>
+        <p>{nextMove && nextMoveRelease ? `${nextMoveRelease.name} moved the task to ${nextMove.place}.` : "This is the final location in the timeline."}</p>
+      </article>
+    </div>
+
+    <p class="relearn-ask" data-relearn-ask hidden>
+      Click or tap where you would do it on the {release.name} desktop above —
+      or tab to it and press Enter.
+    </p>
+
+    <p class="relearn-status" data-relearn-status role="status" aria-live="polite"></p>
+
+    <button class="relearn-reveal" type="button" data-relearn-reveal hidden>
+      Show me where
+    </button>
+
+    {moved && previousStep && previousRelease && (
+      <p class="relearn-moved" data-relearn-moved hidden>
+        It moved for this release. In {previousRelease.name} the answer was
+        {" "}{previousStep.place}.
+      </p>
+    )}
+  </div>
 </section>

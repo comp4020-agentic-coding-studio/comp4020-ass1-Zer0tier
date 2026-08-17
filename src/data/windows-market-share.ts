@@ -86,7 +86,7 @@ export const marketShares: MarketShare[] = [
     release: "vista",
     measured: true,
     percent: 23,
-    display: "about 23%",
+    display: "23%",
     when: "October 2009",
     basis: "of desktop computers worldwide",
     note: "Its highest month, reached in the same October that Windows 7 arrived to replace it. Vista is remembered as a failure and still outran Windows 8 at the equivalent point.",

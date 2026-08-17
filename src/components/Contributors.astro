@@ -22,12 +22,12 @@ const headingId = `contributors-heading-${releaseName.toLowerCase().replace(/[^a
   <RelearningEvidence release={release} context="contributors" />
   <div class="contributor-grid">
     {contributors.map((contributor) => (
-      <article class="contributor-card">
+      <article class="contributor-card" data-contributor={contributor.name}>
         <img src={`${base}${contributor.photo}`} alt={`Portrait of ${contributor.name}`} width="500" height="500" loading="lazy" />
         <div>
           <h3>{contributor.name}</h3>
           <p>{contributor.contribution}</p>
-          <a href={contributor.profileUrl} target="_blank" rel="noreferrer">Profile and contribution<span aria-hidden="true"> ↗</span></a>
+          <a href={contributor.profileUrl} target="_blank" rel="noreferrer">Wikipedia profile<span aria-hidden="true"> ↗</span></a>
           <small>Photo: {contributor.photoCredit}</small>
         </div>
       </article>

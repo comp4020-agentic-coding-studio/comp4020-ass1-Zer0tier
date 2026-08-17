@@ -1,7 +1,36 @@
 import { expect, test } from "@playwright/test";
+import axe from "axe-core";
 
 const desktop = { width: 1920, height: 1080 };
 const phone = { width: 390, height: 844 };
+
+test("every release has no serious or critical WCAG A/AA violations at either marking viewport", async ({ browser }) => {
+  const context = await browser.newContext({ reducedMotion: "reduce" });
+  const page = await context.newPage();
+  const versions = [
+    "windows-1", "windows-2", "windows-3", "windows-95", "windows-98", "windows-2000",
+    "windows-xp", "windows-vista", "windows-7", "windows-8", "windows-10", "windows-11",
+  ];
+
+  for (const viewport of [desktop, phone]) {
+    await page.setViewportSize(viewport);
+    for (const version of versions) {
+      await page.goto(`./${version}/`);
+      await page.addScriptTag({ content: axe.source });
+      const violations = await page.evaluate(async () => {
+        const results = await globalThis.axe.run(document, {
+          runOnly: { type: "tag", values: ["wcag2a", "wcag2aa", "wcag21aa"] },
+        });
+        return results.violations
+          .filter((violation) => violation.impact === "serious" || violation.impact === "critical")
+          .map((violation) => ({ id: violation.id, targets: violation.nodes.map((node) => node.target) }));
+      });
+      expect(violations, `${version} at ${viewport.width}×${viewport.height}`).toEqual([]);
+    }
+  }
+
+  await context.close();
+});
 
 test("the core timeline survives keyboard use and a desktop-to-phone resize", async ({ page }) => {
   await page.setViewportSize(desktop);
@@ -69,6 +98,36 @@ test("the explainer keeps all twelve themed releases in one vertical document", 
 
   await page.goto("./windows/#windows-xp");
   await expect(page.locator("#windows-xp")).toBeInViewport();
+});
+
+test("W and S move to the previous and next chapter on the long explainer only", async ({ page }) => {
+  await page.setViewportSize(desktop);
+  await page.goto("./windows/#windows-7");
+
+  const shortcuts = page.locator("#windows-7 .chapter-key-hint");
+  await expect(shortcuts).toBeVisible();
+  await expect(shortcuts).toContainText("W previous");
+  await expect(shortcuts).toContainText("S next");
+
+  await page.keyboard.press("s");
+  await expect(page).toHaveURL(/\/windows\/#windows-8$/);
+  await expect(page.locator("#windows-8")).toBeInViewport();
+  await expect(page.locator("[data-chapter-shortcuts]")).toHaveAttribute("data-chapter-index", "9");
+
+  await page.keyboard.press("w");
+  await expect(page).toHaveURL(/\/windows\/#windows-7$/);
+  await expect(page.locator("#windows-7")).toBeInViewport();
+
+  const search = page.locator("#windows-7 input").first();
+  await search.focus();
+  await page.keyboard.press("s");
+  await expect(page).toHaveURL(/\/windows\/#windows-7$/);
+  await expect(search).toHaveValue("s");
+
+  await page.goto("./windows-7/");
+  await expect(page.locator("[data-chapter-shortcuts]")).toHaveCount(0);
+  await page.keyboard.press("s");
+  await expect(page).toHaveURL(/\/windows-7\/$/);
 });
 
 // "More relearning content" is an acceptance rule rather than a visual
@@ -418,6 +477,82 @@ test("both adoption bars are parallel and neither pushes the page wide", async (
       expect(bars.width, `${width}px ${version}: bars are different lengths`).toBeLessThanOrEqual(0.5);
       expect(bars.stacked, `${width}px ${version}: share bar is not below the reach bar`).toBe(true);
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    }
+  }
+});
+
+test("the relearning and adoption panels use their full boxes without vacant columns", async ({ page }) => {
+  for (const [viewport, stacked] of [[desktop, false], [phone, true]] as const) {
+    await page.setViewportSize(viewport);
+    await page.goto("./windows-7/");
+
+    const layout = await page.evaluate(() => {
+      const adoption = document.querySelector<HTMLElement>(".release-adoption")!;
+      const lens = adoption.querySelector<HTMLElement>(".relearning-evidence")!;
+      const figures = adoption.querySelector<HTMLElement>(".adoption-figures")!;
+      const relearn = document.querySelector<HTMLElement>(".relearn")!;
+      const head = relearn.querySelector<HTMLElement>(".relearn-head")!;
+      const ask = relearn.querySelector<HTMLElement>(".relearn-ask")!;
+      const box = (element: HTMLElement) => {
+        const rect = element.getBoundingClientRect();
+        return { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom, width: rect.width };
+      };
+      return {
+        adoptionAreas: getComputedStyle(adoption).gridTemplateAreas,
+        relearnAreas: getComputedStyle(relearn).gridTemplateAreas,
+        adoption: box(adoption), lens: box(lens), figures: box(figures),
+        relearn: box(relearn), head: box(head), ask: box(ask),
+      };
+    });
+
+    expect(layout.lens.width, `${viewport.width}px: the relearning lens does not fill the adoption panel`).toBeGreaterThan(layout.adoption.width * 0.8);
+    expect(layout.figures.right, `${viewport.width}px: Reach and share leaves the wide edge vacant`).toBeGreaterThan(layout.lens.right - 2);
+    expect(layout.ask.right, `${viewport.width}px: the relearning prompt leaves its content column vacant`).toBeGreaterThan(layout.relearn.right - 80);
+
+    if (stacked) {
+      expect(layout.adoptionAreas).toContain('"lens" "heading" "figures" "sources"');
+      expect(layout.relearnAreas).toContain('"head" "body"');
+      expect(layout.figures.top).toBeGreaterThan(layout.lens.bottom);
+      expect(layout.ask.left).toBeCloseTo(layout.head.left, 0);
+    } else {
+      expect(layout.adoptionAreas).toContain('"lens lens" "heading figures" "sources sources"');
+      expect(layout.relearnAreas).toContain('"head body"');
+      expect(layout.figures.left).toBeGreaterThan(layout.adoption.left + layout.adoption.width * 0.25);
+      expect(layout.ask.left).toBeGreaterThan(layout.head.right);
+    }
+  }
+});
+
+test("Reach and share use smaller figures with longer, slimmer meters", async ({ page }) => {
+  for (const [viewport, stacked] of [[desktop, false], [phone, true]] as const) {
+    await page.setViewportSize(viewport);
+    await page.goto("./windows-7/");
+
+    const rows = await page.evaluate(() => {
+      const values = [...document.querySelectorAll<HTMLElement>(".adoption-value")];
+      const meters = [...document.querySelectorAll<HTMLElement>(".release-adoption-meter")];
+      return values.map((value, index) => {
+        const figure = value.getBoundingClientRect();
+        const meter = meters[index].getBoundingClientRect();
+        return {
+          figureRight: figure.right,
+          figureBottom: figure.bottom,
+          figureHeight: figure.height,
+          meterLeft: meter.left,
+          meterTop: meter.top,
+          meterWidth: meter.width,
+          meterHeight: meter.height,
+        };
+      });
+    });
+
+    expect(rows).toHaveLength(2);
+    for (const row of rows) {
+      expect(row.meterHeight, `${viewport.width}px: meter is too heavy`).toBeLessThanOrEqual(14);
+      expect(row.figureHeight, `${viewport.width}px: figure is still oversized`).toBeLessThanOrEqual(stacked ? 22 : 34);
+      expect(row.meterWidth, `${viewport.width}px: meter is too short`).toBeGreaterThan(stacked ? 280 : 180);
+      if (stacked) expect(row.meterTop).toBeGreaterThan(row.figureBottom);
+      else expect(row.meterLeft).toBeGreaterThan(row.figureRight);
     }
   }
 });

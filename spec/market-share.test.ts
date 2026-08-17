@@ -96,6 +96,8 @@ describe("share of desktops, beside the adoption figure", () => {
     expect(getMarketShare("win10").display).toBe("79.79%");
     expect(getMarketShare("win8").display).toBe("8.02%");
     expect(getMarketShare("win8").source?.label).toContain("Net Applications");
+    expect(getMarketShare("vista").display).toBe("23%");
+    expect(marketShares.every((entry) => !entry.display?.toLowerCase().includes("about"))).toBe(true);
     expect(getMarketShare("win1").measured).toBe(false);
   });
 });
