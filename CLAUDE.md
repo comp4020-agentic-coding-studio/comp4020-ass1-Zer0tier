@@ -430,6 +430,20 @@ Two things that fell out of doing it:
   comments in `global.css` cover the main rules, but the phone media query at
   the bottom had five more that `grep` found and reading wouldn't have.
 
+### Media in a long explainer loads only after the visitor asks
+
+Ten startup sounds on one page used `preload="auto"`, and the script also tried
+to autoplay one. The first sound worked; later buttons could sit disabled at
+“Loading” while the browser fetched competing WAV files. Attribute checks
+proved that every source existed but could not prove that a second player could
+take control.
+
+Do not autoplay media. Use `preload="none"`, leave a loading control cancellable,
+and keep at most one player active. Prove the shared state in a browser: start
+one real player, start a second, then require the first to stop and the second
+to reach `playing`. A test that clicks only the first player cannot catch the
+failure this rule exists for.
+
 ### Assignment 1 acceptance gate
 
 - The core interaction is `change-version`: wheel, A/D or arrow keys, touch
